@@ -1,0 +1,19 @@
+{
+  "name": "laundryboy",
+  "version": "1.0.0",
+  "description": "Internship_work",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pankaj0017/laundryboy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pankaj0017/laundryboy/issues"
+  },
+  "homepage": "https://github.com/pankaj0017/laundryboy#readme"
+}
