@@ -12,8 +12,8 @@ var OrderSchema = mongoose.Schema({
     isOutForDelivery: {type: Boolean , default: false},									//true when out for delivery
     isDelivered:      {type: Boolean , default: false},
     isPaid:           {type: Boolean , default: false},
-    orderDate:        { type: Date, default: Date.now },								//when order is placed
-    deliveryDate:     { type: Date, default: Date.now },								//when delivered
+    orderDate:        {type: Date, default: Date.now },								//when order is placed
+    deliveryDate:     {type: Date, default: Date.now },								//when delivered
     ratingToDelivery: {type: Number , default: 0, max: 5},						//rating given to delivery by customer
     ratingToVendor:   {type: Number , default: 0, max: 5}						//rating given to vendor by customer
     

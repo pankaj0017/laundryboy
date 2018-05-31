@@ -20,7 +20,6 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 
-
 app.use(require("express-session")({
     secret: "Once again Rusty wins cutest dog!",
     resave: false,
@@ -89,6 +88,6 @@ function isLoggedIn(req, res, next){
 }
 
 
-app.listen(3002, function(){
+app.listen(3005, function(){
    console.log("The LaundryBuoy Server Has Started!");
 });
