@@ -5,9 +5,8 @@ var express        = require("express"),
     mongoose       = require("mongoose"),
     passport       = require("passport"),
     // LocalStrategy  = require("passport-local"),
-    // User           = require("./models/user"),
+    User           = require('./app/models/user'),
     session        = require('express-session'),
-    // auth           = require("./config/auth"),
     // Customer       = require("./models/customer"),
     // Order          = require("./models/order"),
     // Vendor         = require("./models/vendor"),
@@ -40,19 +39,15 @@ require('./config/passport')(passport); // pass passport for configuration
 
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-// app.use(function(req, res, next){
-//    res.locals.currentUser = req.user;
-//    next();
-// });
+app.use(function(req, res, next){
+   res.locals.currentUser = req.user;
+   next();
+});
 
 
-// app.get("/", function(req, res){
-//     res.render("landing");
-// });
+app.get("/landing", function(req, res){
+    res.render("landing");
+});
 
 // // show register form
 // app.get("/register", function(req, res){
@@ -73,25 +68,9 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 //     });
 // });
 
-// // show login form
-// app.get("/login", function(req, res){
-//    res.render("login"); 
-// });
-// // handling login logic
-// app.post("/login", passport.authenticate("local", 
-//     {
-//         successRedirect: "/",
-//         failureRedirect: "/login"
-//     }), function(req, res){
-// });
-
 
 
 
 app.listen(port, function(){
    console.log("The LaundryBuoy Server Has Started!");
 });
-
-
-// google client id: 197999679029-0o911bog5lapuna69quvvh4rkc8crght.apps.googleusercontent.com
-//google client secret: 8qbKB59CdpkKQmoUYBLHY1vx
