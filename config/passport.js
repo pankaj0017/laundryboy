@@ -1,15 +1,11 @@
 // config/passport.js
 
 // load all the things we need
-var LocalStrategy   = require('passport-local').Strategy;
+var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-// load up the user model
-var User            = require('../app/models/user');
-
-// load the auth variables
-var configAuth = require('./auth');
+var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
+var User             = require('../app/models/user');
+var configAuth       = require('./auth');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -50,35 +46,56 @@ module.exports = function(passport) {
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error
-            if (err)
-                return done(err);
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            User.findOne({ 'local.email' :  email }, function(err, user) {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
 
-            // check to see if theres already a user with that email
-            if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-            } else {
+                // check to see if theres already a user with that email
+                if (user) {
+                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                } else {
 
-                // if there is no user with that email
-                // create the user
-                var newUser            = new User();
+                        var newUser;
 
-                // set the user's local credentials
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
+                        User.findOne({ 'facebook.email' : email }, function(err, user) {
 
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
-                });
-            }
+                            if (user) {
 
-        });    
+                                newUser = user;
+
+                            } else {
+
+                                    User.findOne({ 'google.email' : email }, function(err, user) {
+
+                                        if (user) {
+
+                                            newUser = user;
+
+                                        } else {  
+
+                                                // if there is no user with that email, create the user
+                                                newUser  = new User();         
+                                            }
+                                    });
+                                }
+                        });
+
+
+                        newUser.local.email    = email;
+                        newUser.local.password = newUser.generateHash(password);
+
+                        // save the user
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });  
+                    }
+
+            });    
 
         });
 
@@ -150,8 +167,34 @@ module.exports = function(passport) {
                 if (user) {
                     return done(null, user); // user found, return that user
                 } else {
-                    // if there is no user found with that facebook id, create them
-                    var newUser            = new User();
+
+                            var newUser;
+
+                            User.findOne({ 'google.email' : profile.emails[0].value }, function(err, user) {
+
+                            if (user) {
+
+                                newUser = user;
+
+                            } else {  
+
+                                    User.findOne({ 'local.email' :  profile.emails[0].value }, function(err, user) {
+                                        
+                                        if (user) {
+
+                                            newUser = user;
+
+                                        } else {
+
+                                            // if there is no user found with that facebook email, create them
+                                            newUser = new User();
+
+                                            }
+                                    });
+                                }
+
+                            });
+
 
                     // set all of the facebook information in our user model
                     newUser.facebook.id    = profile.id; // set the users facebook id                   
@@ -197,12 +240,35 @@ module.exports = function(passport) {
                     return done(err);
 
                 if (user) {
-
-                    // if a user is found, log them in
                     return done(null, user);
                 } else {
-                    // if the user isnt in our database, create a new user
-                    var newUser          = new User();
+
+                    var newUser;
+
+                    User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
+
+                        if (user) {
+
+                            newUser = user;
+
+                        } else {  
+
+                                User.findOne({ 'local.email' :  profile.emails[0].value }, function(err, user) {
+                                    
+                                    if (user) {
+
+                                        newUser = user;
+
+                                    } else {
+
+                                        // if there is no user found with that google email, create them
+                                        newUser = new User();
+
+                                        }
+                                });
+                            }
+
+                    });
 
                     // set all of the relevant information
                     newUser.google.id    = profile.id;
@@ -221,7 +287,5 @@ module.exports = function(passport) {
         });
 
     }));
-
-
 
 };

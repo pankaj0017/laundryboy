@@ -6,12 +6,6 @@ module.exports = {
         'callbackURL'   : 'http://localhost:8080/auth/google/callback'
     },
 
-    'twitterAuth' : {
-        'consumerKey'       : 'your-consumer-key-here',
-        'consumerSecret'    : 'your-client-secret-here',
-        'callbackURL'       : 'http://localhost:8080/auth/twitter/callback'
-    },
-
     'facebookAuth' : {
         'clientID'      : '644077089273017',
         'clientSecret'  : '8a1398ae53e6c6a09524198937a596e4',

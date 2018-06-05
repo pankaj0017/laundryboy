@@ -1,5 +1,4 @@
 // app/models/user.js
-// load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
@@ -15,12 +14,6 @@ var userSchema = mongoose.Schema({
         token        : String,
         name         : String,
         email        : String
-    },
-    twitter          : {
-        id           : String,
-        token        : String,
-        displayName  : String,
-        username     : String
     },
     google           : {
         id           : String,

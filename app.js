@@ -4,7 +4,6 @@ var express        = require("express"),
     bodyParser     = require("body-parser"),
     mongoose       = require("mongoose"),
     passport       = require("passport"),
-    // LocalStrategy  = require("passport-local"),
     User           = require('./app/models/user'),
     session        = require('express-session'),
     // Customer       = require("./models/customer"),
@@ -18,6 +17,9 @@ var express        = require("express"),
     flash          = require('connect-flash');
 
 mongoose.connect("mongodb://localhost/laundrybuoy");
+//db.mycollection.remove( {name:"stack"} )
+
+
 app.use(morgan('dev'));
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.urlencoded({extended: true}));
@@ -48,27 +50,6 @@ app.use(function(req, res, next){
 app.get("/landing", function(req, res){
     res.render("landing");
 });
-
-// // show register form
-// app.get("/register", function(req, res){
-//    res.render("register"); 
-// });
-
-// //handle sign up logic
-// app.post("/register", function(req, res){
-//     var newUser = new User({username: req.body.username});
-//     User.register(newUser, req.body.password, function(err, user){
-//         if(err){
-//             console.log(err);
-//             return res.render("register");
-//         }
-//         passport.authenticate("local")(req, res, function(){
-//            res.redirect("/"); 
-//         });
-//     });
-// });
-
-
 
 
 app.listen(port, function(){
