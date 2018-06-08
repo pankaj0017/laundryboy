@@ -1,2 +1,2 @@
 # laundryboy
-Internship Work (React, MongoDb, NodeJs)
+Internship Work (MongoDb, NodeJs)
