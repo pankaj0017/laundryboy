@@ -6,11 +6,12 @@ var express        = require("express"),
     passport       = require("passport"),
     User           = require('./app/models/user'),
     session        = require('express-session'),
-    // Customer       = require("./models/customer"),
-    // Order          = require("./models/order"),
-    // Vendor         = require("./models/vendor"),
-    // DeliveryBoy    = require("./models/deliveryboy"),
-    // LaundryBoy     = require("./models/laundryboy"),
+    // Customer       = require("./app/models/customer"),
+    // Order          = require("./app/models/order"),
+    // Vendor         = require("./app/models/vendor"),
+    // DeliveryBoy    = require("./app/models/deliveryboy"),
+    // LaundryBoy     = require("./app/models/laundryboy"),
+    // Clothe         = require("./app/models/clothes"),
     methodOverride = require("method-override"),
     morgan         = require("morgan"),
     cookieParser   = require('cookie-parser'),
@@ -40,17 +41,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./config/passport')(passport); // pass passport for configuration
 
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
-
-app.use(function(req, res, next){
-   res.locals.currentUser = req.user;
-   next();
-});
-
-
-app.get("/landing", function(req, res){
-    res.render("landing");
-});
-
 
 app.listen(port, function(){
    console.log("The LaundryBuoy Server Has Started!");
