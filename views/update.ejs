@@ -26,11 +26,55 @@
 	            </div>
 	        </div>
 	    </nav>
-	    <div class="jumbotron text-center">
-	    	<p><%= customer.name %></p>
-	    	<p><%= customer.address %></p>
-	    	<p><%= customer.mobile %></p>
-	    	<p><%= customer.user %></p>
-	    </div>
+
+    	<div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+    		<p><%= customer.user %></p>
+    		<% if(!customer.mobile){ %>
+
+			    <h1><span class="fa fa-sign-in"></span>Enter Details</h1>
+
+
+			    <!-- DETAIL FORM -->
+			    <form action="/update" method="post">
+			    	<div class="form-group">
+			            <label>Name</label>
+			            <input type="text" class="form-control" name="customer[name]" placeholder="Enter Full Name">
+			        </div>
+			        <div class="form-group">
+			            <label>Mobile</label>
+			            <input type="number" class="form-control" name="customer[mobile]" placeholder="Enter Your Mobile Number">
+			        </div>
+			        <div class="form-group">
+			            <label>Address</label>
+			            <textarea class="form-control" name="customer[address]" placeholder="Enter Your Address"></textarea>
+			        </div>
+
+			        <button type="submit" class="btn btn-success btn-lg">Enter</button>
+			    </form>
+
+
+            <% } else { %>
+            	<h1><span class="fa fa-sign-in"></span>Enter Details</h1>
+
+
+			    <!-- UPDATE FORM -->
+			    <form action="/update" method="post">
+			    	<div class="form-group">
+			            <label>Name</label>
+			            <input type="text" class="form-control" name="customer[name]" value="<%= customer.name %>">
+			        </div>
+			        <div class="form-group">
+			            <label>Mobile</label>
+			            <input type="number" class="form-control" name="customer[mobile]" value="<%= customer.mobile %>">
+			        </div>
+			        <div class="form-group">
+			            <label>Address</label>
+			            <textarea class="form-control" name="customer[address]"><%= customer.address %></textarea>
+			        </div>
+
+			        <button type="submit" class="btn btn-success btn-lg">Enter</button>
+			    </form>
+            <% } %>
+        </div>
 	</body>
 </html>

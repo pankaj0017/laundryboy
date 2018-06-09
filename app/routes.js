@@ -31,7 +31,13 @@ module.exports = function(app, passport) {
     }));
 
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs');
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
+
+                res.render('profile.ejs',{customer : customer});
+            })
     });
 
     app.get('/update', isLoggedIn, function(req, res) {
@@ -39,11 +45,30 @@ module.exports = function(app, passport) {
                 // if there are any errors, return the error
                 if (err)
                     return done(err);
-                console.log(customer);
+
                 res.render('update.ejs',{customer : customer});
             })
     });
     app.post('/update', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
+
+                if (customer) {
+                    res.redirect('/profile');
+                    customer.name = req.body.customer.name;
+                    customer.mobile = req.body.customer.mobile;
+                    customer.address = req.body.customer.address;
+                    customer.save(function(err) {
+                        if (err)
+                            throw err;
+                    });
+
+                } else { 
+                    res.redirect('/update');
+                }
+            })
     });
 
 
