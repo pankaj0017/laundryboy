@@ -35,7 +35,15 @@ module.exports = function(app, passport) {
     });
 
     app.get('/update', isLoggedIn, function(req, res) {
-        res.render('update.ejs');
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
+                console.log(customer);
+                res.render('update.ejs',{customer : customer});
+            })
+    });
+    app.post('/update', isLoggedIn, function(req, res) {
     });
 
 

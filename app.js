@@ -4,9 +4,8 @@ var express        = require("express"),
     bodyParser     = require("body-parser"),
     mongoose       = require("mongoose"),
     passport       = require("passport"),
-    User           = require('./app/models/user'),
     session        = require('express-session'),
-    // Customer       = require("./app/models/customer"),
+    Customer       = require('./app/models/customer'),
     // Order          = require("./app/models/order"),
     // Vendor         = require("./app/models/vendor"),
     // DeliveryBoy    = require("./app/models/deliveryboy"),
@@ -41,6 +40,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./config/passport')(passport); // pass passport for configuration
 
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
 
 app.listen(port, function(){
    console.log("The LaundryBuoy Server Has Started!");

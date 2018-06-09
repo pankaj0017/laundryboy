@@ -5,6 +5,7 @@ var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var User             = require('../app/models/user');
+var Customer         = require("../app/models/customer");
 var configAuth       = require('./auth');
 
 // expose this function to our app using module.exports
@@ -95,15 +96,27 @@ module.exports = function(passport) {
                                         } else {  
 
                                                 // if there is no user with that email, create the user
-                                                var newUser  = new User();   
+                                                var newUser  = new User();
                                                 newUser.local.email    = email;
                                                 newUser.local.password = newUser.generateHash(password);
+                                                
 
                                                 // save the user
                                                 newUser.save(function(err) {
                                                     if (err)
                                                         throw err;
-                                                    return done(null, newUser);
+                                                    var newCustomer = new Customer();
+                                                    newCustomer.user = newUser._id;
+                                                    console.log("user id = " + newUser._id);
+
+                                                        newCustomer.save(function(err) {
+                                                                if (err)
+                                                                    throw err;
+                                                                var newCustomer = new Customer();
+                                                                newCustomer.user = newUser._id;
+                                                                console.log("customer id = " + newCustomer._id);
+                                                                return done(null, newUser);
+                                                            });
                                                 });       
                                             }
                                     });
@@ -242,9 +255,19 @@ module.exports = function(passport) {
                                                     newUser.save(function(err) {
                                                         if (err)
                                                             throw err;
+                                                        
+                                                        var newCustomer = new Customer();
+                                                        newCustomer.user = newUser._id;
+                                                        console.log("user id = " + newUser._id);
 
-                                                        // if successful, return the new user
-                                                        return done(null, newUser);
+                                                            newCustomer.save(function(err) {
+                                                                    if (err)
+                                                                        throw err;
+                                                                    var newCustomer = new Customer();
+                                                                    newCustomer.user = newUser._id;
+                                                                    console.log("customer id = " + newCustomer._id);
+                                                                    return done(null, newUser);
+                                                                });
                                                     });
 
                                                 }
@@ -339,7 +362,18 @@ module.exports = function(passport) {
                                             newUser.save(function(err) {
                                                 if (err)
                                                     throw err;
-                                                return done(null, newUser);
+                                                var newCustomer = new Customer();
+                                                        newCustomer.user = newUser._id;
+                                                        console.log("user id = " + newUser._id);
+
+                                                            newCustomer.save(function(err) {
+                                                                    if (err)
+                                                                        throw err;
+                                                                    var newCustomer = new Customer();
+                                                                    newCustomer.user = newUser._id;
+                                                                    console.log("customer id = " + newCustomer._id);
+                                                                    return done(null, newUser);
+                                                                });
                                             });
 
                                         }
