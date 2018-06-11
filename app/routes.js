@@ -11,7 +11,12 @@ module.exports = function(app, passport) {
     });
 
     app.get('/login', function(req, res) {
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        if (req.isAuthenticated()) {
+            res.redirect('/profile');
+        }
+        else {
+            res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        }
     });
 
     app.post('/login', passport.authenticate('local-login', {
@@ -34,17 +39,17 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 // if there are any errors, return the error
                 if (err)
-                    return done(err);
+                    throw err;
 
                 res.render('profile.ejs',{customer : customer});
             })
     });
 
     app.get('/update', isLoggedIn, function(req, res) {
-        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+        Customer.findOne({ 'user' :  req.user._id }).populate("history").exec(function(err, customer) {
                 // if there are any errors, return the error
                 if (err)
-                    return done(err);
+                    throw err;
 
                 res.render('update.ejs',{customer : customer});
             })
@@ -53,22 +58,51 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 // if there are any errors, return the error
                 if (err)
-                    return done(err);
+                    throw err;
 
-                if (customer) {
+                customer.name = req.body.customer.name;
+                customer.pinCode = req.body.customer.pinCode;
+                customer.address = req.body.customer.address;
+                customer.save(function(err) {
+                    if (err)
+                        throw err;
                     res.redirect('/profile');
-                    customer.name = req.body.customer.name;
-                    customer.mobile = req.body.customer.mobile;
-                    customer.address = req.body.customer.address;
-                    customer.save(function(err) {
-                        if (err)
-                            throw err;
-                    });
-
-                } else { 
-                    res.redirect('/update');
-                }
+                });
             })
+    });
+    app.get('/update/mobile', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
+                // if there are any errors, return the error
+                if (err)
+                    throw err;
+
+                console.log("i am in get request /update/mobile  " + customer);
+                res.render('mobile.ejs',{customer : customer});
+            })
+    });
+    app.post('/update/mobile', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                // if there are any errors, return the error
+                if (err)
+                    throw err;
+
+                Mobile.create(req.body.newMobile, function(err, newMobile){
+                   if(err){
+                       console.log(err);
+                   } else {
+                       
+                       newMobile.owner    = customer._id;
+
+                       newMobile.save();
+                       customer.numbers.push(newMobile);
+                       customer.save();
+
+                       console.log(customer);
+
+                       res.redirect('/update');
+                   }
+                });
+            });
     });
 
 

@@ -41,8 +41,8 @@
 			            <input type="text" class="form-control" name="customer[name]" placeholder="Enter Full Name">
 			        </div>
 			        <div class="form-group">
-			            <label>Mobile</label>
-			            <input type="number" class="form-control" name="customer[mobile]" placeholder="Enter Your Mobile Number">
+			            <label>Pin Code</label>
+			            <input type="number" class="form-control" name="customer[pinCode]" placeholder="Enter Your Pin Code">
 			        </div>
 			        <div class="form-group">
 			            <label>Address</label>
@@ -64,8 +64,8 @@
 			            <input type="text" class="form-control" name="customer[name]" value="<%= customer.name %>">
 			        </div>
 			        <div class="form-group">
-			            <label>Mobile</label>
-			            <input type="number" class="form-control" name="customer[mobile]" value="<%= customer.mobile %>">
+			            <label>Pin Code</label>
+			            <input type="number" class="form-control" name="customer[pinCode]" value="<%= customer.pinCode %>">
 			        </div>
 			        <div class="form-group">
 			            <label>Address</label>
@@ -75,6 +75,8 @@
 			        <button type="submit" class="btn btn-success btn-lg">Enter</button>
 			    </form>
             <% } %>
+
+            <h6><a href="/update/mobile">Mobile Numbers</a></h6>
         </div>
 	</body>
 </html>

@@ -5,12 +5,19 @@ var CustomerSchema = new mongoose.Schema({
 	  user         : {type: mongoose.Schema.Types.ObjectId, ref: "User"},       //to extract details of customer who is currently logged in
     name         : {type: String , default: ''},
     referedBy    : {type: String , default: ''},
-    referCode    : {type: Number, default:  0 }, 
+    tagNumber    : {type: Number, default:  0 },
+    mainNumber   : {type: String , default: ''},
     address      : {type: String , default: ''},
-    mobile       : {type: String , default: ''},
+    pinCode      : {type: Number, default:  0 },
     daysLeft     : {type: Number, default:  0 },                              //time untill next recharge
     longClothes  : {type: Number, default:  0 },
     shortClothes : {type: Number, default:  0 },
+    numbers:  [
+        {
+           type: mongoose.Schema.Types.ObjectId,
+           ref: "Mobile"
+        }
+      ],
     history:  [
         {
            type: mongoose.Schema.Types.ObjectId,
