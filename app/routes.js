@@ -72,37 +72,36 @@ module.exports = function(app, passport) {
     });
     app.get('/update/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
-                // if there are any errors, return the error
                 if (err)
                     throw err;
-
-                console.log("i am in get request /update/mobile  " + customer);
                 res.render('mobile.ejs',{customer : customer});
             })
     });
     app.post('/update/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                // if there are any errors, return the error
                 if (err)
                     throw err;
-
                 Mobile.create(req.body.newMobile, function(err, newMobile){
                    if(err){
                        console.log(err);
-                   } else {
-                       
+                   } else {   
                        newMobile.owner    = customer._id;
-
                        newMobile.save();
                        customer.numbers.push(newMobile);
                        customer.save();
-
-                       console.log(customer);
-
                        res.redirect('/update');
                    }
                 });
             });
+    });
+    app.get('/update/mobile/:id', function(req, res){
+       Mobile.findByIdAndRemove(req.params.id, function(err){
+          if(err){
+              throw err;
+          } else {
+              res.redirect("/update/mobile");
+          }
+       });
     });
 
 

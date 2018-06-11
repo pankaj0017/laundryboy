@@ -30,9 +30,12 @@
     	<div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
     		<p><%= customer.user %></p>
 
-    		<% customer.numbers.forEach(function(number){ %>
-
-    			<p><%= number %></p>
+    		<% customer.numbers.forEach(function(cell){ %>
+    			
+    			<form class="form-inline" action="/update/mobile/<%=cell._id%>?_method=DELETE" method="GET">
+    				<label><%= cell.number %></label>
+                    <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                </form>
 
     		<% }) %>
 
@@ -44,7 +47,7 @@
 		            <input type="number" class="form-control" name="newMobile[number]" placeholder="Enter New Phone Number">
 		        </div>
 
-		        <button type="submit" class="btn btn-success btn-sm">Add</button>
+		        <button type="submit" class="btn btn-primary btn-sm">Add</button>
 		    </form>
 
         </div>
