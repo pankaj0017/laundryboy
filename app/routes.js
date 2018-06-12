@@ -41,17 +41,17 @@ module.exports = function(app, passport) {
                 if (err)
                     throw err;
 
-                res.render('profile.ejs',{customer : customer});
+                res.render('customer/profile.ejs',{customer : customer});
             })
     });
 
     app.get('/update', isLoggedIn, function(req, res) {
-        Customer.findOne({ 'user' :  req.user._id }).populate("history").exec(function(err, customer) {
+        Customer.findOne({ 'user' :  req.user._id }).populate("history numbers").exec(function(err, customer) {
                 // if there are any errors, return the error
                 if (err)
                     throw err;
 
-                res.render('update.ejs',{customer : customer});
+                res.render('customer/update.ejs',{customer : customer});
             })
     });
     app.post('/update', isLoggedIn, function(req, res) {
@@ -62,8 +62,9 @@ module.exports = function(app, passport) {
 
                 customer.name = req.body.customer.name;
                 customer.pinCode = req.body.customer.pinCode;
+                customer.mainNumber = req.body.customer.mainNumber;
                 customer.address = req.body.customer.address;
-                customer.save(function(err) {
+                customer.save(function(err) {   
                     if (err)
                         throw err;
                     res.redirect('/profile');
@@ -74,7 +75,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
                     throw err;
-                res.render('mobile.ejs',{customer : customer});
+                res.render('customer/mobile.ejs',{customer : customer});
             })
     });
     app.post('/update/mobile', isLoggedIn, function(req, res) {
@@ -89,7 +90,7 @@ module.exports = function(app, passport) {
                        newMobile.save();
                        customer.numbers.push(newMobile);
                        customer.save();
-                       res.redirect('/update');
+                       res.redirect('/update/mobile');
                    }
                 });
             });
@@ -102,6 +103,20 @@ module.exports = function(app, passport) {
               res.redirect("/update/mobile");
           }
        });
+    });
+
+
+    // =====================================
+    // ADMIN ROUTES =====================
+    // =====================================
+    // route for changing database
+    app.get('/admin', isLoggedIn, function(req, res) {
+        
+        if(req.user.local.email == "mail@laundrybuoy.com") {
+            res.render('admin/admin.ejs');
+        } else {
+            res.redirect("/logout");
+        }
     });
 
 

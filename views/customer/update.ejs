@@ -47,8 +47,22 @@
 			            <label>Pin Code</label>
 			            <input type="number" class="form-control" name="customer[pinCode]" value="<%= customer.pinCode %>">
 			        </div>
+			        <div class="form-group">
+					  <label for="sel1">Select a Mobile number</label>
+					  <select class="form-control" name="customer[mainNumber]">
+
+					  	<option value="" selected disabled hidden><%= customer.mainNumber %></option>
+					  	<% customer.numbers.forEach(function(cell){ %>
+						    <option>
+						    	<%= cell.number %>
+						    </option>
+						<% }) %>
+						
+					  </select>
+					</div>
 
 			        <button type="submit" class="btn btn-success btn-lg">Enter</button>
+			        
 			    </form>
 
             <h3><a href="/update/mobile"><span class="fa fa-sign-in"></span>Manage Mobile Numbers</a></h3>
