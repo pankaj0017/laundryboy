@@ -10,23 +10,27 @@ module.exports = function(app, passport) {
         res.render('index.ejs'); // load the index.ejs file
     });
 
-    app.get('/login', function(req, res) {
-        if (req.isAuthenticated()) {
-            res.redirect('/profile');
-        }
-        else {
+    app.get('/login', isLoggedOut, function(req, res) {
             res.render('login.ejs', { message: req.flash('loginMessage') }); 
-        }
     });
 
-    app.post('/login', passport.authenticate('local-login', {
+    app.post('/login', isLoggedOut, passport.authenticate('local-login', {
         successRedirect : '/', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
 
-    app.get('/signup/:id', function(req, res) {
+    app.get('/signup', isLoggedOut, function(req, res) {
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
+    });
 
+    app.post('/signup', isLoggedOut, passport.authenticate('local-signup', {
+        successRedirect : '/', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+    app.get('/signup/:id', isLoggedOut, function(req, res) {
         Customer.findById(req.params.id, function(err, foundCustomer){
             if(!foundCustomer) {
                 res.redirect('/signup');
@@ -36,21 +40,18 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.post('/signup/:id', passport.authenticate('local-signup', {
+    app.post('/signup/:id', isLoggedOut, passport.authenticate('local-signup', {
         successRedirect : '/', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
 
-    app.get('/signup', function(req, res) {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
-    });
+    
 
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+
+    // =====================================
+    // CUSTOMER ROUTES =====================
+    // =====================================
 
     app.get('/profile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
@@ -112,7 +113,7 @@ module.exports = function(app, passport) {
                 });
             });
     });
-    app.post('/update/mobile/:id', function(req, res){
+    app.post('/update/mobile/:id', isLoggedIn, function(req, res){
        Mobile.findByIdAndRemove(req.params.id, function(err){
           if(err){
               throw err;
@@ -245,12 +246,12 @@ module.exports = function(app, passport) {
     // FACEBOOK ROUTES =====================
     // =====================================
     // route for facebook authentication and login
-    app.get('/auth/facebook', passport.authenticate('facebook', { 
+    app.get('/auth/facebook', isLoggedOut, passport.authenticate('facebook', { 
       scope : ['public_profile', 'email']
     }));
 
     // handle the callback after facebook has authenticated the user
-    app.get('/auth/facebook/callback',
+    app.get('/auth/facebook/callback', isLoggedOut,
         passport.authenticate('facebook', {
             successRedirect : '/',
             failureRedirect : '/login'
@@ -262,10 +263,10 @@ module.exports = function(app, passport) {
     // send to google to do the authentication
     // profile gets us their basic information including their name
     // email gets their emails
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    app.get('/auth/google', isLoggedOut, passport.authenticate('google', { scope : ['profile', 'email'] }));
 
     // the callback after google has authenticated the user
-    app.get('/auth/google/callback',
+    app.get('/auth/google/callback', isLoggedOut,
             passport.authenticate('google', {
                     successRedirect : '/',
                     failureRedirect : '/login'
@@ -284,6 +285,11 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     res.redirect('/login');
+}
+function isLoggedOut(req, res, next) {
+    if (!req.isAuthenticated())
+        return next();
+    res.redirect('/profile');
 }
 function isAdmin(req, res, next) {
     if (req.isAuthenticated() && req.user.local.email == "mail@laundrybuoy.com")

@@ -45,5 +45,5 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 
 app.listen(port, function(){
-   console.log("The LaundryBuoy+ Server Has Started!");
+   console.log("The LaundryBuoy Server Has Started!");
 });
