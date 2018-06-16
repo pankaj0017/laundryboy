@@ -107,14 +107,13 @@ module.exports = function(passport) {
                                                         throw err;
                                                     var newCustomer = new Customer();
                                                     newCustomer.user = newUser._id;
+                                                    newCustomer.referedBy = req.params.id;
                                                     console.log("user id = " + newUser._id);
 
                                                         newCustomer.save(function(err) {
                                                                 if (err)
-                                                                    throw err;
-                                                                var newCustomer = new Customer();
-                                                                newCustomer.user = newUser._id;
-                                                                console.log("customer id = " + newCustomer._id);
+                                                                    throw err;  
+                                                                console.log("customer = " + newCustomer);
                                                                 return done(null, newUser);
                                                             });
                                                 });       
@@ -263,8 +262,6 @@ module.exports = function(passport) {
                                                             newCustomer.save(function(err) {
                                                                     if (err)
                                                                         throw err;
-                                                                    var newCustomer = new Customer();
-                                                                    newCustomer.user = newUser._id;
                                                                     console.log("customer id = " + newCustomer._id);
                                                                     return done(null, newUser);
                                                                 });
@@ -369,8 +366,6 @@ module.exports = function(passport) {
                                                             newCustomer.save(function(err) {
                                                                     if (err)
                                                                         throw err;
-                                                                    var newCustomer = new Customer();
-                                                                    newCustomer.user = newUser._id;
                                                                     console.log("customer id = " + newCustomer._id);
                                                                     return done(null, newUser);
                                                                 });

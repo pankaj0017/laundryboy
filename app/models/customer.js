@@ -4,8 +4,8 @@ var CustomerSchema = new mongoose.Schema({
 
 	  user         : {type: mongoose.Schema.Types.ObjectId, ref: "User"},       //to extract details of customer who is currently logged in
     name         : {type: String , default: ''},
-    referedBy    : {type: String , default: ''},
-    tagNumber    : {type: Number, default:  0 },
+    referedBy    : {type: mongoose.Schema.Types.ObjectId, ref: "Customer"},
+    tagNumber    : {type: String , default: ''},
     mainNumber   : {type: String , default: ''},
     address      : {type: String , default: ''},
     pinCode      : {type: Number, default:  0 },

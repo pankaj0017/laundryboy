@@ -5,6 +5,7 @@ var express        = require("express"),
     mongoose       = require("mongoose"),
     passport       = require("passport"),
     session        = require('express-session'),
+    User           = require('./app/models/user'),
     Customer       = require('./app/models/customer'),
     Mobile         = require('./app/models/mobile'),
     Order          = require("./app/models/order"),
@@ -44,5 +45,5 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 
 app.listen(port, function(){
-   console.log("The LaundryBuoy Server Has Started!");
+   console.log("The LaundryBuoy+ Server Has Started!");
 });

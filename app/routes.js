@@ -25,11 +25,28 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
+    app.get('/signup/:id', function(req, res) {
+
+        Customer.findById(req.params.id, function(err, foundCustomer){
+            if(!foundCustomer) {
+                res.redirect('/signup');
+            } else {
+                res.render("signuprefer", {customer: foundCustomer, message: req.flash('signupMessage')});
+            }
+        });
+    });
+
+    app.post('/signup/:id', passport.authenticate('local-signup', {
+        successRedirect : '/', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
     app.get('/signup', function(req, res) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
-     app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
@@ -95,7 +112,7 @@ module.exports = function(app, passport) {
                 });
             });
     });
-    app.get('/update/mobile/:id', function(req, res){
+    app.post('/update/mobile/:id', function(req, res){
        Mobile.findByIdAndRemove(req.params.id, function(err){
           if(err){
               throw err;
@@ -110,13 +127,117 @@ module.exports = function(app, passport) {
     // ADMIN ROUTES =====================
     // =====================================
     // route for changing database
-    app.get('/admin', isLoggedIn, function(req, res) {
-        
-        if(req.user.local.email == "mail@laundrybuoy.com") {
+    app.get('/admin', isAdmin, function(req, res) {
             res.render('admin/admin.ejs');
-        } else {
-            res.redirect("/logout");
-        }
+    });
+    app.get('/admin/customer', isAdmin, function(req, res) {
+            res.render('admin/customersection.ejs');
+    });
+    app.post('/admin/customer', isAdmin, function(req, res) {                    //send email to all customer
+        res.redirect('admin/customer');
+    });
+
+    // =====================================
+    // ADMIN CUSTOMER ROUTES =====================
+    // =====================================
+    // route for changing CUSTOMER database
+    app.post('/admin/customer/email', isAdmin, function(req, res) {
+
+            User.findOne({ 'local.email' :  req.body.viaEmail }, function(err, foundUser) {
+                if (err)
+                    return done(err);
+
+                if (foundUser) {
+
+                    Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
+                        if (err)
+                            throw err;
+                        res.render('admin/customerdetail.ejs',{customer : customer});
+                    })
+                } else {
+
+                        User.findOne({ 'facebook.email' : req.body.viaEmail }, function(err, foundUser) {
+
+                            if (err) throw err;
+
+                            if (foundUser) {
+
+                                Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
+                                    if (err)
+                                        throw err;
+                                    res.render('admin/customerdetail.ejs',{customer : customer});
+                                })
+
+                            } else {
+
+                                    User.findOne({ 'google.email' : req.body.viaEmail }, function(err, foundUser) {
+
+                                        if (err) throw err;
+
+                                        if (foundUser) {
+
+                                            Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
+                                                if (err)
+                                                    throw err;
+                                                res.render('admin/customerdetail.ejs',{customer : customer});
+                                            })
+
+                                        } else {  
+     
+                                            }
+                                    });
+                                }
+                        });
+                    }
+
+            }); 
+    });
+
+    app.post('/admin/customer/tag', isAdmin, function(req, res) {
+        Customer.findOne({ 'tagNumber' :  req.body.viaTag }).populate("history numbers").exec(function(err, customer) {
+            if (err)
+                throw err;
+            res.render('admin/customerdetail.ejs',{customer : customer});
+        })
+    });
+    app.post('/admin/customer/mobile', isAdmin, function(req, res) {
+        Customer.findOne({ 'mainNumber' :  req.body.viaMobile }).populate("history numbers").exec(function(err, customer) {
+            if (err)
+                throw err;
+            res.render('admin/customerdetail.ejs',{customer : customer});
+        })
+    });
+
+    // =====================================
+    // CLOTHES ROUTES =====================
+    // =====================================
+    // route for changing CLOTHE database
+    app.get('/admin/clothes', isAdmin, function(req, res) {
+        Clothe.find({}, function(err, allClothes){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/clothes.ejs",{clothes : allClothes});
+           }
+        });
+    });
+    app.post('/admin/clothes', isAdmin, function(req, res) {
+        Clothe.create(req.body.newClothe, function(err, newClothe){
+           if(err){
+               console.log(err);
+           } else {   
+               res.redirect('/admin/clothes');
+           }
+        });
+    });
+    app.post('/admin/clothes/:id', isAdmin, function(req, res) {
+        Clothe.findByIdAndRemove(req.params.id, function(err){
+           if(err){
+               console.log(err);
+           } else {
+              res.redirect("/admin/clothes");
+           }
+        });
     });
 
 
@@ -161,6 +282,11 @@ module.exports = function(app, passport) {
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
+        return next();
+    res.redirect('/login');
+}
+function isAdmin(req, res, next) {
+    if (req.isAuthenticated() && req.user.local.email == "mail@laundrybuoy.com")
         return next();
     res.redirect('/login');
 }

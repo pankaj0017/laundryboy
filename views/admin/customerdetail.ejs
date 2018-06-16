@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>
+            LaundryBuoy
+        </title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+        <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">laundrybuoy</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if(!user){ %>
+                            <li><a href="/login"><span class="glyphicon glyphicon-log-in" style="color:black;"></span> <span style="color:black;"> Login </span></a></li>
+                            <li ><a href="/signup"><span class="glyphicon glyphicon-user" style="color:black;" ></span> <span style="color:black;">Sign Up</span></a></li>
+                        <% } else { %>
+                            <li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;"> Signed In As <%= user.local.email %> </span></a></li>
+                            <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <p><%=customer.user%></p>
+        <p><%=customer.name%></p>
+        <p><%=customer.address%></p>
+        <p><%=customer.pinCode%></p>
+    </body>
+</html>
