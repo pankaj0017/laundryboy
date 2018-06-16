@@ -142,6 +142,38 @@ module.exports = function(app, passport) {
     // ADMIN CUSTOMER ROUTES =====================
     // =====================================
     // route for changing CUSTOMER database
+
+
+
+    app.get('/admin/customerdetails/:id', isAdmin, function(req, res){
+       Customer.findById(req.params.id, function(err, customer){
+        if(!customer) console.log('nhi mila');
+          if(err){
+              throw err;
+          } else {
+              res.render('admin/customerdetail.ejs',{customer : customer});
+          }
+       });
+    });
+    app.post('/admin/customerdetails/:id', isAdmin, function(req, res){
+       Customer.findById(req.params.id, function(err, foundCustomer){
+          if(err){
+              throw err;
+          } else {
+              foundCustomer.name = req.body.customer.name;
+              foundCustomer.tagNumber = req.body.customer.tagNumber;
+              foundCustomer.mainNumber = req.body.customer.mainNumber;
+              foundCustomer.address = req.body.customer.address;
+              foundCustomer.pinCode = req.body.customer.pinCode;
+              foundCustomer.daysLeft = req.body.customer.daysLeft;
+              foundCustomer.longClothes = req.body.customer.longClothes;
+              foundCustomer.shortClothes = req.body.customer.shortClothes;
+              foundCustomer.save();
+              res.redirect('/admin/customer/:id');
+          }
+       });
+    });
+
     app.post('/admin/customer/email', isAdmin, function(req, res) {
 
             User.findOne({ 'local.email' :  req.body.viaEmail }, function(err, foundUser) {
@@ -153,7 +185,7 @@ module.exports = function(app, passport) {
                     Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
                         if (err)
                             throw err;
-                        res.render('admin/customerdetail.ejs',{customer : customer});
+                        res.redirect('/admin/customerdetails/' + customer._id);
                     })
                 } else {
 
@@ -166,7 +198,7 @@ module.exports = function(app, passport) {
                                 Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
                                     if (err)
                                         throw err;
-                                    res.render('admin/customerdetail.ejs',{customer : customer});
+                                    res.redirect('/admin/customerdetails/' + customer._id);
                                 })
 
                             } else {
@@ -180,7 +212,7 @@ module.exports = function(app, passport) {
                                             Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
                                                 if (err)
                                                     throw err;
-                                                res.render('admin/customerdetail.ejs',{customer : customer});
+                                                res.redirect('/admin/customerdetailsd/' + customer._id);
                                             })
 
                                         } else {  
@@ -198,16 +230,18 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'tagNumber' :  req.body.viaTag }).populate("history numbers").exec(function(err, customer) {
             if (err)
                 throw err;
-            res.render('admin/customerdetail.ejs',{customer : customer});
+            res.redirect('/admin/customerdetails/' + customer._id);
         })
     });
     app.post('/admin/customer/mobile', isAdmin, function(req, res) {
         Customer.findOne({ 'mainNumber' :  req.body.viaMobile }).populate("history numbers").exec(function(err, customer) {
             if (err)
                 throw err;
-            res.render('admin/customerdetail.ejs',{customer : customer});
+            res.redirect('/admin/customerdetails/' + customer._id);
         })
     });
+
+
 
     // =====================================
     // CLOTHES ROUTES =====================
