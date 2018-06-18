@@ -147,7 +147,6 @@ module.exports = function(app, passport) {
 
     app.get('/admin/customerdetails/:id', isAdmin, function(req, res){
        Customer.findById(req.params.id, function(err, customer){
-        if(!customer) console.log('nhi mila');
           if(err){
               throw err;
           } else {
@@ -240,6 +239,142 @@ module.exports = function(app, passport) {
             res.redirect('/admin/customerdetails/' + customer._id);
         })
     });
+
+
+    // =====================================
+    // ADMIN PINCODE ROUTES =====================
+    // =====================================
+    // route for changing CUSTOMER database
+
+    app.get('/admin/pincodes', isAdmin, function(req, res) {
+        PinCode.find({}, function(err, allPincodes){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/pincode.ejs",{pincodes : allPincodes});
+           }
+        });
+    });
+    app.get('/admin/pincodes/add', isAdmin, function(req, res) {
+        Vendor.find({}, function(err, allVendors){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/newpincode.ejs",{vendors : allVendors});
+           }
+        });
+    });
+    app.post('/admin/pincodes/add', isAdmin, function(req, res) {
+        PinCode.create(req.body.newPincode, function(err, newPincode){
+           if(err){
+               console.log(err);
+           } else {   
+               res.redirect('/admin/pincodes');
+           }
+        });
+    });
+
+
+    // =====================================
+    // ADMIN VENDOR ROUTES =====================
+    // =====================================
+    // route for changing CUSTOMER database
+
+    app.get('/admin/vendors', isAdmin, function(req, res) {
+        Vendor.find({}, function(err, allVendors){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/vendor.ejs",{vendors : allVendors});
+           }
+        });
+    });
+    app.post('/admin/vendors', isAdmin, function(req, res) {
+        Vendor.create(req.body.newVendor, function(err, newVendor){
+           if(err){
+               console.log(err);
+           } else {   
+               res.redirect('/admin/vendors');
+           }
+        });
+    });
+    app.get('/admin/vendors/:id', isAdmin, function(req, res){
+       Vendor.findById(req.params.id, function(err, vendor){
+          if(err){
+              throw err;
+          } else {
+              res.render('admin/vendordetail.ejs',{vendor : vendor});
+          }
+       });
+    });
+    app.post('/admin/vendors/:id', isAdmin, function(req, res){
+       Vendor.findById(req.params.id, function(err, foundVendor){
+          if(err){
+              throw err;
+          } else {
+              foundVendor.name = req.body.vendor.name;
+              foundVendor.username = req.body.vendor.username;
+              foundVendor.password = req.body.vendor.password;
+              foundVendor.address = req.body.vendor.address;
+              foundVendor.email = req.body.vendor.email;
+              foundVendor.save();
+              res.redirect('/admin/vendors/:id');
+          }
+       });
+    });
+
+
+
+
+    // =====================================
+    // ADMIN DELIVERYBOY ROUTES =====================
+    // =====================================
+    // route for changing CUSTOMER database
+
+    app.get('/admin/deliveryboys', isAdmin, function(req, res) {
+        DeliveryBoy.find({}, function(err, allDeliveryBoys){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/deliveryboy.ejs",{deliveryboys : allDeliveryBoys});
+           }
+        });
+    });
+    app.post('/admin/deliveryboys', isAdmin, function(req, res) {
+        DeliveryBoy.create(req.body.newDeliveryBoy, function(err, newDeliveryBoy){
+           if(err){
+               console.log(err);
+           } else {   
+               res.redirect('/admin/deliveryboys');
+           }
+        });
+    });
+    app.get('/admin/deliveryboys/:id', isAdmin, function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+          if(err){
+              throw err;
+          } else {
+              res.render('admin/deliveryboydetail.ejs',{deliveryboy : deliveryboy});
+          }
+       });
+    });
+    app.post('/admin/deliveryboys/:id', isAdmin, function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+          if(err){
+              throw err;
+          } else {
+              foundDeliveryBoy.name = req.body.deliveryboy.name;
+              foundDeliveryBoy.username = req.body.deliveryboy.username;
+              foundDeliveryBoy.password = req.body.deliveryboy.password;
+              foundDeliveryBoy.address = req.body.deliveryboy.address;
+              foundDeliveryBoy.email = req.body.deliveryboy.email;
+              foundDeliveryBoy.save();
+              res.redirect('/admin/deliveryboys/:id');
+          }
+       });
+    });
+
+
 
 
 
