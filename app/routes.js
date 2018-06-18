@@ -330,3 +330,9 @@ function isAdmin(req, res, next) {
         return next();
     res.redirect('/login');
 }
+
+
+
+        // Customer.count(function(error, nc) {
+        //     console.log(nc);
+        // });
