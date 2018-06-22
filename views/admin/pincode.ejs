@@ -1,0 +1,68 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Clothe Page</h1>
+        <a href="/" class="btn btn-default btn-sm">Home</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/admin" class="btn btn-default btn-sm">Back</a>
+    </div>
+
+    <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+        <p><%= user.local.email %></p>
+
+        <h3><span class="fa fa-sign-in"></span>add new pincodes</h3>
+
+        <!-- CREATING -->
+                <form action="/admin/pincodes/add" method="post">
+
+                    <div class="form-group">
+                        <label>Pincode</label>
+                        <input type="number" class="form-control" name="newPinCode[pinCode]">
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">Select a Vendor</label>
+                          <select class="form-control" name="newPinCode[vendor]">
+
+                            <% vendors.forEach(function(vendor){ %>
+                                <option value="<%= vendor._id %>">
+                                    <%= vendor.name %>
+                                </option>
+                            <% }) %>
+                            
+                          </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg">Add</button>
+                    
+                </form>
+        <!-- CREATING -->
+
+        <% pincodes.forEach(function(pincode){ %>
+                
+
+            <form class="form-inline" action="/admin/pincodes/<%=pincode._id%>?_method=DELETE" method="POST">
+                <label><%= pincode.pinCode %> of <%= pincode.vendor.name %></label>
+                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+            </form>
+
+        <% }) %>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -9,6 +9,9 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
+    app.get('/check', function(req, res) {
+        res.render('check.ejs'); // load the index.ejs file
+    });
 
     app.get('/login', isLoggedOut, function(req, res) {
             res.render('login.ejs', { message: req.flash('loginMessage') }); 
@@ -168,7 +171,8 @@ module.exports = function(app, passport) {
               foundCustomer.longClothes = req.body.customer.longClothes;
               foundCustomer.shortClothes = req.body.customer.shortClothes;
               foundCustomer.save();
-              res.redirect('/admin/customer/:id');
+              res.redirect('/admin/customerdetails/' + req.params.id
+                );
           }
        });
     });
@@ -211,7 +215,7 @@ module.exports = function(app, passport) {
                                             Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
                                                 if (err)
                                                     throw err;
-                                                res.redirect('/admin/customerdetailsd/' + customer._id);
+                                                res.redirect('/admin/customerdetails/' + customer._id);
                                             })
 
                                         } else {  
@@ -247,7 +251,7 @@ module.exports = function(app, passport) {
     // route for changing CUSTOMER database
 
     app.get('/admin/pincodes', isAdmin, function(req, res) {
-        PinCode.find({}, function(err, allPincodes){
+        PinCode.find({}).populate("vendor").exec(function(err, allPincodes) {
            if(err){
                console.log(err);
            } else {
@@ -276,7 +280,7 @@ module.exports = function(app, passport) {
 
 
     // =====================================
-    // ADMIN VENDOR ROUTES =====================
+    // ADMIN VENDOR ROUTES =================
     // =====================================
     // route for changing CUSTOMER database
 
@@ -285,7 +289,9 @@ module.exports = function(app, passport) {
            if(err){
                console.log(err);
            } else {
-              res.render("admin/vendor.ejs",{vendors : allVendors});
+                Vendor.count(function(error, vendorCount) {
+                    res.render("admin/vendor.ejs",{vendors : allVendors, vendorCount : vendorCount + 1});
+                });
            }
         });
     });
@@ -317,8 +323,9 @@ module.exports = function(app, passport) {
               foundVendor.password = req.body.vendor.password;
               foundVendor.address = req.body.vendor.address;
               foundVendor.email = req.body.vendor.email;
+              foundVendor.mobile = req.body.vendor.mobile;
               foundVendor.save();
-              res.redirect('/admin/vendors/:id');
+              res.redirect('/admin/vendors/' + req.params.id);
           }
        });
     });
@@ -336,7 +343,9 @@ module.exports = function(app, passport) {
            if(err){
                console.log(err);
            } else {
-              res.render("admin/deliveryboy.ejs",{deliveryboys : allDeliveryBoys});
+                DeliveryBoy.count(function(error, deliveryBoyCount) {
+                    res.render("admin/deliveryboy.ejs",{deliveryboys : allDeliveryBoys , deliveryBoyCount : deliveryBoyCount + 1});
+                });
            }
         });
     });
@@ -368,8 +377,9 @@ module.exports = function(app, passport) {
               foundDeliveryBoy.password = req.body.deliveryboy.password;
               foundDeliveryBoy.address = req.body.deliveryboy.address;
               foundDeliveryBoy.email = req.body.deliveryboy.email;
+              foundDeliveryBoy.mobile = req.body.deliveryboy.mobile;
               foundDeliveryBoy.save();
-              res.redirect('/admin/deliveryboys/:id');
+              res.redirect('/admin/deliveryboys/' + req.params.id);
           }
        });
     });
@@ -461,13 +471,7 @@ function isLoggedOut(req, res, next) {
     res.redirect('/profile');
 }
 function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.local.email == "mail@laundrybuoy.com")
+    if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com")
         return next();
     res.redirect('/login');
 }
-
-
-
-        // Customer.count(function(error, nc) {
-        //     console.log(nc);
-        // });

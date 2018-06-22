@@ -1,0 +1,74 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Delivery Boy Page</h1>
+        <a href="/" class="btn btn-default btn-sm">Home</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/admin" class="btn btn-default btn-sm">Back</a>
+    </div>
+
+    <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+        <p><%= user.local.email %></p>
+
+        <h3><span class="fa fa-sign-in"></span>add new delivery boy</h3>
+
+        <!-- CREATING -->
+                <form action="/admin/deliveryboys" method="post">
+
+                    <div class="form-group">
+                        <label>DeliveryBoy Tag</label>
+                        <input type="text" class="form-control" name="newDeliveryBoy[username]" value="lbd<%= deliveryBoyCount %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="newDeliveryBoy[password]">
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="newDeliveryBoy[name]">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" name="newDeliveryBoy[email]">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control" name="newDeliveryBoy[address]"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>mobile</label>
+                        <input type="text" class="form-control" name="newDeliveryBoy[mobile]">
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg">Add new delivery boy</button>
+                    
+                </form>
+
+                <br><br><p>list of deliveryboys : click for more details</p>
+        <!-- CREATING -->
+
+        <% deliveryboys.forEach(function(deliveryboy){ %>
+                
+            <p><a href="/admin/deliveryboys/<%= deliveryboy._id %>" ><%= deliveryboy.name %> : <%= deliveryboy.mobile %></a></p>
+
+        <% }) %>
+
+    </div>
+
+</div>
+</body>
+</html>
