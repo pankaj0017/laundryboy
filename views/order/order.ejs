@@ -7,55 +7,406 @@
     <script type="text/javascript"> 
         function incQuantity(item) {
             var itemType = item.getAttribute("data-type");
-            var quantity = parseInt($('#quantity' + itemType).val());
-            $('#quantity' + itemType).val(quantity + 1);
+            var quantity = parseInt($('#' + itemType).val());
+            $('#' + itemType).val(quantity + 1);
         }
         function decQuantity(item) {
             var itemType = item.getAttribute("data-type");
-            var quantity = parseInt($('#quantity' + itemType).val());
-            $('#quantity' + itemType).val(quantity - 1);
+            var quantity = parseInt($('#' + itemType).val());
+            $('#' + itemType).val(quantity - 1);
         }
     </script>
 </head>
 <body>
 <div class="container">
-	<div class="row">
-		<h2>Simple Quantity increment buttons with Javascript </h2>
-        
-        
+    <div class="row">
+        <center><h1>Pickup Page</h1></center>
+        <h3><br></h3>
+        <center><h3>Big Clothes</h3></center>
                         <div class="col-lg-2">
-                            <span>shirt</span>
+                            <span>Half Sleeve Shirt & T-Shirt</span>
                                         <div class="input-group">
                                     <span class="input-group-btn">
-                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="shirt" data-field="" onclick="decQuantity(this)">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="tshirt" data-field="" onclick="decQuantity(this)">
                                           <span class="glyphicon glyphicon-minus"></span>
                                         </button>
                                     </span>
-                                    <input type="text" id="quantityshirt" name="quantityshirt" class="form-control input-number" value="10" min="1" max="100">
+                                    <input type="text" id="quantitytshirt" name="quantitytshirt" class="form-control input-number" value="0" min="1" max="100">
                                     <span class="input-group-btn">
-                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="shirt" data-field="" onclick="incQuantity(this)">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="tshirt" data-field="" onclick="incQuantity(this)">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     </span>
                                 </div>
                         </div>
                         <div class="col-lg-2">
-                            <span>pant</span>
+                            <span>3/4 Pants & Pajama</span>
                                         <div class="input-group">
                                     <span class="input-group-btn">
-                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="pant" data-field="" onclick="decQuantity(this)">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="tfpants" data-field="" onclick="decQuantity(this)">
                                           <span class="glyphicon glyphicon-minus"></span>
                                         </button>
                                     </span>
-                                    <input type="text" id="quantitypant" name="quantitypant" class="form-control input-number" value="10" min="1" max="100">
+                                    <input type="text" id="quantitytfpants" name="quantitytfpants" class="form-control input-number" value="0" min="1" max="100">
                                     <span class="input-group-btn">
-                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="pant" data-field="" onclick="incQuantity(this)">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="tfpants" data-field="" onclick="incQuantity(this)">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     </span>
                                 </div>
                         </div>
-	</div>
+                        <div class="col-lg-2">
+                            <span>Legging/Jegging/Palazzo</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="legging" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="legging" name="legging" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="legging" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Full Sleeve Shirt & T-Shirt</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="fullsleeveshirt" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="quantityfullsleeveshirt" name="quantityfullsleeveshirt" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="fullsleeveshirt" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Trousers & Jeans</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="jeans" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="jeans" name="jeans" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="jeans" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div> 
+                        <div class="col-lg-2">
+                            <span>Frock & Lungi</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="frock" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="frock" name="frock" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="frock" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        
+
+                        <div class="col-lg-2">
+                            <span>Jumpsuit & Petticoat</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="jumpsuit" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="jumpsuit" name="jumpsuit" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="jumpsuit" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Long Skirt & Towel(M)</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="towel" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="towel" name="towel" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="towel" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div> 
+                        <div class="col-lg-2">
+                            <span>Kurti, Kurta, Nightwear</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="kurti" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="kurti" name="kurti" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="kurti" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div> 
+                        <div class="col-lg-2">
+                            <span>Towel (L)</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="longtowel" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="longtowel" name="longtowel" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="longtowel" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div> 
+                        <div class="col-lg-2">
+                            <span>Saree, Salwar Suit</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="saree" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="saree" name="saree" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="saree" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        </div>
 </div>
+<div class="container">
+    <div class="row">
+       <center><h5><br></h5></center>
+       <center><h3>Small Clothes</h3></center>
+             <div class="col-lg-2">
+                            <span>Tie / Handkerchief</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="tie" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="tie" name="tie" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="tie" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div> 
+                         <div class="col-lg-2">
+                            <span>Undergarment (Lower)</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="loweru" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="loweru" name="loweru" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="loweru" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>  
+                         <div class="col-lg-2">
+                            <span>Undergarment(Upper)/Dupatta</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="upperu" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="upeeru" name="upperu" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="upperu" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                         <div class="col-lg-2">
+                            <span>Socks/Scarf/Shrug/Blouse</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="socks" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="socks" name="socks" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="socks" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                         <div class="col-lg-2">
+                            <span>Short Skirt,1/2 Pants</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="saree" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="saree" name="saree" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="saree" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                         <div class="col-lg-2">
+                            <span>Pillow Cover, Hand Towel</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="pillow" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="pillow" name="pillow" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="pillow" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>   
+                        </div>
+</div>
+<div class="container">
+    <div class="row">
+       <center><h5><br></h5></center>
+       <center><h3>Super Big Clothes</h3></center>
+              <div class="col-lg-2">
+                            <span>Sweater, Sweat Shirt</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="sweater" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="sweater" name="sweater" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="sweater" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Jacket</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="jacket" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="jacket" name="jacket" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="jacket" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Bed Sheet / Comforter (S)</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="bedsheets" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="bedsheets" name="bedsheets" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="bedsheets" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Bed Sheet / Comforter (D)</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="bedsheetd" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="bedsheetd" name="bedsheetd" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="bedsheetd" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Blanket</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="blanket" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="blanket" name="blanket" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="blanket" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <span>Curtain*</span>
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="curtain" data-field="" onclick="decQuantity(this)">
+                                          <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="curtain" name="curtain" class="form-control input-number" value="0" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="curtain" data-field="" onclick="incQuantity(this)">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <center><h6>*Service Charges are extra as applicable.</h6></center>
 </body>
 </html>

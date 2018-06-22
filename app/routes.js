@@ -12,6 +12,9 @@ module.exports = function(app, passport) {
     app.get('/check', function(req, res) {
         res.render('check.ejs'); // load the index.ejs file
     });
+    app.get('/order', function(req, res) {
+        res.render('order/order.ejs'); // load the index.ejs file
+    });
 
     app.get('/login', isLoggedOut, function(req, res) {
             res.render('login.ejs', { message: req.flash('loginMessage') }); 
