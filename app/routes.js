@@ -9,12 +9,6 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
-    app.get('/check', function(req, res) {
-        res.render('check.ejs'); // load the index.ejs file
-    });
-    app.get('/order', function(req, res) {
-        res.render('order/order.ejs'); // load the index.ejs file
-    });
 
     app.get('/login', isLoggedOut, function(req, res) {
             res.render('login.ejs', { message: req.flash('loginMessage') }); 
@@ -423,6 +417,24 @@ module.exports = function(app, passport) {
         });
     });
 
+    
+
+    // =====================================
+    // ORDER ROUTES =====================
+    // =====================================
+
+    app.get('/order',function(req, res) {
+        Clothe.find({}, function(err, allClothes){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("order/order.ejs",{clothes : allClothes});
+           }
+        });
+    });
+
+
+    
 
     // =====================================
     // FACEBOOK ROUTES =====================
