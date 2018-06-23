@@ -506,7 +506,7 @@ function isLoggedOut(req, res, next) {
     res.redirect('/profile');
 }
 function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com")
+    if (req.isAuthenticated() && req.user.local.email == "mail@laundrybuoy.com")
         return next();
     res.redirect('/login');
 }
