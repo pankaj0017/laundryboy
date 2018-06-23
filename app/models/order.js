@@ -5,8 +5,9 @@ var OrderSchema = mongoose.Schema({
 	customer:         {type: mongoose.Schema.Types.ObjectId, ref: "Customer"},			//when order is placed
     vendor:           {type: mongoose.Schema.Types.ObjectId, ref: "Vendor"},			//when order is placed
     deliveredBy:      {type: mongoose.Schema.Types.ObjectId, ref: "DeliveryBoy"},		//when delivered
-    cost:             {type: mongoose.Schema.Types.Decimal128, default: 0.00},          //for decimal values
+    cost:             {type: Number , default: 0, max: 5},        
     pickUpKey:        {type: Number , default: 0},                                      //generated randomly when order is placed
+    description:      {type: String , default: ''},
     isPicked:         {type: Boolean , default: false},
     isWashed:         {type: Boolean , default: false},
     isOutForDelivery: {type: Boolean , default: false},									//true when out for delivery

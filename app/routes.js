@@ -432,6 +432,26 @@ module.exports = function(app, passport) {
            }
         });
     });
+    app.post('/order',function(req, res) {
+        Clothe.find({}, function(err, clothes){
+           if(err){
+               throw err;
+           } else {
+                var summary = "";
+                clothes.forEach(function(clothe){ 
+                    if(req.body[clothe.name] != 0) {
+                        summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
+                }});
+                var getOrder = new Order();
+                getOrder.description = summary;
+                getOrder.save(function(err) {
+                    if (err)
+                        throw err;
+                    res.redirect('/order');
+                });
+           }
+        });
+    });
 
 
     
