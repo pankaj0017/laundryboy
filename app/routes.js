@@ -439,7 +439,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/vendorlogin', function(req, res) {
-        Vendor.findOne({ 'username' :  req.body.tag }).populate("").exec(function(err, vendor) {
+        Vendor.findOne({ 'username' :  req.body.tag }, function(err, vendor) {
             if (err)
                 throw err;
             res.redirect('/vendorlogin/' + vendor._id);
