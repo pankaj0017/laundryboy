@@ -46,7 +46,18 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
-    
+    app.get('/pincode', function(req, res) {
+        res.render('pincode.ejs', { message: req.flash('yoyo', 'pincode unavailibility.') }); 
+    });
+    app.post('/pincode', function(req, res) {
+        PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, pincode) {
+                // if there are any errors, return the error
+                if (err)
+                    throw err;
+
+                res.render('pincode.ejs', { message: req.flash('yoyo', 'pincode available.') }); 
+            })
+    });
 
 
     // =====================================
@@ -182,7 +193,7 @@ module.exports = function(app, passport) {
 
                 if (foundUser) {
 
-                    Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
+                    Customer.findOne({ 'user' :  foundUser._id }, function(err, customer) {
                         if (err)
                             throw err;
                         res.redirect('/admin/customerdetails/' + customer._id);
@@ -195,7 +206,7 @@ module.exports = function(app, passport) {
 
                             if (foundUser) {
 
-                                Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
+                                Customer.findOne({ 'user' :  foundUser._id }, function(err, customer) {
                                     if (err)
                                         throw err;
                                     res.redirect('/admin/customerdetails/' + customer._id);
@@ -209,7 +220,7 @@ module.exports = function(app, passport) {
 
                                         if (foundUser) {
 
-                                            Customer.findOne({ 'user' :  foundUser._id }).populate("history numbers").exec(function(err, customer) {
+                                            Customer.findOne({ 'user' :  foundUser._id }, function(err, customer) {
                                                 if (err)
                                                     throw err;
                                                 res.redirect('/admin/customerdetails/' + customer._id);
@@ -227,14 +238,14 @@ module.exports = function(app, passport) {
     });
 
     app.post('/admin/customer/tag', isAdmin, function(req, res) {
-        Customer.findOne({ 'tagNumber' :  req.body.viaTag }).populate("history numbers").exec(function(err, customer) {
+        Customer.findOne({ 'tagNumber' :  req.body.viaTag }, function(err, customer) {
             if (err)
                 throw err;
             res.redirect('/admin/customerdetails/' + customer._id);
         })
     });
     app.post('/admin/customer/mobile', isAdmin, function(req, res) {
-        Customer.findOne({ 'mainNumber' :  req.body.viaMobile }).populate("history numbers").exec(function(err, customer) {
+        Customer.findOne({ 'mainNumber' :  req.body.viaMobile }, function(err, customer) {
             if (err)
                 throw err;
             res.redirect('/admin/customerdetails/' + customer._id);
@@ -418,6 +429,80 @@ module.exports = function(app, passport) {
     });
 
     
+    // =====================================
+    // VENDOR ROUTES =====================
+    // =====================================
+
+
+    app.get('/vendorlogin', function(req, res) {
+            res.render('vendor/vendorlogin.ejs');
+    });
+
+    app.post('/vendorlogin', function(req, res) {
+        Vendor.findOne({ 'username' :  req.body.tag }).populate("").exec(function(err, vendor) {
+            if (err)
+                throw err;
+            res.redirect('/vendorlogin/' + vendor._id);
+        })
+    });
+
+    app.get('/vendor/:id', function(req, res){
+       Vendor.findById(req.params.id, function(err, vendor){
+          if(err){
+              throw err;
+          } else {
+              res.render('vendorpage.ejs',{vendor : vendor});
+          }
+       });
+    });
+    app.post('/vendor/:id', function(req, res){
+       Vendor.findById(req.params.id, function(err, foundVendor){
+          if(err){
+              throw err;
+          } else {
+              res.redirect('/vendor/' + req.params.id);
+          }
+       });
+    });
+
+
+    // =====================================
+    // DELIVERYBOY ROUTES =====================
+    // =====================================
+
+
+    app.get('/deliveryboylogin', function(req, res) {
+            res.render('deliveryboy/deliveryboylogin.ejs');
+    });
+
+    app.post('/deliveryboylogin', function(req, res) {
+        Vendor.findOne({ 'username' :  req.body.tag }).populate("toDeliver").exec(function(err, deliveryboy) {
+            if (err)
+                throw err;
+            res.redirect('/deliveryboylogin/' + deliveryboy._id);
+        })
+    });
+
+    app.get('/deliveryboy/:id', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+          if(err){
+              throw err;
+          } else {
+              res.render('deliveryboypage.ejs',{deliveryboy : deliveryboy});
+          }
+       });
+    });
+    app.post('/deliveryboy/:id', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+          if(err){
+              throw err;
+          } else {
+              res.redirect('/deliveryboy/' + req.params.id);
+          }
+       });
+    });
+
+
 
     // =====================================
     // ORDER ROUTES =====================
