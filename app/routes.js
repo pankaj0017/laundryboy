@@ -457,26 +457,17 @@ module.exports = function(app, passport) {
     });
 
     app.get('/contact', isLoggedIn, function(req, res) {
-        res.render('order/contact.ejs'); 
-    });
-    app.post('/contact', isLoggedIn, function(req, res) {
-        PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, foundPinCode) {
+        Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
                     throw err;
-                if (foundPinCode) {
-                    Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                        if (err)
-                            throw err;
-                        customer.pinCode = req.body.pincode;
-                        customer.save(function(err) {   
-                            if (err)
-                                throw err;
-                            res.redirect('/contact');
-                        });
-                    })
-                } else {
-                    res.redirect("/pincode");
-                }
+                res.render('order/contact.ejs',{customer : customer});
+            })
+    });
+    app.post('/contact', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    throw err;
+                res.redirect("/order");
             })
     });
 
