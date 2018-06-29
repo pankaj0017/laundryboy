@@ -7,7 +7,11 @@ module.exports = function(app, passport) {
     });
 
     app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
+        if (isAdmin) {
+            res.redirect("/admin");
+        } else {
+            res.render('index.ejs'); // load the index.ejs file
+        }
     });
 
     app.get('/login', isLoggedOut, function(req, res) {
@@ -45,19 +49,6 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-
-    app.get('/pincode', function(req, res) {
-        res.render('pincode.ejs', { message: req.flash('yoyo', 'pincode unavailibility.') }); 
-    });
-    app.post('/pincode', function(req, res) {
-        PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, pincode) {
-                // if there are any errors, return the error
-                if (err)
-                    throw err;
-
-                res.render('pincode.ejs', { message: req.flash('yoyo', 'pincode available.') }); 
-            })
-    });
 
 
     // =====================================
@@ -259,7 +250,7 @@ module.exports = function(app, passport) {
     // route for changing CUSTOMER database
 
     app.get('/admin/pincodes', isAdmin, function(req, res) {
-        PinCode.find({}).populate("vendor").exec(function(err, allPincodes) {
+        PinCode.find({}).populate("vendor deliveryBoy").exec(function(err, allPincodes) {
            if(err){
                console.log(err);
            } else {
@@ -267,24 +258,32 @@ module.exports = function(app, passport) {
            }
         });
     });
-    app.get('/admin/pincodes/add', isAdmin, function(req, res) {
-        Vendor.find({}, function(err, allVendors){
-           if(err){
-               console.log(err);
-           } else {
-              res.render("admin/newpincode.ejs",{vendors : allVendors});
-           }
-        });
+    app.post('/admin/pincodes', isAdmin, function(req, res) {
+        Vendor.findOne({ 'username' :  req.body.vendorTag }, function(err, foundVendor) {
+            if (err)
+                throw err;
+            DeliveryBoy.findOne({ 'username' :  req.body.deliveryBoyTag }, function(err, foundDeliveryBoy) {
+                if (err)
+                    throw err;
+                newPinCode = new PinCode();
+                newPinCode.pinCode = req.body.pinCode;
+                newPinCode.vendor = foundVendor._id;
+                newPinCode.deliveryBoy = foundDeliveryBoy._id;
+                newPinCode.save();
+                res.redirect("/admin/pincodes");
+            })
+        })
     });
-    app.post('/admin/pincodes/add', isAdmin, function(req, res) {
-        PinCode.create(req.body.newPincode, function(err, newPincode){
-           if(err){
-               console.log(err);
-           } else {   
-               res.redirect('/admin/pincodes');
-           }
-        });
+    app.post('/admin/pincodes/:id', isAdmin, function(req, res){
+       PinCode.findByIdAndRemove(req.params.id, function(err){
+          if(err){
+              throw err;
+          } else {
+              res.redirect("/admin/pincodes");
+          }
+       });
     });
+
 
 
     // =====================================
@@ -428,7 +427,124 @@ module.exports = function(app, passport) {
         });
     });
 
+
+    // =====================================
+    // ORDER ROUTES =====================
+    // =====================================
+
+    app.get('/pincode', isLoggedIn, function(req, res) {
+        res.render('pincode.ejs', { message: req.flash('yoyo', 'pincode unavailibility.') }); 
+    });
+    app.post('/pincode', isLoggedIn, function(req, res) {
+        PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, foundPinCode) {
+                if (err)
+                    throw err;
+                if (foundPinCode) {
+                    Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                        if (err)
+                            throw err;
+                        customer.pinCode = req.body.pincode;
+                        customer.save(function(err) {   
+                            if (err)
+                                throw err;
+                            res.redirect('/order');
+                        });
+                    })
+                } else {
+                    res.redirect("/pincode");
+                }
+            })
+    });
+
+    app.get('/order', isLoggedIn, function(req, res) {
+        res.render("order/order.ejs");
+    });
+    app.post('/order',function(req, res) {
+    });
+
+    // app.get('/order', isLoggedIn, function(req, res) {
+    //     Clothe.find({}, function(err, allClothes){
+    //        if(err){
+    //            console.log(err);
+    //        } else {
+    //           res.render("order/order.ejs",{clothes : allClothes});
+    //        }
+    //     });
+    // });
+    // app.post('/order',function(req, res) {
+    //     Clothe.find({}, function(err, clothes){
+    //        if(err){
+    //            throw err;
+    //        } else {
+    //             var summary = "";
+    //             clothes.forEach(function(clothe){ 
+    //                 if(req.body[clothe.name] != 0) {
+    //                     summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
+    //             }});
+    //             var getOrder = new Order();
+    //             getOrder.description = summary;
+    //             getOrder.save(function(err) {
+    //                 if (err)
+    //                     throw err;
+    //                 res.redirect('/order');
+    //             });
+    //        }
+    //     });
+    // });
+
+
     
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // =====================================
     // VENDOR ROUTES =====================
     // =====================================
@@ -442,7 +558,15 @@ module.exports = function(app, passport) {
         Vendor.findOne({ 'username' :  req.body.tag }, function(err, vendor) {
             if (err)
                 throw err;
-            res.redirect('/vendorlogin/' + vendor._id);
+            if(vendor) {
+                if(req.body.password == vendor.password) {
+                    res.redirect('/vendor/' + vendor._id);
+                } else {
+                    res.redirect('/vendorlogin');
+                }
+            } else {
+                res.redirect('/vendorlogin');
+            }
         })
     });
 
@@ -476,10 +600,18 @@ module.exports = function(app, passport) {
     });
 
     app.post('/deliveryboylogin', function(req, res) {
-        Vendor.findOne({ 'username' :  req.body.tag }).populate("toDeliver").exec(function(err, deliveryboy) {
+        DeliveryBoy.findOne({ 'username' :  req.body.tag }).populate("toDeliver").exec(function(err, deliveryboy) {
             if (err)
                 throw err;
-            res.redirect('/deliveryboylogin/' + deliveryboy._id);
+            if(vendor) {
+                if(req.body.password == deliveryboy.password) {
+                    res.redirect('/deliveryboy/' + deliveryboy._id);
+                } else {
+                    res.redirect('/deliveryboylogin');
+                }
+            } else {
+                res.redirect('/deliveryboylogin');
+            }
         })
     });
 
@@ -501,43 +633,6 @@ module.exports = function(app, passport) {
           }
        });
     });
-
-
-
-    // =====================================
-    // ORDER ROUTES =====================
-    // =====================================
-
-    app.get('/order',function(req, res) {
-        Clothe.find({}, function(err, allClothes){
-           if(err){
-               console.log(err);
-           } else {
-              res.render("order/order.ejs",{clothes : allClothes});
-           }
-        });
-    });
-    app.post('/order',function(req, res) {
-        Clothe.find({}, function(err, clothes){
-           if(err){
-               throw err;
-           } else {
-                var summary = "";
-                clothes.forEach(function(clothe){ 
-                    if(req.body[clothe.name] != 0) {
-                        summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
-                }});
-                var getOrder = new Order();
-                getOrder.description = summary;
-                getOrder.save(function(err) {
-                    if (err)
-                        throw err;
-                    res.redirect('/order');
-                });
-           }
-        });
-    });
-
 
     
 
@@ -591,7 +686,10 @@ function isLoggedOut(req, res, next) {
     res.redirect('/profile');
 }
 function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.local.email == "mail@laundrybuoy.com")
+    if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com")
         return next();
     res.redirect('/login');
 }
+
+
+//AIzaSyARATL5BzsQmYSh8oRM4ZfsFvgRiiSz6oA
