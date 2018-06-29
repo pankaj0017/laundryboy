@@ -433,7 +433,7 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.get('/pincode', isLoggedIn, function(req, res) {
-        res.render('pincode.ejs', { message: req.flash('yoyo', 'pincode unavailibility.') }); 
+        res.render('order/pincode.ejs', { message: req.flash('yoyo', 'pincode unavailibility.') }); 
     });
     app.post('/pincode', isLoggedIn, function(req, res) {
         PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, foundPinCode) {
@@ -457,8 +457,14 @@ module.exports = function(app, passport) {
     });
 
     app.get('/order', isLoggedIn, function(req, res) {
-        res.render("order/order.ejs");
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                // if there are any errors, return the error
+                if (err)
+                    throw err;
+                res.render("order/order.ejs",{customer : customer});
+            })
     });
+
     app.post('/order',function(req, res) {
     });
 
