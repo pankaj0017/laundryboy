@@ -460,16 +460,52 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
                     throw err;
-                res.render('order/contact.ejs',{customer : customer});
+                if (customer.mainNumber) {
+                    res.render('order/contact.ejs',{customer : customer});
+                } else {
+                    res.redirect("/contact/mobile");
+                }
             })
     });
     app.post('/contact', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
                     throw err;
-                res.redirect("/order");
+                customer.mainNumber = req.body.mobile;
+                customer.save(function(err) {   
+                    if (err)
+                        throw err;
+                    res.redirect('/order');
+                });
             })
     });
+
+    app.get('/contact/mobile', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    throw err;
+                res.render('order/mobile.ejs',{customer : customer});
+            })
+    });
+    app.post('/contact/mobile', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    throw err;
+                Mobile.create(req.body.newMobile, function(err, newMobile){
+                   if(err){
+                       console.log(err);
+                   } else {   
+                       newMobile.owner    = customer._id;
+                       newMobile.save();
+                       customer.mainNumber = newMobile.number;
+                       customer.numbers.push(newMobile);
+                       customer.save();
+                       res.redirect('/order');
+                   }
+                });
+            });
+    });
+
 
     app.get('/order', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
@@ -479,7 +515,8 @@ module.exports = function(app, passport) {
             })
     });
 
-    app.post('/order',function(req, res) {
+    app.post('/order', isLoggedIn, function(req, res) {
+        res.redirect("/order");
     });
 
     // app.get('/order', isLoggedIn, function(req, res) {

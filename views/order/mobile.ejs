@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<title>
+			LaundryBuoy
+		</title>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+        <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+	</head>
+	<body>
+
+    	<div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+
+		    <h3><span class="fa fa-sign-in"></span>Enter New Phone Number</h3>
+
+		    <form action="/contact/mobile" class="form-inline"  method="post" >
+		    	<div class="form-group">
+		    		<label>Number:</label>
+		            <input type="number" class="form-control" name="newMobile[number]" placeholder="Enter New Phone Number">
+		        </div>
+
+		        <button type="submit" class="btn btn-primary btn-sm">Add</button>
+		    </form>
+
+        </div>
+	</body>
+</html>
