@@ -646,7 +646,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/deliveryboylogin', function(req, res) {
-        DeliveryBoy.findOne({ 'username' :  req.body.tag }).populate("toDeliver").exec(function(err, deliveryboy) {
+        DeliveryBoy.findOne({ 'username' :  req.body.tag }, function(err, deliveryboy) {
             if (err)
                 throw err;
             if(vendor) {
@@ -662,7 +662,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/deliveryboy/:id', function(req, res){
-       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+       DeliveryBoy.findById(req.params.id).populate("currentOrders").exec(function(err, deliveryboy) {
           if(err){
               throw err;
           } else {
@@ -670,21 +670,12 @@ module.exports = function(app, passport) {
           }
        });
     });
-    // app.post('/deliveryboy/:id', function(req, res){
-    //    DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
-    //       if(err){
-    //           throw err;
-    //       } else {
-    //           res.redirect('/deliveryboy/' + req.params.id);
-    //       }
-    //    });
-    // });
     app.get('/deliveryboy/:id/pickup/:oid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
           if(err){
               throw err;
           } else {
-              res.render('deliveryboypage.ejs',{deliveryboy : deliveryboy});
+              res.render('pickuppage.ejs',{deliveryboy : deliveryboy});
           }
        });
     });
@@ -702,7 +693,7 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              res.render('deliveryboypage.ejs',{deliveryboy : deliveryboy});
+              res.render('deliverpage.ejs',{deliveryboy : deliveryboy});
           }
        });
     });
