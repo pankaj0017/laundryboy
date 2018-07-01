@@ -590,57 +590,6 @@ module.exports = function(app, passport) {
     // });
 
 
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // =====================================
     // VENDOR ROUTES =====================
@@ -721,16 +670,16 @@ module.exports = function(app, passport) {
           }
        });
     });
-    app.post('/deliveryboy/:id', function(req, res){
-       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
-          if(err){
-              throw err;
-          } else {
-              res.redirect('/deliveryboy/' + req.params.id);
-          }
-       });
-    });
-    app.get('/deliveryboy/:id', function(req, res){
+    // app.post('/deliveryboy/:id', function(req, res){
+    //    DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+    //       if(err){
+    //           throw err;
+    //       } else {
+    //           res.redirect('/deliveryboy/' + req.params.id);
+    //       }
+    //    });
+    // });
+    app.get('/deliveryboy/:id/pickup/:oid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
           if(err){
               throw err;
@@ -739,7 +688,7 @@ module.exports = function(app, passport) {
           }
        });
     });
-    app.post('/deliveryboy/:id', function(req, res){
+    app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
           if(err){
               throw err;
@@ -748,7 +697,7 @@ module.exports = function(app, passport) {
           }
        });
     });
-    app.get('/deliveryboy/:id', function(req, res){
+    app.get('/deliveryboy/:id/deliver/:oid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
           if(err){
               throw err;
@@ -757,7 +706,7 @@ module.exports = function(app, passport) {
           }
        });
     });
-    app.post('/deliveryboy/:id', function(req, res){
+    app.post('/deliveryboy/:id/deliver/:oid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
           if(err){
               throw err;
