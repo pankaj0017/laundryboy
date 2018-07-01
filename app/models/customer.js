@@ -6,6 +6,8 @@ var CustomerSchema = new mongoose.Schema({
     name         : {type: String , default: ''},
     referedBy    : {type: mongoose.Schema.Types.ObjectId, ref: "Customer"},
     tagNumber    : {type: String , default: ''},
+    bagNumber    : {type: String , default: ''},
+    pickUpKey    : {type: Number , default: 0 },                                //generated randomly when order is placed
     mainNumber   : {type: String , default: ''},
     address      : {type: String , default: ''},
     pinCode      : {type: Number, default:  0 },
