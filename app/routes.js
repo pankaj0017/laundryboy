@@ -671,38 +671,38 @@ module.exports = function(app, passport) {
        });
     });
     app.get('/deliveryboy/:id/pickup/:oid', function(req, res){
-       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
           } else {
-              res.render('pickuppage.ejs',{deliveryboy : deliveryboy});
+              res.render('pickuppage.ejs',{order : order});
           }
        });
     });
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
-       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+       Order.findById(req.params.oid, function(err, order){
           if(err){
               throw err;
           } else {
-              res.redirect('/deliveryboy/' + req.params.id);
+              res.render('pickuppage.ejs',{order : order});
           }
        });
     });
     app.get('/deliveryboy/:id/deliver/:oid', function(req, res){
-       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
           } else {
-              res.render('deliverpage.ejs',{deliveryboy : deliveryboy});
+              res.render('pickuppage.ejs',{order : order});
           }
        });
     });
     app.post('/deliveryboy/:id/deliver/:oid', function(req, res){
-       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+       Order.findById(req.params.oid, function(err, order){
           if(err){
               throw err;
           } else {
-              res.redirect('/deliveryboy/' + req.params.id);
+              res.render('pickuppage.ejs',{order : order});
           }
        });
     });
