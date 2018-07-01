@@ -18,7 +18,8 @@ var express        = require("express"),
     methodOverride = require("method-override"),
     morgan         = require("morgan"),
     cookieParser   = require('cookie-parser'),
-    flash          = require('connect-flash');
+    flash          = require('connect-flash'),
+    rn             = require('random-number');
 
 mongoose.connect("mongodb://localhost/laundrybuoy");
 //db.mycollection.remove( {name:"stack"} )

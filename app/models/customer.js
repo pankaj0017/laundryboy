@@ -9,6 +9,7 @@ var CustomerSchema = new mongoose.Schema({
     bagNumber    : {type: String , default: ''},
     pickUpKey    : {type: Number , default: 0 },                                //generated randomly when order is placed
     mainNumber   : {type: String , default: ''},
+    isBusy       : {type: Boolean , default: false},
     address      : {type: String , default: ''},
     pinCode      : {type: Number, default:  0 },
     daysLeft     : {type: Number, default:  0 },                              //time untill next recharge

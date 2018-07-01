@@ -518,6 +518,14 @@ module.exports = function(app, passport) {
                     throw err;
                 customer.name = req.body.customer.name;
                 customer.address = req.body.customer.address;
+                customer.isBusy = true;
+                var options = {
+                  min:  1000,
+                  max:  9999,
+                  integer: true
+                }
+                customer.pickUpKey = rn(options);
+
                 customer.save(function(err) {   
                     if (err)
                         throw err;
@@ -704,6 +712,42 @@ module.exports = function(app, passport) {
         })
     });
 
+    app.get('/deliveryboy/:id', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+          if(err){
+              throw err;
+          } else {
+              res.render('deliveryboypage.ejs',{deliveryboy : deliveryboy});
+          }
+       });
+    });
+    app.post('/deliveryboy/:id', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+          if(err){
+              throw err;
+          } else {
+              res.redirect('/deliveryboy/' + req.params.id);
+          }
+       });
+    });
+    app.get('/deliveryboy/:id', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
+          if(err){
+              throw err;
+          } else {
+              res.render('deliveryboypage.ejs',{deliveryboy : deliveryboy});
+          }
+       });
+    });
+    app.post('/deliveryboy/:id', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
+          if(err){
+              throw err;
+          } else {
+              res.redirect('/deliveryboy/' + req.params.id);
+          }
+       });
+    });
     app.get('/deliveryboy/:id', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
           if(err){
