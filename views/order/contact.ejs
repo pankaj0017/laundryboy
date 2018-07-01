@@ -14,18 +14,13 @@
 
 <div class="col-sm-6 col-sm-offset-3">
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
-
     <!-- UPDATE FORM -->
         <form action="/contact" method="post">
             <div class="form-group">
               <label>Select a Mobile number</label>
               <select class="form-control" name="mobile">
 
-                <option value="" selected disabled hidden><%= customer.mainNumber %></option>
+                <option hidden><%= customer.mainNumber %></option>
                 <% customer.numbers.forEach(function(cell){ %>
                     <option>
                         <%= cell.number %>

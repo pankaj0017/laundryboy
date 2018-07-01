@@ -8,7 +8,13 @@ var VendorSchema = new mongoose.Schema({
     address:      {type: String , default: ''},
     mobile:       {type: String , default: ''},
     rating:       {type: Number , default: 0 },
-    ratingCount:  {type: Number , default: 0 }
+    ratingCount:  {type: Number , default: 0 },
+    currentOrders: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Order"
+      }
+   ]
 });
 
 module.exports = mongoose.model("Vendor", VendorSchema);

@@ -9,7 +9,7 @@ var DeliveryBoySchema = new mongoose.Schema({
     mobile:       {type: String , default: ''},
     rating:       {type: Number , default: 0 },
     ratingCount:  {type: Number , default: 0 },
-    toDeliver:    [
+    currentOrders: [
       {
          type: mongoose.Schema.Types.ObjectId,
          ref: "Order"

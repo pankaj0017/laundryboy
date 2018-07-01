@@ -14,16 +14,11 @@
 
 <div class="col-sm-6 col-sm-offset-3">
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
-
     <!-- CHECK PINCODE FORM -->
     <form action="/pincode" method="post">
         <div class="form-group">
             <label>Enter Pincode</label>
-            <input type="text" class="form-control" name="pincode">
+            <input type="text" class="form-control" name="pincode" value="<%= customer.pinCode %>">
         </div>
 
         <button type="submit" class="btn btn-success btn-lg">Next</button>

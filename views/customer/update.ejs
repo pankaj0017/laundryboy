@@ -53,7 +53,7 @@
 					  <label for="sel1">Select a Mobile number</label>
 					  <select class="form-control" name="customer[mainNumber]">
 
-					  	<option value="" selected disabled hidden><%= customer.mainNumber %></option>
+					  	<option hidden><%= customer.mainNumber %></option>
 					  	<% customer.numbers.forEach(function(cell){ %>
 						    <option>
 						    	<%= cell.number %>

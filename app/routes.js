@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/', function(req, res) {
-        if (isAdmin) {
+        if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com") {
             res.redirect("/admin");
         } else {
             res.render('index.ejs'); // load the index.ejs file
@@ -433,7 +433,11 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.get('/pincode', isLoggedIn, function(req, res) {
-        res.render('order/pincode.ejs', { message: req.flash('yoyo', 'pincode unavailibility.') }); 
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    throw err;
+                res.render('order/pincode.ejs', { customer : customer }); 
+            })
     });
     app.post('/pincode', isLoggedIn, function(req, res) {
         PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, foundPinCode) {
@@ -447,9 +451,9 @@ module.exports = function(app, passport) {
                         customer.save(function(err) {   
                             if (err)
                                 throw err;
-                            res.redirect('/contact');
                         });
                     })
+                    res.redirect('/contact');
                 } else {
                     res.redirect("/pincode");
                 }
@@ -460,11 +464,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
                     throw err;
-                if (customer.mainNumber) {
-                    res.render('order/contact.ejs',{customer : customer});
-                } else {
-                    res.redirect("/contact/mobile");
-                }
+                res.render('order/contact.ejs',{customer : customer});
             })
     });
     app.post('/contact', isLoggedIn, function(req, res) {
@@ -472,11 +472,8 @@ module.exports = function(app, passport) {
                 if (err)
                     throw err;
                 customer.mainNumber = req.body.mobile;
-                customer.save(function(err) {   
-                    if (err)
-                        throw err;
-                    res.redirect('/order');
-                });
+                customer.save();
+                res.redirect('/order');
             })
     });
 
@@ -500,9 +497,9 @@ module.exports = function(app, passport) {
                        customer.mainNumber = newMobile.number;
                        customer.numbers.push(newMobile);
                        customer.save();
-                       res.redirect('/order');
                    }
                 });
+                res.redirect('/order');
             });
     });
 
@@ -516,7 +513,42 @@ module.exports = function(app, passport) {
     });
 
     app.post('/order', isLoggedIn, function(req, res) {
-        res.redirect("/order");
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    throw err;
+                customer.name = req.body.customer.name;
+                customer.address = req.body.customer.address;
+                customer.save(function(err) {   
+                    if (err)
+                        throw err;
+                });
+
+                var newOrder = new Order();
+                newOrder.customer = customer._id;
+                PinCode.findOne({ 'pinCode' :  req.body.customer.pinCode }, function(err, foundPinCode) {
+                    if (err)
+                        throw err;
+                    Vendor.findById(foundPinCode.vendor, function(err, foundVendor) {
+                        if (err)
+                            throw err;
+
+                        newOrder.vendor = foundVendor._id;
+                        DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
+                            if (err)
+                                throw err;
+
+                            newOrder.deliveryBoy = foundDeliveryBoy._id;
+                            newOrder.status = "booked";
+                            newOrder.save();
+                            foundVendor.currentOrders.push(newOrder);
+                            foundDeliveryBoy.currentOrders.push(newOrder);
+                            foundVendor.save();
+                            foundDeliveryBoy.save();
+                            res.redirect("/profile");
+                        }) 
+                    })                
+                })
+            })
     });
 
     // app.get('/order', isLoggedIn, function(req, res) {
