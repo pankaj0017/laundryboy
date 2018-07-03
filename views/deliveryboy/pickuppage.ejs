@@ -28,7 +28,7 @@
 </head>
 <body>
 
-    <form action="/deliveryboy/<%= order.deliveryBoy %>/pickup/<%= order._id %>" method="post">
+    <form action="/deliveryboy/<%= order.deliveryBoy._id %>/pickup/<%= order._id %>" method="post">
 <div class="container">
     <div class="row">
         <center>
@@ -63,9 +63,7 @@
         <% }}) %>
              
     </div>
-</div>
 
-<div class="container">
     <div class="row">
        <center><h5><br></h5></center>
        <center><h3>Big Clothes</h3></center>
@@ -91,9 +89,7 @@
 
         <% }}) %>
     </div>
-</div>
 
-<div class="container">
     <div class="row">
        <center><h5><br></h5></center>
        <center><h3>Super Big Clothes</h3></center>
@@ -119,11 +115,24 @@
 
         <% }}) %>
    </div>
+
+   <br><br><br>
+   <div id="customerKey" class="col-sm-4 col-sm-offset-4">
+        <div class="form-group">
+            <label>order key</label>
+            <input type="text" class="form-control" name="dtag">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">place order</button>
+    </div>
+
 </div>
+</form>
         <center>
             <h6>*Service Charges are extra as applicable.</h6>
         </center>
-<div class="col-sm-4 col-sm-offset-4">
+<div class="container">
+<div class="col-sm-6 col-sm-offset-3">
+    <form>
         <div class="form-group">
             <label>Estimated Cost: </label>
             <input type="number" id="estimatedCost" name="estimatedCost" class="form-control input-number" value="0" readonly>
@@ -132,13 +141,12 @@
             <label>delivery boy tag</label>
             <input type="text" class="form-control" name="ctag">
         </div>
-        <div class="form-group">
-            <label>order key</label>
-            <input type="text" class="form-control" name="dtag">
-        </div>
-
         <button type="submit" class="btn btn-primary btn-lg">place order</button>
+    </form>
 </div>
-</form>
+
+<br><br><br><br><br><br>
+</div>
+
 </body>
 </html>
