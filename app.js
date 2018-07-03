@@ -19,7 +19,8 @@ var express        = require("express"),
     morgan         = require("morgan"),
     cookieParser   = require('cookie-parser'),
     flash          = require('connect-flash'),
-    rn             = require('random-number');
+    rn             = require('random-number'),
+    deepPopulate   = require('mongoose-deep-populate')(mongoose);
 
 mongoose.connect("mongodb://localhost/laundrybuoy");
 //db.mycollection.remove( {name:"stack"} )

@@ -499,8 +499,8 @@ module.exports = function(app, passport) {
                        customer.save();
                    }
                 });
-                res.redirect('/order');
             });
+        res.redirect('/order');
     });
 
 
@@ -551,15 +551,6 @@ module.exports = function(app, passport) {
             })
     });
 
-    // app.get('/order', isLoggedIn, function(req, res) {
-    //     Clothe.find({}, function(err, allClothes){
-    //        if(err){
-    //            console.log(err);
-    //        } else {
-    //           res.render("order/order.ejs",{clothes : allClothes});
-    //        }
-    //     });
-    // });
     // app.post('/order',function(req, res) {
     //     Clothe.find({}, function(err, clothes){
     //        if(err){
@@ -654,7 +645,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/deliveryboy/:id', function(req, res){
-       DeliveryBoy.findById(req.params.id).populate("currentOrders").populate("customer").exec(function(err, deliveryboy) {
+       DeliveryBoy.findById(req.params.id).deepPopulate("currentOrders.customer").exec(function(err, deliveryboy) {
           if(err){
               throw err;
           } else {
@@ -667,12 +658,18 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              res.render('deliveryboy/pickuppage.ejs',{order : order});
+            Clothe.find({}, function(err, allClothes){
+               if(err){
+                   console.log(err);
+               } else {
+                    res.render('deliveryboy/pickuppage.ejs',{order : order , clothes : allClothes});
+               }
+            });
           }
        });
     });
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
-       Order.findById(req.params.oid, function(err, order){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
           } else {

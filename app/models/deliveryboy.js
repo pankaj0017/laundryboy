@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var DeliveryBoySchema = new mongoose.Schema({
     username:     {type: String , default: ''},
@@ -16,5 +17,12 @@ var DeliveryBoySchema = new mongoose.Schema({
       }
    ]
 });
+
+DeliveryBoySchema.plugin(deepPopulate, {
+  whitelist: [
+    'currentOrders.customer'
+  ]
+});
+
 
 module.exports = mongoose.model("DeliveryBoy", DeliveryBoySchema);

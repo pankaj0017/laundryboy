@@ -13,9 +13,13 @@
 
         <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'booked') { %>
   
-            <div class="col-lg-4">
-                <h3><%=order.customer%></h3>
-                <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order.customer%>" class="btn btn-default btn-sm">Pick</a>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <p>OrderID : <%= order._id %></p>
+                <span><%= order.customer.name %></span>
+                <span> : <%= order.customer.address %></span>
+                <span>
+                    <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
+                </span>
             </div> 
 
         <% }}) %>
