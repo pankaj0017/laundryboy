@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+        <center><h1>Deliveryboy Page</h1></center>
+        <h3><br></h3>
+<div class="container">
+    <div class="row">
+
+        <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'booked') { %>
+  
+            <div class="col-lg-4">
+                <h3><%=order.customer%></h3>
+                <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order.customer%>" class="btn btn-default btn-sm">Pick</a>
+            </div> 
+
+        <% }}) %>
+             
+    </div>
+</div>
+
+
+</body>
+</html>

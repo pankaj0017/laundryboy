@@ -536,25 +536,17 @@ module.exports = function(app, passport) {
                 PinCode.findOne({ 'pinCode' :  req.body.customer.pinCode }, function(err, foundPinCode) {
                     if (err)
                         throw err;
-                    Vendor.findById(foundPinCode.vendor, function(err, foundVendor) {
+                    DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
                         if (err)
                             throw err;
 
-                        newOrder.vendor = foundVendor._id;
-                        DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
-                            if (err)
-                                throw err;
-
-                            newOrder.deliveryBoy = foundDeliveryBoy._id;
-                            newOrder.status = "booked";
-                            newOrder.save();
-                            foundVendor.currentOrders.push(newOrder);
-                            foundDeliveryBoy.currentOrders.push(newOrder);
-                            foundVendor.save();
-                            foundDeliveryBoy.save();
-                            res.redirect("/profile");
-                        }) 
-                    })                
+                        newOrder.deliveryBoy = foundDeliveryBoy._id;
+                        newOrder.status = "booked";
+                        newOrder.save();
+                        foundDeliveryBoy.currentOrders.push(newOrder);
+                        foundDeliveryBoy.save();
+                        res.redirect("/profile");
+                    })                 
                 })
             })
     });
@@ -649,7 +641,7 @@ module.exports = function(app, passport) {
         DeliveryBoy.findOne({ 'username' :  req.body.tag }, function(err, deliveryboy) {
             if (err)
                 throw err;
-            if(vendor) {
+            if(deliveryboy) {
                 if(req.body.password == deliveryboy.password) {
                     res.redirect('/deliveryboy/' + deliveryboy._id);
                 } else {
@@ -662,11 +654,11 @@ module.exports = function(app, passport) {
     });
 
     app.get('/deliveryboy/:id', function(req, res){
-       DeliveryBoy.findById(req.params.id).populate("currentOrders").exec(function(err, deliveryboy) {
+       DeliveryBoy.findById(req.params.id).populate("currentOrders").populate("customer").exec(function(err, deliveryboy) {
           if(err){
               throw err;
           } else {
-              res.render('deliveryboypage.ejs',{deliveryboy : deliveryboy});
+              res.render('deliveryboy/deliveryboypage.ejs',{deliveryboy : deliveryboy});
           }
        });
     });
@@ -675,7 +667,7 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              res.render('pickuppage.ejs',{order : order});
+              res.render('deliveryboy/pickuppage.ejs',{order : order});
           }
        });
     });
@@ -693,7 +685,7 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              res.render('pickuppage.ejs',{order : order});
+              res.render('deliveryboy/deliverpage.ejs',{order : order});
           }
        });
     });
