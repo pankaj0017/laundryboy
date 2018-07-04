@@ -1,30 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
         <center><h1>Deliveryboy Page</h1></center>
         <h3><br></h3>
 <div class="container">
-    <div class="row">
+    <center>
+        <ul class="nav nav-tabs">
+            <li class="active col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#pickup">Pick Up</a></li>
+            <li class="col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#deliver">Deliver</a></li>
+        </ul>
+    </center>
 
-        <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'booked') { %>
-  
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <p>OrderID : <%= order._id %></p>
-                <span><%= order.customer.name %></span>
-                <span> : <%= order.customer.address %></span>
-                <span>
-                    <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
-                </span>
-            </div> 
+    <div class="tab-content">
+        <div id="pickup" class="tab-pane fade in active">
 
-        <% }}) %>
-             
+            <div class="row">
+                <h2>Pick Up</h2>
+
+                <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'booked') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span>
+                            <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
+                        </span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+
+        </div>
+
+        <div id="deliver" class="tab-pane fade">
+
+            <div class="row">
+                <h2>Deliver</h2>
+
+                <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'out') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span>
+                            <a href="/deliveryboy/<%=deliveryboy._id%>/deliver/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
+                        </span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+        
+        </div>
     </div>
+        
+            
 </div>
 
 
