@@ -27,14 +27,20 @@
             }
         }
         $(document).ready(function(){
-            $("#buttonboy").click(function(){
-                alert(<%= order.deliveryBoy.password %>);
-                var Linput = $('input[type="text"].inputtag').val();
-                // var Oinput = <%= order.deliveryBoy.password %>;
-                // if(Linput == Oinput){
-                //     $(".quantity-left-minus").addClass("hidden");
-                //     $(".quantity-right-plus").addClass("hidden");
-                // }
+            $("#buttonlock").click(function(){
+
+                $(".quantity-left-minus").addClass("hidden");
+                $(".quantity-right-plus").addClass("hidden");
+                $(".deliveryBoyPass").addClass("hidden");
+                $(".okey").removeClass("hidden");
+            });
+            $("#buttonunlock").click(function(){
+
+                $(".quantity-left-minus").removeClass("hidden");
+                $(".quantity-right-plus").removeClass("hidden");
+                $(".deliveryBoyPass").removeClass("hidden");
+                $(".okey").addClass("hidden");
+                $('.inputpass').val("");
             });
         });
     </script>
@@ -75,7 +81,7 @@
                         <span><%= clothe.name %> <%= clothe.price %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.price %>" onclick="decQuantity(this)">
+                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.price %>" onclick="decQuantity(this)">
                                       <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
@@ -105,7 +111,7 @@
                         <span><%= clothe.name %> <%= clothe.price %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.price %>" onclick="decQuantity(this)">
+                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.price %>" onclick="decQuantity(this)">
                                       <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
@@ -137,7 +143,7 @@
                         <span><%= clothe.name %> <%= clothe.price %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.price %>" onclick="decQuantity(this)">
+                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.price %>" onclick="decQuantity(this)">
                                       <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
@@ -159,37 +165,31 @@
     </div>
 
    <br><br><br>
-   <div id="customerKey" class="col-sm-4 col-sm-offset-4">
+
+   <div class="col-sm-4 col-sm-offset-4">
+        <center><h6>*Service Charges are extra as applicable.</h6></center>
         <div class="form-group">
-            <label>order key</label>
-            <input type="text" class="form-control" name="dtag">
+            <label>Estimated Cost: </label>
+            <input type="number" id="estimatedCost" class="form-control input-number" value="0" readonly>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg">place order</button>
+
+        <div class="form-group deliveryBoyPass">
+            <label>Delivery Boy Password</label>
+            <input type="password" class="form-control inputpass" name="password">
+        </div>
+        <button id="buttonlock" type="button" class="btn btn-danger btn-lg deliveryBoyPass">Lock Items</button>
+
+        <div class="form-group okey hidden">
+            <label>order key</label>
+            <input type="text" class="form-control" name="customerkey">
+        </div>
+        <button type="submit" class="btn btn-success btn-lg okey hidden">place order</button>
+        <button id="buttonunlock" type="button" class="btn btn-danger btn-lg okey hidden">Unlock</button>
     </div>
 
     </form>
 
 </div>
-        <center>
-            <h6>*Service Charges are extra as applicable.</h6>
-        </center>
-
-    <div class="container">
-
-        <div class="col-sm-4 col-sm-offset-4">
-            <div class="form-group">
-                <label>Estimated Cost: </label>
-                <input type="number" id="estimatedCost" class="form-control input-number" value="0" readonly>
-            </div>
-            <div class="form-group">
-                <label>delivery boy tag</label>
-                <input type="text" class="form-control inputtag" name="lboytag">
-            </div>
-            <button id="buttonboy" type="submit" class="btn btn-danger btn-lg">Lock Items</button>
-        </div>
-
-        <br><br><br><br><br><br>
-    </div>
 
 </body>
 </html>

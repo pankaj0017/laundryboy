@@ -670,11 +670,11 @@ module.exports = function(app, passport) {
        });
     });
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
-       Order.findById(req.params.oid, function(err, order){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
           } else {
-              res.render('pickuppage.ejs',{order : order});
+              res.redirect('/deliveryboy/pickuppage.ejs');
           }
        });
     });
