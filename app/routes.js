@@ -551,27 +551,6 @@ module.exports = function(app, passport) {
             })
     });
 
-    // app.post('/order',function(req, res) {
-    //     Clothe.find({}, function(err, clothes){
-    //        if(err){
-    //            throw err;
-    //        } else {
-    //             var summary = "";
-    //             clothes.forEach(function(clothe){ 
-    //                 if(req.body[clothe.name] != 0) {
-    //                     summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
-    //             }});
-    //             var getOrder = new Order();
-    //             getOrder.description = summary;
-    //             getOrder.save(function(err) {
-    //                 if (err)
-    //                     throw err;
-    //                 res.redirect('/order');
-    //             });
-    //        }
-    //     });
-    // });
-
 
 
     // =====================================
@@ -670,11 +649,32 @@ module.exports = function(app, passport) {
        });
     });
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
-       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, getOrder){
           if(err){
               throw err;
           } else {
-              res.redirect('/deliveryboy/pickuppage.ejs');
+
+              Clothe.find({}, function(err, clothes){
+                   if(err){
+                       throw err;
+                   } else {
+                        var summary = "";
+                        var calculateCost = 0;
+                        clothes.forEach(function(clothe){ 
+                            if(req.body[clothe.name] != 0) {
+                                summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
+                                calculateCost = calculateCost + (clothe.price + clothe.ironCost)*(req.body[clothe.name]);
+                        }});
+                        getOrder.description = summary;
+                        getOrder.status = "picked";
+                        getOrder.cost = calculateCost;
+                        getOrder.save(function(err) {
+                            if (err)
+                                throw err;
+                        });
+                   }
+                });
+                res.redirect('/deliveryboy/' + req.params.id);
           }
        });
     });
