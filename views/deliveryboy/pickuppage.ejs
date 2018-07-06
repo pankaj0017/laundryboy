@@ -11,6 +11,7 @@
             var itemType = item.getAttribute("data-type");
             var quantity = parseInt($('#' + itemType).val());
             $('#' + itemType).val(quantity + 1);
+            $('.' + itemType).addClass("addtoselect");
             var itemPrice = Number(item.getAttribute("data-field"));
             var currentCost = parseInt($('#estimatedCost').val());
             $('#estimatedCost').val(currentCost + itemPrice);
@@ -24,6 +25,9 @@
                 var itemPrice = Number(item.getAttribute("data-field"));
                 var currentCost = parseInt($('#estimatedCost').val());
                 $('#estimatedCost').val(currentCost - itemPrice);
+                if(quantity == 0){
+                    $('.' + itemType).removeClass("addtoselect");
+                }
             }
         }
         $(document).ready(function(){
@@ -33,6 +37,8 @@
                 $(".quantity-right-plus").addClass("hidden");
                 $(".deliveryBoyPass").addClass("hidden");
                 $(".okey").removeClass("hidden");
+                $(".addtoall").addClass("hidden");
+                $(".addtoselect").removeClass("hidden");
             });
             $("#buttonunlock").click(function(){
 
@@ -41,6 +47,8 @@
                 $(".deliveryBoyPass").removeClass("hidden");
                 $(".okey").addClass("hidden");
                 $('.inputpass').val("");
+                $(".addtoselect").addClass("hidden");
+                $(".addtoall").removeClass("hidden");
             });
         });
     </script>
@@ -51,12 +59,26 @@
 
     <form action="/deliveryboy/<%= order.deliveryBoy._id %>/pickup/<%= order._id %>" method="post">
     
-    <center>
-        <h1>Pickup Page</h1>
-        <h3><%= order.customer.name %></h3>
-        <h3> : <%= order.customer.address %></h3>
-        <h3> : delivered by <%= order.deliveryBoy.name %></h3>
-    </center>
+    <div>
+        <table>
+            <th>
+                <h3>Pickup Page</h3>
+            </th>
+            <tr>
+                <td>Customer</td>
+                <td><%= order.customer.name %></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><%= order.customer.address %></td>
+            </tr>
+            <tr>
+                <td>LaundryBuoy</td>
+                <td><%= order.deliveryBoy.name %></td>
+            </tr>
+        </table>
+    </div>
+    <br><br><br><br>
 
     <center>
         <ul class="nav nav-tabs">
@@ -77,7 +99,7 @@
 
                 <% clothes.forEach(function(clothe){ if(clothe.category === 'small') { %>
           
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 col-md-4 col-sm-6 addtoall <%= clothe.name %>">
                         <span><%= clothe.name %> <%= clothe.price %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
@@ -107,7 +129,7 @@
 
                 <% clothes.forEach(function(clothe){ if(clothe.category === 'big') { %>
           
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 col-md-4 col-sm-6 addtoall <%= clothe.name %>">
                         <span><%= clothe.name %> <%= clothe.price %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
@@ -139,7 +161,7 @@
 
                 <% clothes.forEach(function(clothe){ if(clothe.category === 'superbig') { %>
           
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 col-md-4 col-sm-6 addtoall <%= clothe.name %>">
                         <span><%= clothe.name %> <%= clothe.price %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
