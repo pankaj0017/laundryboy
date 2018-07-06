@@ -197,6 +197,10 @@
             <input type="number" id="estimatedCost" class="form-control input-number" value="0" readonly>
         </div>
 
+        <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+        <% } %>
+        
         <div class="form-group deliveryBoyPass">
             <label>Bag Number</label>
             <input type="number" class="form-control" name="bagNumber">
@@ -209,7 +213,7 @@
 
         <div class="form-group okey hidden">
             <label>order key</label>
-            <input type="text" class="form-control" name="customerkey">
+            <input type="text" class="form-control" name="customerKey">
         </div>
         <button id="buttonunlock" type="button" class="btn btn-danger btn-lg okey hidden">Unlock</button>
         <button type="submit" class="btn btn-success btn-lg okey hidden mainButton" disabled="true">place order</button>

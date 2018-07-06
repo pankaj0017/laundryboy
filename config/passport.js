@@ -108,9 +108,6 @@ module.exports = function(passport) {
                                                     var newCustomer = new Customer();
                                                     newCustomer.user = newUser._id;
                                                     newCustomer.referedBy = req.params.id;
-                                                    Customer.count(function(error, nc) {
-                                                        newCustomer.tagNumber = nc + 1;
-                                                    });
 
                                                         newCustomer.save(function(err) {
                                                                 if (err)
@@ -258,10 +255,6 @@ module.exports = function(passport) {
                                                         
                                                         var newCustomer = new Customer();
                                                         newCustomer.user = newUser._id;
-                                                        Customer.count(function(error, nc) {
-                                                            newCustomer.tagNumber = nc + 1;
-                                                        });
-
                                                             newCustomer.save(function(err) {
                                                                     if (err)
                                                                         throw err;
@@ -363,9 +356,6 @@ module.exports = function(passport) {
                                                     throw err;
                                                 var newCustomer = new Customer();
                                                         newCustomer.user = newUser._id;
-                                                        Customer.count(function(error, nc) {
-                                                            newCustomer.tagNumber = nc + 1;
-                                                        });
 
                                                             newCustomer.save(function(err) {
                                                                     if (err)
