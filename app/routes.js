@@ -539,13 +539,21 @@ module.exports = function(app, passport) {
                     DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
                         if (err)
                             throw err;
+                        Vendor.findById(foundPinCode.vendor, function(err, foundVendor) {
+                            if (err)
+                                throw err;
 
-                        newOrder.deliveryBoy = foundDeliveryBoy._id;
-                        newOrder.status = "booked";
-                        newOrder.save();
-                        foundDeliveryBoy.currentOrders.push(newOrder);
-                        foundDeliveryBoy.save();
-                        res.redirect("/profile");
+                            newOrder.deliveryBoy = foundDeliveryBoy._id;
+                            newOrder.vendor = foundVendor._id;
+                            newOrder.status = "booked";
+                            newOrder.save();
+                            customer.history.push(newOrder);
+                            foundDeliveryBoy.currentOrders.push(newOrder);
+                            foundVendor.currentOrders.push(newOrder);
+                            foundDeliveryBoy.save();
+                            foundVendor.save();
+                            res.redirect("/profile");
+                        })
                     })                 
                 })
             })
@@ -654,21 +662,21 @@ module.exports = function(app, passport) {
               throw err;
           } else {
 
-              Clothe.find({}, function(err, clothes){
+              Clothe.find({}, function(err, clothes){ 
                    if(err){
                        throw err;
                    } else {
                         var summary = "";
                         var calculateCost = 0;
                         clothes.forEach(function(clothe){ 
-                            if(req.body[clothe.name] != 0) {
+                            if(req.body[clothe.name] != 0) { 
                                 summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
                                 calculateCost = calculateCost + (clothe.price + clothe.ironCost)*(req.body[clothe.name]);
                         }});
                         getOrder.description = summary;
                         getOrder.status = "picked";
                         getOrder.cost = calculateCost;
-                        getOrder.save(function(err) {
+                        getOrder.save(function(err) { 
                             if (err)
                                 throw err;
                         });

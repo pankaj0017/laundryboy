@@ -39,6 +39,7 @@
                 $(".okey").removeClass("hidden");
                 $(".addtoall").addClass("hidden");
                 $(".addtoselect").removeClass("hidden");
+                $('.mainButton').prop("disabled", false);
             });
             $("#buttonunlock").click(function(){
 
@@ -49,6 +50,7 @@
                 $('.inputpass').val("");
                 $(".addtoselect").addClass("hidden");
                 $(".addtoall").removeClass("hidden");
+                $('.mainButton').prop("disabled", true);
             });
         });
     </script>
@@ -196,6 +198,10 @@
         </div>
 
         <div class="form-group deliveryBoyPass">
+            <label>Bag Number</label>
+            <input type="number" class="form-control" name="bagNumber">
+        </div>
+        <div class="form-group deliveryBoyPass">
             <label>Delivery Boy Password</label>
             <input type="password" class="form-control inputpass" name="password">
         </div>
@@ -205,8 +211,8 @@
             <label>order key</label>
             <input type="text" class="form-control" name="customerkey">
         </div>
-        <button type="submit" class="btn btn-success btn-lg okey hidden">place order</button>
         <button id="buttonunlock" type="button" class="btn btn-danger btn-lg okey hidden">Unlock</button>
+        <button type="submit" class="btn btn-success btn-lg okey hidden mainButton" disabled="true">place order</button>
     </div>
 
     </form>
