@@ -16,6 +16,10 @@
 
     <h1><span class="fa fa-sign-in"></span>Delivery boy Login</h1>
 
+    <% if (message.length > 0) { %>
+    <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
     <!-- LOGIN FORM -->
     <form action="/deliveryboylogin" method="post">
         <div class="form-group">

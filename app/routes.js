@@ -567,7 +567,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/vendorlogin', function(req, res) {
-            res.render('vendor/vendorlogin.ejs');
+            res.render('vendor/vendorlogin.ejs', { message: req.flash('vendormessage') });
     });
 
     app.post('/vendorlogin', function(req, res) {
@@ -578,29 +578,22 @@ module.exports = function(app, passport) {
                 if(req.body.password == vendor.password) {
                     res.redirect('/vendor/' + vendor._id);
                 } else {
+                    req.flash('vendormessage', 'Wrong Password');
                     res.redirect('/vendorlogin');
                 }
             } else {
+                req.flash('vendormessage', 'Incorrect Username');
                 res.redirect('/vendorlogin');
             }
         })
     });
 
     app.get('/vendor/:id', function(req, res){
-       Vendor.findById(req.params.id, function(err, vendor){
+       Vendor.findById(req.params.id).deepPopulate("currentOrders.customer").exec(function(err, vendor) {
           if(err){
               throw err;
           } else {
-              res.render('vendorpage.ejs',{vendor : vendor});
-          }
-       });
-    });
-    app.post('/vendor/:id', function(req, res){
-       Vendor.findById(req.params.id, function(err, foundVendor){
-          if(err){
-              throw err;
-          } else {
-              res.redirect('/vendor/' + req.params.id);
+              res.render('vendor/vendorpage.ejs',{vendor : vendor});
           }
        });
     });
@@ -612,7 +605,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/deliveryboylogin', function(req, res) {
-            res.render('deliveryboy/deliveryboylogin.ejs');
+            res.render('deliveryboy/deliveryboylogin.ejs', { message: req.flash('laundrymessage') });
     });
 
     app.post('/deliveryboylogin', function(req, res) {
@@ -623,9 +616,11 @@ module.exports = function(app, passport) {
                 if(req.body.password == deliveryboy.password) {
                     res.redirect('/deliveryboy/' + deliveryboy._id);
                 } else {
+                    req.flash('laundrymessage', 'Wrong Password');
                     res.redirect('/deliveryboylogin');
                 }
             } else {
+                req.flash('laundrymessage', 'Incorrect Username');
                 res.redirect('/deliveryboylogin');
             }
         })
@@ -666,18 +661,28 @@ module.exports = function(app, passport) {
 
                 if (req.body.customerKey == getOrder.customer.pickUpKey) {
 
-                    if(getOrder.customer.tagNumber == '') {
+                    Customer.findById(getOrder.customer._id, function(err, foundCustomer) {
 
-                        Customer.findById(getOrder.customer._id, function(err, foundCustomer) {
+                        if(getOrder.customer.tagNumber == '') {
+
                             Customer.count(function(error, customerCount) {
                                 foundCustomer.tagNumber = 'lbc' + (customerCount + 1);
+                                foundCustomer.bagNumber = req.body.bagNumber;
                                 foundCustomer.save(function(err) { 
                                     if (err)
                                         throw err;
                                 });
                             });
-                        })
-                    }
+
+                        } else {
+                            foundCustomer.bagNumber = req.body.bagNumber;
+                            foundCustomer.save(function(err) { 
+                                if (err)
+                                    throw err;
+                            });
+                        }
+
+                    });
 
                     Clothe.find({}, function(err, clothes){ 
                        if(err){

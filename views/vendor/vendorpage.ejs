@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+        <center><h1>Vendor Page</h1></center>
+        <h3><br></h3>
+<div class="container">
+    <center>
+        <ul class="nav nav-tabs">
+            <li class="active col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#received">Receive</a></li>
+            <li class="col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#washed">Under Wash</a></li>
+        </ul>
+    </center>
+
+    <div class="tab-content">
+        <div id="received" class="tab-pane fade in active">
+
+            <div class="row">
+                <h2>Receive</h2>
+
+                <% vendor.currentOrders.forEach(function(order){ if(order.status === 'picked') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span>
+                            <a href="/vendor/<%=vendor._id%>/received/<%=order._id%>" class="btn btn-default btn-sm">Received</a>
+                        </span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+
+        </div>
+
+        <div id="washed" class="tab-pane fade">
+
+            <div class="row">
+                <h2>Under Wash</h2>
+
+                <% vendor.currentOrders.forEach(function(order){ if(order.status === 'received') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span>
+                            <a href="/vendor/<%=vendor._id%>/washed/<%=order._id%>" class="btn btn-default btn-sm">Ready</a>
+                        </span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+        
+        </div>
+    </div>
+        
+            
+</div>
+
+
+</body>
+</html>

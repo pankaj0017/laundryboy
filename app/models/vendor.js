@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var VendorSchema = new mongoose.Schema({
     username:     {type: String , default: ''},
@@ -15,6 +16,12 @@ var VendorSchema = new mongoose.Schema({
          ref: "Order"
       }
    ]
+});
+
+VendorSchema.plugin(deepPopulate, {
+  whitelist: [
+    'currentOrders.customer'
+  ]
 });
 
 module.exports = mongoose.model("Vendor", VendorSchema);
