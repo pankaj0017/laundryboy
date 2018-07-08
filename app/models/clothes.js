@@ -2,10 +2,10 @@ var mongoose = require("mongoose");
 
 var clotheSchema = mongoose.Schema({
 
-    name      : {type: String , default: ''},
-    category  : {type: String , default: ''},
-    price     : {type: Number, default:  0 },
-    ironCost  : {type: Number, default:  0 }
+    name    		  : {type: String , default: ''},
+    category  		  : {type: String , default: ''},
+    price     		  : {type: Number, default:  0 },
+    priceWithoutIron  : {type: Number, default:  0 }
 
 });
 

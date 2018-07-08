@@ -685,6 +685,38 @@ module.exports = function(app, passport) {
        });
     });
 
+    app.get('/deliveryboy/:id/pickup/:oid/no_iron', function(req, res){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+          if(err){
+              throw err;
+          } else {
+            Clothe.find({}, function(err, allClothes){
+               if(err){
+                   console.log(err);
+               } else {
+                    res.render('deliveryboy/pickuppagewithoutiron.ejs',{order : order , clothes : allClothes, message: req.flash('info') });
+               }
+            });
+          }
+       });
+    });
+
+    app.get('/deliveryboy/:id/out/:oid', function(req, res){
+       Order.findById(req.params.oid, function(err, getOrder){
+          if(err) {
+              throw err;
+          } else {
+
+            getOrder.status = "out";
+            getOrder.save(function(err) { 
+                if (err)
+                    throw err;
+            });
+            res.redirect('/deliveryboy/' + req.params.id);
+          }
+       });
+    });
+
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, getOrder){
           if(err){
@@ -723,11 +755,20 @@ module.exports = function(app, passport) {
                        } else {
                             var summary = "";
                             var calculateCost = 0;
-                            clothes.forEach(function(clothe){ 
-                                if(req.body[clothe.name] != 0) { 
-                                    summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
-                                    calculateCost = calculateCost + (clothe.price + clothe.ironCost)*(req.body[clothe.name]);
-                            }});
+                            if (req.body.isIron) {
+                                clothes.forEach(function(clothe){ 
+                                    if(req.body[clothe.name] != 0) { 
+                                        summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
+                                        calculateCost = calculateCost + (clothe.price)*(req.body[clothe.name]);
+                                }});
+                                getOrder.isIron = true;
+                            } else {
+                                clothes.forEach(function(clothe){ 
+                                    if(req.body[clothe.name] != 0) { 
+                                        summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
+                                        calculateCost = calculateCost + (clothe.priceWithoutIron)*(req.body[clothe.name]);
+                                }});
+                            }
                             getOrder.description = summary;
                             getOrder.status = "picked";
                             getOrder.cost = calculateCost;
@@ -741,12 +782,20 @@ module.exports = function(app, passport) {
 
                 } else {
                     req.flash('info', 'Wrong Order Key');
-                    res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
+                    if (req.body.isIron) {
+                        res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
+                      } else {
+                        res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid + '/no_iron');
+                      }
                 }
 
             } else {
                 req.flash('info', 'Wrong LaundryBuoy Password');
-                res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
+                if (req.body.isIron) {
+                    res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
+                  } else {
+                    res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid + '/no_iron');
+                  }
             }
           }
        });

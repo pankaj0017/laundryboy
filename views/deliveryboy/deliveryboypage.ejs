@@ -13,16 +13,41 @@
 <div class="container">
     <center>
         <ul class="nav nav-tabs">
-            <li class="active col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#pickup">Pick Up</a></li>
-            <li class="col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#deliver">Deliver</a></li>
+            <li class="active col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#readytopick">Pick (Vendor)</a></li>
+            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#pickup">Pick (Customer)</a></li>
+            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#deliver">Deliver</a></li>
         </ul>
     </center>
 
     <div class="tab-content">
-        <div id="pickup" class="tab-pane fade in active">
+
+        <div id="readytopick" class="tab-pane fade in active">
 
             <div class="row">
-                <h2>Pick Up</h2>
+                <h2>Pick From Vendor</h2>
+
+                <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'washed') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span>
+                        <span>
+                            <a href="/deliveryboy/<%=deliveryboy._id%>/out/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
+                        </span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+        
+        </div>
+
+        <div id="pickup" class="tab-pane fade">
+
+            <div class="row">
+                <h2>Pick From Customer</h2>
 
                 <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'booked') { %>
           
@@ -30,6 +55,7 @@
                         <p>OrderID : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
                         </span>
@@ -52,6 +78,7 @@
                         <p>OrderID : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/deliver/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
                         </span>

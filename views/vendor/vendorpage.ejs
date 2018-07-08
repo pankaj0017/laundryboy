@@ -22,17 +22,18 @@
         <div id="received" class="tab-pane fade in active">
 
             <div class="row">
-                <h2>Receive</h2>
+                <h2><br></h2>
 
                 <% vendor.currentOrders.forEach(function(order){ if(order.status === 'picked') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <p>OrderID : <%= order._id %></p>
-                        <span><%= order.customer.name %></span>
-                        <span> : <%= order.customer.address %></span>
+                        <p><span>Tag : <%= order.customer.tagNumber %></span>
+                        <span>Bag : <%= order.customer.bagNumber %></span>
+                        <span>Iron : <%= order.isIron %></span>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/received/<%=order._id%>" class="btn btn-default btn-sm">Received</a>
-                        </span>
+                        </span></p>
                     </div> 
 
                 <% }}) %>
@@ -44,16 +45,16 @@
         <div id="washed" class="tab-pane fade">
 
             <div class="row">
-                <h2>Under Wash</h2>
+                <h2><br></h2>
 
                 <% vendor.currentOrders.forEach(function(order){ if(order.status === 'received') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <p>OrderID : <%= order._id %></p>
-                        <span><%= order.customer.name %></span>
-                        <span> : <%= order.customer.address %></span>
+                        <span>Tag : <%= order.customer.tagNumber %></span>
+                        <span>Iron : <%= order.isIron %></span>
                         <span>
-                            <a href="/vendor/<%=vendor._id%>/washed/<%=order._id%>" class="btn btn-default btn-sm">Ready</a>
+                            <a href="/vendor/<%=vendor._id%>/washed/<%=order._id%>" class="btn btn-default btn-sm">Washed</a>
                         </span>
                     </div> 
 
