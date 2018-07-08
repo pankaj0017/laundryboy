@@ -598,6 +598,39 @@ module.exports = function(app, passport) {
        });
     });
 
+    app.get('/vendor/:id/received/:oid', function(req, res){
+       Order.findById(req.params.oid, function(err, getOrder){
+          if(err) {
+              throw err;
+          } else {
+
+            getOrder.status = "received";
+            getOrder.save(function(err) { 
+                if (err)
+                    throw err;
+            });
+            res.redirect('/vendor/' + req.params.id);
+          }
+       });
+    });
+
+    app.get('/vendor/:id/washed/:oid', function(req, res){
+       Order.findById(req.params.oid, function(err, getOrder){
+          if(err) {
+              throw err;
+          } else {
+
+            getOrder.status = "washed";
+            getOrder.save(function(err) { 
+                if (err)
+                    throw err;
+
+            });
+            res.redirect('/vendor/' + req.params.id);
+          }
+       });
+    });
+
 
     // =====================================
     // DELIVERYBOY ROUTES =====================
