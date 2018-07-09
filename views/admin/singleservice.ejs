@@ -1,0 +1,60 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Single Service Package Page</h1>
+        <a href="/" class="btn btn-default btn-sm">Home</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/admin" class="btn btn-default btn-sm">Back</a>
+    </div>
+
+    <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+
+        <h3><span class="fa fa-sign-in"></span>Add New Single Service Package</h3>
+
+        <!-- CREATING -->
+                <form action="/admin/singlesevices" method="post">
+
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" class="form-control" name="newSingleService[amount]">
+                    </div>
+                    <div class="form-group">
+                        <label>Number Of Clothes</label>
+                        <input type="number" class="form-control" name="newSingleService[totalClothes]">
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg">Add</button>
+                    
+                </form>
+
+                <br><br><p>list of services : </p>
+        <!-- CREATING -->
+
+        <% singleServices.forEach(function(singleService){ %>
+                
+            <form class="form-inline" action="/admin/singlesevices/<%=singleService._id%>?_method=DELETE" method="POST">
+                <label>Rs.: <%= singleService.amount %> for <%= singleService.totalClothes %></label>
+                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+            </form>
+
+        <% }) %>
+
+    </div>
+
+</div>
+</body>
+</html>
