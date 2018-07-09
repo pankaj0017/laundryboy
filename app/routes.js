@@ -550,6 +550,7 @@ module.exports = function(app, passport) {
                             customer.history.push(newOrder);
                             foundDeliveryBoy.currentOrders.push(newOrder);
                             foundVendor.currentOrders.push(newOrder);
+                            customer.history.push(newOrder);
                             foundDeliveryBoy.save();
                             foundVendor.save();
                             res.redirect("/profile");
@@ -685,7 +686,7 @@ module.exports = function(app, passport) {
        });
     });
 
-    app.get('/deliveryboy/:id/pickup/:oid/no_iron', function(req, res){
+    app.get('/deliveryboy/:id/pickup/:oid/onlyiron', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
@@ -694,28 +695,13 @@ module.exports = function(app, passport) {
                if(err){
                    console.log(err);
                } else {
-                    res.render('deliveryboy/pickuppagewithoutiron.ejs',{order : order , clothes : allClothes, message: req.flash('info') });
+                    res.render('deliveryboy/pickuppageonlyiron.ejs',{order : order , clothes : allClothes, message: req.flash('info') });
                }
             });
           }
        });
     });
 
-    app.get('/deliveryboy/:id/out/:oid', function(req, res){
-       Order.findById(req.params.oid, function(err, getOrder){
-          if(err) {
-              throw err;
-          } else {
-
-            getOrder.status = "out";
-            getOrder.save(function(err) { 
-                if (err)
-                    throw err;
-            });
-            res.redirect('/deliveryboy/' + req.params.id);
-          }
-       });
-    });
 
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, getOrder){
@@ -755,18 +741,18 @@ module.exports = function(app, passport) {
                        } else {
                             var summary = "";
                             var calculateCost = 0;
-                            if (req.body.isIron) {
+                            if (req.body.onlyIron) {
                                 clothes.forEach(function(clothe){ 
                                     if(req.body[clothe.name] != 0) { 
                                         summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
-                                        calculateCost = calculateCost + (clothe.price)*(req.body[clothe.name]);
+                                        calculateCost = calculateCost + (clothe.ironPrice)*(req.body[clothe.name]);
                                 }});
-                                getOrder.isIron = true;
+                                getOrder.onlyIron = true;
                             } else {
                                 clothes.forEach(function(clothe){ 
                                     if(req.body[clothe.name] != 0) { 
                                         summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
-                                        calculateCost = calculateCost + (clothe.priceWithoutIron)*(req.body[clothe.name]);
+                                        calculateCost = calculateCost + (clothe.price)*(req.body[clothe.name]);
                                 }});
                             }
                             getOrder.description = summary;
@@ -782,21 +768,81 @@ module.exports = function(app, passport) {
 
                 } else {
                     req.flash('info', 'Wrong Order Key');
-                    if (req.body.isIron) {
-                        res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
-                      } else {
+                    if (req.body.onlyIron) {
                         res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid + '/no_iron');
+                      } else {
+                        res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
                       }
                 }
 
             } else {
                 req.flash('info', 'Wrong LaundryBuoy Password');
-                if (req.body.isIron) {
-                    res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
-                  } else {
+                if (req.body.onlyIron) {
                     res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid + '/no_iron');
+                  } else {
+                    res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
                   }
             }
+          }
+       });
+    });
+
+    app.get('/deliveryboy/:id/out/:oid', function(req, res){
+       Order.findById(req.params.oid, function(err, getOrder){
+          if(err) {
+              throw err;
+          } else {
+
+            getOrder.status = "out";
+            getOrder.save(function(err) { 
+                if (err)
+                    throw err;
+            });
+            res.redirect('/deliveryboy/' + req.params.id);
+          }
+       });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    app.get('/deliveryboy/:id/payment/:oid', function(req, res){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+          if(err){
+              throw err;
+          } else {
+              res.render('deliveryboy/paymentpage.ejs',{order : order});
+          }
+       });
+    });
+
+    app.post('/deliveryboy/:id/payment/:oid', function(req, res){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+          if(err){
+              throw err;
+          } else {
+              res.render('deliveryboy/paymentpage.ejs',{order : order});
           }
        });
     });
@@ -806,21 +852,68 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              res.render('deliveryboy/deliverpage.ejs',{order : order});
+              if (order.isPaid) {
+                res.render('deliveryboy/deliverpage.ejs',{order : order});
+              } else {
+                res.redirect('/deliveryboy/' + req.params.id + '/payment/' + req.params.oid);
+              }
           }
        });
     });
     app.post('/deliveryboy/:id/deliver/:oid', function(req, res){
-       Order.findById(req.params.oid, function(err, order){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
           } else {
-              res.render('pickuppage.ejs',{order : order});
+              if (order.isPaid) {
+              } else {
+                res.redirect('/deliveryboy/' + req.params.id + '/payment/' + req.params.oid);
+              }
           }
        });
     });
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // =====================================
     // FACEBOOK ROUTES =====================

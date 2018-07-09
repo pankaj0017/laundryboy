@@ -42,12 +42,12 @@
                           </select>
                     </div>
                     <div class="form-group">
-                        <label>Price</label>
+                        <label>Price with Iron</label>
                         <input type="number" class="form-control" name="newClothe[price]">
                     </div>
                     <div class="form-group">
-                        <label>Price Without Iron</label>
-                        <input type="number" class="form-control" name="newClothe[priceWithoutIron]">
+                        <label>Iron Price</label>
+                        <input type="number" class="form-control" name="newClothe[ironPrice]">
                     </div>
 
                     <button type="submit" class="btn btn-success btn-lg">Insert</button>
@@ -59,7 +59,7 @@
                 
 
             <form class="form-inline" action="/admin/clothes/<%=clothe._id%>?_method=DELETE" method="POST">
-                <label><%= clothe.name %> in <%= clothe.category %> with price <%= clothe.price %> and <%= clothe.priceWithoutIron %></label>
+                <label><%= clothe.name %> in <%= clothe.category %> with price <%= clothe.price %> and <%= clothe.ironPrice %></label>
                 <input type="submit" class="btn btn-xs btn-danger" value="Delete">
             </form>
 

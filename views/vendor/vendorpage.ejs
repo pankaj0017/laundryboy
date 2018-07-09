@@ -30,7 +30,7 @@
                         <p>OrderID : <%= order._id %></p>
                         <p><span>Tag : <%= order.customer.tagNumber %></span>
                         <span>Bag : <%= order.customer.bagNumber %></span>
-                        <span>Iron : <%= order.isIron %></span>
+                        <span>Only Iron : <%= order.onlyIron %></span>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/received/<%=order._id%>" class="btn btn-default btn-sm">Received</a>
                         </span></p>
@@ -52,7 +52,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <p>OrderID : <%= order._id %></p>
                         <span>Tag : <%= order.customer.tagNumber %></span>
-                        <span>Iron : <%= order.isIron %></span>
+                        <span>Only Iron : <%= order.onlyIron %></span>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/washed/<%=order._id%>" class="btn btn-default btn-sm">Washed</a>
                         </span>

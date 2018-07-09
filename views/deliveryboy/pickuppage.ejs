@@ -79,8 +79,8 @@
                 <td><%= order.deliveryBoy.name %></td>
             </tr>
             <tr>
-                <td>Iron</td>
-                <td>Yes / <a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>/no_iron" class="btn btn-default btn-sm">No Iron</a></td>
+                <td>Only Iron</td>
+                <td>No / <a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>/onlyiron" class="btn btn-default btn-sm">Only Iron</a></td>
             </tr>
             <tr>
                 <td><a href="/deliveryboy/<%=order.deliveryBoy._id%>" class="btn btn-default btn-sm">Back</a></td>
@@ -202,9 +202,6 @@
         <div class="form-group">
             <label>Estimated Cost: </label>
             <input type="number" id="estimatedCost" class="form-control input-number" value="0" readonly>
-        </div>
-        <div class="form-group hidden">
-            <input type="checkbox" name="isIron" value="true" checked>
         </div>
 
         <% if (message.length > 0) { %>

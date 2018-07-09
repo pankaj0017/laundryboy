@@ -79,8 +79,8 @@
                 <td><%= order.deliveryBoy.name %></td>
             </tr>
             <tr>
-                <td>Iron</td>
-                <td>No / <a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Yes</a></td>
+                <td>Only Iron</td>
+                <td>Yes / <a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Wash And Iron</a></td>
             </tr>
             <tr>
                 <td><a href="/deliveryboy/<%=order.deliveryBoy._id%>" class="btn btn-default btn-sm">Back</a></td>
@@ -109,16 +109,16 @@
                 <% clothes.forEach(function(clothe){ if(clothe.category === 'small') { %>
           
                     <div class="col-lg-2 col-md-4 col-sm-6 addtoall <%= clothe.name %>">
-                        <span><%= clothe.name %> Rs. <%= clothe.priceWithoutIron %></span>
+                        <span><%= clothe.name %> Rs. <%= clothe.ironPrice %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.priceWithoutIron %>" onclick="decQuantity(this)">
+                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.ironPrice %>" onclick="decQuantity(this)">
                                       <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
                                 <input type="number" id="<%= clothe.name %>" name="<%= clothe.name %>" class="form-control input-number" value="0" min="0" max="30" readonly>
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="<%= clothe.name %>" data-field="<%= clothe.priceWithoutIron %>" onclick="incQuantity(this)">
+                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="<%= clothe.name %>" data-field="<%= clothe.ironPrice %>" onclick="incQuantity(this)">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 </span>
@@ -139,16 +139,16 @@
                 <% clothes.forEach(function(clothe){ if(clothe.category === 'big') { %>
           
                     <div class="col-lg-2 col-md-4 col-sm-6 addtoall <%= clothe.name %>">
-                        <span><%= clothe.name %> Rs. <%= clothe.priceWithoutIron %></span>
+                        <span><%= clothe.name %> Rs. <%= clothe.ironPrice %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.priceWithoutIron %>" onclick="decQuantity(this)">
+                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.ironPrice %>" onclick="decQuantity(this)">
                                       <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
                                 <input type="number" id="<%= clothe.name %>" name="<%= clothe.name %>" class="form-control input-number" value="0" min="0" max="30" readonly>
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="<%= clothe.name %>" data-field="<%= clothe.priceWithoutIron %>" onclick="incQuantity(this)">
+                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="<%= clothe.name %>" data-field="<%= clothe.ironPrice %>" onclick="incQuantity(this)">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 </span>
@@ -171,16 +171,16 @@
                 <% clothes.forEach(function(clothe){ if(clothe.category === 'superbig') { %>
           
                     <div class="col-lg-2 col-md-4 col-sm-6 addtoall <%= clothe.name %>">
-                        <span><%= clothe.name %> Rs. <%= clothe.priceWithoutIron %></span>
+                        <span><%= clothe.name %> Rs. <%= clothe.ironPrice %></span>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.priceWithoutIron %>" onclick="decQuantity(this)">
+                                    <button type="button" class="quantity-left-minus btn btn-primary btn-number"  data-type="<%= clothe.name %>" data-field="<%= clothe.ironPrice %>" onclick="decQuantity(this)">
                                       <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                 </span>
                                 <input type="number" id="<%= clothe.name %>" name="<%= clothe.name %>" class="form-control input-number" value="0" min="0" max="30" readonly>
                                 <span class="input-group-btn">
-                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="<%= clothe.name %>" data-field="<%= clothe.priceWithoutIron %>" onclick="incQuantity(this)">
+                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="<%= clothe.name %>" data-field="<%= clothe.ironPrice %>" onclick="incQuantity(this)">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 </span>
@@ -202,6 +202,9 @@
         <div class="form-group">
             <label>Estimated Cost: </label>
             <input type="number" id="estimatedCost" class="form-control input-number" value="0" readonly>
+        </div>
+        <div class="form-group hidden">
+            <input type="checkbox" name="onlyIron" value="true" checked>
         </div>
 
         <% if (message.length > 0) { %>

@@ -13,6 +13,7 @@ var CustomerSchema = new mongoose.Schema({
     address      : {type: String , default: ''},
     pinCode      : {type: Number, default:  0 },
     daysLeft     : {type: Number, default:  0 },                              //time untill next recharge
+    services     : {type: Number, default:  0 },
     longClothes  : {type: Number, default:  0 },
     shortClothes : {type: Number, default:  0 },
     numbers:  [
