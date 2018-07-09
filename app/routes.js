@@ -466,6 +466,34 @@ module.exports = function(app, passport) {
     // =====================================
     // route for changing SINGLE SERVICE database
 
+    app.get('/admin/singleservices', isAdmin, function(req, res) {
+        SingleService.find({}, function(err, allSingleServices){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/singleservice.ejs",{singleServices : allSingleServices});
+           }
+        });
+    });
+    app.post('/admin/singleservices', isAdmin, function(req, res) {
+        SingleService.create(req.body.newSingleService, function(err, newSingleService){
+           if(err){
+               console.log(err);
+           } else {   
+               res.redirect('/admin/singleservices');
+           }
+        });
+    });
+    app.post('/admin/singleservices/:id', isAdmin, function(req, res) {
+        SingleService.findByIdAndRemove(req.params.id, function(err){
+           if(err){
+               console.log(err);
+           } else {
+              res.redirect("/admin/singleservices");
+           }
+        });
+    });
+
 
     // =====================================
     // ORDER ROUTES ========================
