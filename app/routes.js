@@ -396,7 +396,7 @@ module.exports = function(app, passport) {
 
 
     // =====================================
-    // CLOTHES ROUTES =====================
+    // ADMIN CLOTHES ROUTES =====================
     // =====================================
     // route for changing CLOTHE database
     app.get('/admin/clothes', isAdmin, function(req, res) {
@@ -427,9 +427,48 @@ module.exports = function(app, passport) {
         });
     });
 
+    // =====================================
+    // ADMIN PLAN ROUTES ===================
+    // =====================================
+    // route for changing PLAN database
+
+    app.get('/admin/plans', isAdmin, function(req, res) {
+        Plan.find({}, function(err, allPlans){
+           if(err){
+               console.log(err);
+           } else {
+              res.render("admin/plan.ejs",{plans : allPlans});
+           }
+        });
+    });
+    app.post('/admin/plans', isAdmin, function(req, res) {
+        Plan.create(req.body.newPlan, function(err, newPlan){
+           if(err){
+               console.log(err);
+           } else {   
+               res.redirect('/admin/plans');
+           }
+        });
+    });
+    app.post('/admin/plans/:id', isAdmin, function(req, res) {
+        Plan.findByIdAndRemove(req.params.id, function(err){
+           if(err){
+               console.log(err);
+           } else {
+              res.redirect("/admin/plans");
+           }
+        });
+    });
+
 
     // =====================================
-    // ORDER ROUTES =====================
+    // ADMIN SINGLE SERVICE ROUTES =========
+    // =====================================
+    // route for changing SINGLE SERVICE database
+
+
+    // =====================================
+    // ORDER ROUTES ========================
     // =====================================
 
     app.get('/pincode', isLoggedIn, function(req, res) {
