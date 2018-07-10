@@ -167,6 +167,7 @@ module.exports = function(app, passport) {
               foundCustomer.address = req.body.customer.address;
               foundCustomer.pinCode = req.body.customer.pinCode;
               foundCustomer.daysLeft = req.body.customer.daysLeft;
+              foundCustomer.services = req.body.customer.services;
               foundCustomer.longClothes = req.body.customer.longClothes;
               foundCustomer.shortClothes = req.body.customer.shortClothes;
               foundCustomer.save();
@@ -618,6 +619,7 @@ module.exports = function(app, passport) {
                             foundDeliveryBoy.currentOrders.push(newOrder);
                             foundVendor.currentOrders.push(newOrder);
                             customer.history.push(newOrder);
+                            customer.save();
                             foundDeliveryBoy.save();
                             foundVendor.save();
                             res.redirect("/profile");
@@ -701,7 +703,7 @@ module.exports = function(app, passport) {
 
 
     // =====================================
-    // DELIVERYBOY ROUTES =====================
+    // DELIVERYBOY ROUTES ==================
     // =====================================
 
 
@@ -870,6 +872,95 @@ module.exports = function(app, passport) {
        });
     });
 
+    // =====================================
+    // RECHARGE ROUTES =====================
+    // =====================================
+
+    app.get('/deliveryboy/:id/recharge', function(req, res){ 
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
+          if(err){
+              throw err;
+          } else {
+              res.render('deliveryboy/ctagforrecharge.ejs',{deliveryboy : deliveryboy, message: req.flash('tagforrecharge') });
+          }
+       });
+    });
+
+    app.post('/deliveryboy/:id/recharge', function(req, res){
+        Customer.findOne({ 'tagNumber' :  req.body.customerTag }, function(err, customer) {
+          if(err){
+              throw err;
+          } else {
+            if (!customer) {
+              req.flash('tagforrecharge', 'No Customer Found');
+              res.redirect('/deliveryboy/' + req.params.id + '/recharge');
+            } else {
+              res.redirect('/deliveryboy/' + req.params.id + '/recharge/' + customer._id);
+            }
+          }
+        });
+    });
+
+    app.get('/deliveryboy/:id/recharge/:cid', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
+          if(err){
+              throw err;
+          } else {
+              Customer.findById(req.params.cid, function(err, customer) {
+                if(err){
+                    throw err;
+                } else {
+                    Plan.find({}, function(err, plans){
+                       if(err){
+                           throw err;
+                       } else {
+                            res.render('deliveryboy/recharge.ejs',{ plans : plans, deliveryboy : deliveryboy , customer : customer, message: req.flash('rechargestatus') });
+                       }
+                    });
+                }
+              })
+          }
+       });
+    });
+
+    app.post('/deliveryboy/:id/recharge/:cid', function(req, res){
+       DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
+          if(err){
+              throw err;
+          } else {
+              Customer.findById(req.params.cid, function(err, customer) {
+                if(err){
+                    throw err;
+                } else {
+                    Plan.findOne({ 'amount' :  req.body.getPlan }, function(err, plan){
+                       if(err){
+                           throw err;
+                       } else {
+                            if (deliveryboy.password == req.body.dPass) {
+                              var newRecharge = new Recharge();
+                              newRecharge.amount = plan.amount;
+                              newRecharge.customer = customer._id;
+                              newRecharge.deliveryBoy = deliveryboy._id;
+                              newRecharge.save();
+
+                              customer.daysLeft = customer.daysLeft + plan.validity;
+                              customer.longClothes = customer.longClothes + plan.longClothes;
+                              customer.shortClothes = customer.shortClothes + plan.shortClothes;
+                              customer.services = customer.services + plan.services;
+                              customer.save();
+
+                              req.flash('rechargestatus', 'Recharge Done');
+                            } else {
+                              req.flash('rechargestatus', 'Wrong Password');
+                            }
+                            res.redirect('/deliveryboy/' + req.params.id + '/recharge/' + req.params.cid);
+                       }
+                    });
+                }
+              })
+          }
+       });
+    });
 
 
 
@@ -892,6 +983,9 @@ module.exports = function(app, passport) {
 
 
 
+    // =====================================
+    // PAYMENT ROUTES =====================
+    // =====================================
 
 
     app.get('/deliveryboy/:id/payment/:oid', function(req, res){
@@ -913,6 +1007,10 @@ module.exports = function(app, passport) {
           }
        });
     });
+
+    // =====================================
+    // DELIVERY ROUTES ==================
+    // =====================================
 
     app.get('/deliveryboy/:id/deliver/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
@@ -1036,6 +1134,23 @@ function isAdmin(req, res, next) {
         return next();
     res.redirect('/login');
 }
+var cleanUp = schedule.scheduleJob('0 2 * * *', function(){
+  console.log('The answer to life, the universe, and everything!');
+  // for(var i = array.length - 1; i >= 0; i--) {
+  //     if(array[i] === number) {
+  //        array.splice(i, 1);
+  //     }
+  // }
+  // *    *    *    *    *    *
+  // ┬    ┬    ┬    ┬    ┬    ┬
+  // │    │    │    │    │    │
+  // │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+  // │    │    │    │    └───── month (1 - 12)
+  // │    │    │    └────────── day of month (1 - 31)
+  // │    │    └─────────────── hour (0 - 23)
+  // │    └──────────────────── minute (0 - 59)
+  // └───────────────────────── second (0 - 59, OPTIONAL)
+});
 
 
 //AIzaSyARATL5BzsQmYSh8oRM4ZfsFvgRiiSz6oA
