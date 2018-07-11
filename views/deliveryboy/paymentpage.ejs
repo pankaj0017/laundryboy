@@ -21,6 +21,19 @@
     <p>Cost With Plan : <%= costWithPlan %><p>
     <p>Cost Without Plan : <%= costWithoutPlan %><p>
 
+    <form action="/deliveryboy/<%= order.deliveryBoy._id %>/payment/<%= order._id %>" method="post">
+        <div class="form-group">
+            <label>Pay With Plan</label>
+            <input type="text" class="form-control" name="payWithPlan">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg">Pay</button>
+    </form>
+
 
 </div>
 
