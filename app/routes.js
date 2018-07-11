@@ -967,6 +967,7 @@ module.exports = function(app, passport) {
                            throw err;
                        } else {
                             if (deliveryboy.password == req.body.dPass) {
+
                               var newRecharge = new Recharge();
                               newRecharge.amount = plan.amount;
                               newRecharge.customer = customer._id;
@@ -1026,7 +1027,32 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              res.render('deliveryboy/paymentpage.ejs',{order : order});
+              var costWithoutPlan = order.cost;
+              var noOfClothes = (order.customer.longGiven + order.customer.shortGiven);
+
+              SingleService.find({}).sort('totalClothes').exec(function(err, services) {
+
+                services.forEach(function(service){ 
+
+                    if(noOfClothes <= service.totalClothes) {
+                      costWithoutPlan = costWithoutPlan + service.amount;
+                      break;
+                    }
+                });
+              });
+
+              var costWithPlan = 0;
+              if ((order.customer.longClothes < order.customer.longGiven) && (order.customer.shortClothes < order.customer.shortGiven)) {
+                asd
+              } else if (order.customer.longClothes < order.customer.longGiven) {
+                asd
+              } else if (order.customer.shortClothes < order.customer.shortGiven) {
+                asd
+              } else {
+                asd
+              }
+
+              res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan});
           }
        });
     });

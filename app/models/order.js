@@ -7,7 +7,8 @@ var OrderSchema = mongoose.Schema({
     deliveryBoy:      {type: mongoose.Schema.Types.ObjectId, ref: "DeliveryBoy"},		//when delivered
     onlyIron:         {type: Boolean , default: false},
     cost:             {type: Number , default: 0},
-    isPaid:           {type: Boolean , default: false},        
+    isPaid:           {type: Boolean , default: false}, 
+    rating:           {type: Number , default: 0},       
     description:      {type: String , default: ''},
     status:           {type: String , default: 'booked'},           //booked, picked, received, washed, ironed, out, delivered, terminated
     orderDate:        {type: Date, default: Date.now },								//when order is placed
