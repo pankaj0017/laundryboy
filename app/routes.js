@@ -520,8 +520,8 @@ module.exports = function(app, passport) {
                             if (err)
                                 throw err;
                         });
+                        res.redirect('/contact');
                     })
-                    res.redirect('/contact');
                 } else {
                     res.redirect("/pincode");
                 }
@@ -565,10 +565,10 @@ module.exports = function(app, passport) {
                        customer.mainNumber = newMobile.number;
                        customer.numbers.push(newMobile);
                        customer.save();
+                       res.redirect('/order');
                    }
                 });
             });
-        res.redirect('/order');
     });
 
 
@@ -818,10 +818,10 @@ module.exports = function(app, passport) {
                                     if(req.body[clothe.name] != 0) { 
                                         summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
                                         calculateCost = calculateCost + (clothe.price)*(req.body[clothe.name]);
-                                        if(req.body[clothe.name] <= 4) {
-                                          shortgiven = shortgiven + 1;
+                                        if(clothe.price <= 4) {
+                                          shortgiven = shortgiven + Number(req.body[clothe.name]);
                                         } else {
-                                          longgiven = longgiven + 1;
+                                          longgiven = longgiven + Number(req.body[clothe.name]);
                                         }
                                 }});
 
@@ -1027,19 +1027,6 @@ module.exports = function(app, passport) {
           if(err){
               throw err;
           } else {
-              var costWithoutPlan = order.cost;
-              var noOfClothes = (order.customer.longGiven + order.customer.shortGiven);
-
-              SingleService.find({}).sort('totalClothes').exec(function(err, services) {
-
-                services.forEach(function(service){ 
-
-                    if(noOfClothes <= service.totalClothes) {
-                      costWithoutPlan = costWithoutPlan + service.amount;
-                      break;
-                    }
-                });
-              });
 
               var costWithPlan = 0;
               if ((order.customer.longClothes < order.customer.longGiven) && (order.customer.shortClothes < order.customer.shortGiven)) {
@@ -1056,17 +1043,64 @@ module.exports = function(app, passport) {
                 }
               }
 
-              res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan});
+              var costWithoutPlan = order.cost;
+              var noOfClothes = (order.customer.longGiven + order.customer.shortGiven);
+              var flag = true;
+
+              SingleService.find({}).sort('totalClothes').exec(function(err, services) {
+
+                services.forEach(function(service){ 
+
+                    if(noOfClothes <= service.totalClothes && flag) {
+                      costWithoutPlan = costWithoutPlan + service.amount;
+                      flag = false;
+                    }
+                });
+                res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan});
+              });
           }
        });
     });
 
-    app.post('/deliveryboy/:id/payment/:oid', function(req, res){
-       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+    app.get('/deliveryboy/:id/payment/:oid', function(req, res){
+       Order.findById(req.params.oid).populate("deliveryBoy").exec(function(err, order){
           if(err){
               throw err;
           } else {
-              res.render('deliveryboy/paymentpage.ejs',{order : order});
+
+            Customer.findById(order.customer, function(err, customer){
+
+              var costWithPlan = 0;
+              if ((order.customer.longClothes < order.customer.longGiven) && (order.customer.shortClothes < order.customer.shortGiven)) {
+                costWithPlan = ((order.customer.longGiven - order.customer.longClothes) + (order.customer.shortGiven - order.customer.shortClothes)) * 10 ;
+              
+              } else if (order.customer.longClothes < order.customer.longGiven) {
+                if ((order.customer.longGiven - order.customer.longClothes)*2 > (order.customer.shortClothes - order.customer.shortGiven)) {
+                  costWithPlan = ((order.customer.longGiven - order.customer.longClothes)*2 - (order.customer.shortClothes - order.customer.shortGiven)) * 5;
+                }
+              
+              } else if (order.customer.shortClothes < order.customer.shortGiven) {
+                if ((order.customer.shortGiven - order.customer.shortClothes)/2 > (order.customer.longClothes - order.customer.longGiven)) {
+                  costWithPlan = ((order.customer.shortGiven - order.customer.shortClothes)/2 - (order.customer.longClothes - order.customer.longGiven)) * 10;
+                }
+              }
+
+              var costWithoutPlan = order.cost;
+              var noOfClothes = (order.customer.longGiven + order.customer.shortGiven);
+              var flag = true;
+
+              SingleService.find({}).sort('totalClothes').exec(function(err, services) {
+
+                services.forEach(function(service){ 
+
+                    if(noOfClothes <= service.totalClothes && flag) {
+                      costWithoutPlan = costWithoutPlan + service.amount;
+                      flag = false;
+                    }
+                });
+                res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/deliver/' + order._id);
+              });
+            });
           }
        });
     });
