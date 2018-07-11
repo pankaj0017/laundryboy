@@ -996,27 +996,6 @@ module.exports = function(app, passport) {
        });
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // =====================================
     // PAYMENT ROUTES =====================
     // =====================================
@@ -1056,7 +1035,7 @@ module.exports = function(app, passport) {
                       flag = false;
                     }
                 });
-                res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan});
+                res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan, message: req.flash('paymentstatus') });
               });
           }
        });
@@ -1070,71 +1049,107 @@ module.exports = function(app, passport) {
 
             Customer.findById(order.customer, function(err, customer){
 
-              if (req.body.payWithPlan) {
+              if(req.body.dPass == order.deliveryBoy.password) {
+                if (req.body.payWithPlan) {
 
-                var costWithPlan = 0;
-                if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
-                  costWithPlan = ((customer.longGiven - customer.longClothes) + (customer.shortGiven - customer.shortClothes)) * 10 ;
-                  customer.longClothes = 0;
-                  customer.shortClothes = 0;
-                  customer.daysLeft = 0;
-                
-                } else if (customer.longClothes < customer.longGiven) {
-                  if ((customer.longGiven - customer.longClothes)*2 >= (customer.shortClothes - customer.shortGiven)) {
-                    costWithPlan = ((customer.longGiven - customer.longClothes)*2 - (customer.shortClothes - customer.shortGiven)) * 5;
+                  var costWithPlan = 0;
+                  if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
+                    costWithPlan = ((customer.longGiven - customer.longClothes) + (customer.shortGiven - customer.shortClothes)) * 10 ;
                     customer.longClothes = 0;
                     customer.shortClothes = 0;
                     customer.daysLeft = 0;
-                  } else {
-                    customer.longClothes = 0;
-                    customer.shortClothes = ((customer.shortClothes - customer.shortGiven) - (customer.longGiven - customer.longClothes)*2);
+                  
+                  } else if (customer.longClothes < customer.longGiven) {
+                    if ((customer.longGiven - customer.longClothes)*2 >= (customer.shortClothes - customer.shortGiven)) {
+                      costWithPlan = ((customer.longGiven - customer.longClothes)*2 - (customer.shortClothes - customer.shortGiven)) * 5;
+                      customer.longClothes = 0;
+                      customer.shortClothes = 0;
+                      customer.daysLeft = 0;
+                    } else {
+                      customer.longClothes = 0;
+                      customer.shortClothes = ((customer.shortClothes - customer.shortGiven) - (customer.longGiven - customer.longClothes)*2);
+                    }
+                  
+                  } else if (customer.shortClothes < customer.shortGiven) {
+                    if ((customer.shortGiven - customer.shortClothes)/2 >= (customer.longClothes - customer.longGiven)) {
+                      costWithPlan = ((customer.shortGiven - customer.shortClothes)/2 - (customer.longClothes - customer.longGiven)) * 10;
+                      customer.shortClothes = 0;
+                      customer.longClothes = 0;
+                      customer.daysLeft = 0;
+                    } else {
+                      customer.shortClothes = 0;
+                      customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
+                    }
                   }
-                
-                } else if (customer.shortClothes < customer.shortGiven) {
-                  if ((customer.shortGiven - customer.shortClothes)/2 >= (customer.longClothes - customer.longGiven)) {
-                    costWithPlan = ((customer.shortGiven - customer.shortClothes)/2 - (customer.longClothes - customer.longGiven)) * 10;
-                    customer.shortClothes = 0;
-                    customer.longClothes = 0;
-                    customer.daysLeft = 0;
-                  } else {
-                    customer.shortClothes = 0;
-                    customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
-                  }
-                }
 
-                customer.save();
+                  customer.save();
 
-                order.cost = costWithPlan;
-                order.save();
-                res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/deliver/' + order._id);
-
-              } else {
-
-                var costWithoutPlan = order.cost;
-                var noOfClothes = (customer.longGiven + customer.shortGiven);
-                var flag = true;
-
-                SingleService.find({}).sort('totalClothes').exec(function(err, services) {
-
-                  services.forEach(function(service){ 
-
-                      if(noOfClothes <= service.totalClothes && flag) {
-                        costWithoutPlan = costWithoutPlan + service.amount;
-                        flag = false;
-                      }
-                  });
-                  order.cost = costWithoutPlan;
+                  order.cost = costWithPlan;
+                  order.isPaid = true;
                   order.save();
                   res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/deliver/' + order._id);
 
-                });
+                } else {
 
-              }
+                  var costWithoutPlan = order.cost;
+                  var noOfClothes = (customer.longGiven + customer.shortGiven);
+                  var flag = true;
+
+                  SingleService.find({}).sort('totalClothes').exec(function(err, services) {
+
+                    services.forEach(function(service){ 
+
+                        if(noOfClothes <= service.totalClothes && flag) {
+                          costWithoutPlan = costWithoutPlan + service.amount;
+                          flag = false;
+                        }
+                    });
+                    order.cost = costWithoutPlan;
+                    order.isPaid = true;
+                    order.save();
+                    res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/deliver/' + order._id);
+
+                  });
+
+                }
+              } else {
+                req.flash('paymentstatus', 'Wrong Password');
+                res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/payment/' + order._id);
+              }   
 
             });
           }
        });
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // =====================================
     // DELIVERY ROUTES ==================
