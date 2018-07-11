@@ -24,6 +24,60 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
+    app.get('/forget', isLoggedOut, function(req, res) {
+        res.render('forget.ejs', { message: req.flash('forgetMessage') }); 
+    });
+
+    app.post('/forget', isLoggedOut, function(req, res) {
+      User.findOne({ 'local.email' :  req.body.email }, function(err, user) {
+            if (err)
+                throw err;
+            if (!user) {
+              req.flash('forgetMessage', 'Incorrect Username');
+              res.redirect('/forget');
+            } else {
+              var options = {
+                  min:  100000,
+                  max:  999999,
+                  integer: true
+                }
+              user.forget.otp = rn(options);
+              res.redirect('/forget/' + user.local.email);
+            }
+        })
+    });
+    
+    app.get('/forget/:email', isLoggedOut, function(req, res) {
+      User.findOne({ 'local.email' :  req.params.email }, function(err, user) {
+        res.render('newpassword.ejs', { user : user, message: req.flash('forgetMessage') }); 
+      });
+    });
+
+    app.post('/forget/:email', isLoggedOut, function(req, res) {
+      User.findOne({ 'local.email' :  req.params.email }, function(err, user) {
+            if (err)
+                throw err;
+            if (!user) {
+
+              req.flash('forgetMessage', 'Incorrect Username');
+              res.redirect('/forget');
+
+            } else if (user.forget.otp != req.body.otp) {
+
+              user.local.password = user.generateHash(req.body.password);
+              user.save();
+              req.flash('loginMessage', 'Password Changed');
+              res.redirect('/login');
+
+            } else {
+
+              req.flash('forgetMessage', 'Incorrect OTP');
+              res.redirect('/forget' + req.params.email);
+
+            }
+        })
+    });
+
     app.get('/signup', isLoggedOut, function(req, res) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
