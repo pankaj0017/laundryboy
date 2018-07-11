@@ -42,6 +42,7 @@ module.exports = function(app, passport) {
                   integer: true
                 }
               user.forget.otp = rn(options);
+              user.save();
               res.redirect('/forget/' + user.local.email);
             }
         })
@@ -62,7 +63,7 @@ module.exports = function(app, passport) {
               req.flash('forgetMessage', 'Incorrect Username');
               res.redirect('/forget');
 
-            } else if (user.forget.otp != req.body.otp) {
+            } else if (user.forget.otp == req.body.otp) {
 
               user.local.password = user.generateHash(req.body.password);
               user.save();
@@ -72,7 +73,7 @@ module.exports = function(app, passport) {
             } else {
 
               req.flash('forgetMessage', 'Incorrect OTP');
-              res.redirect('/forget' + req.params.email);
+              res.redirect('/forget/' + req.params.email);
 
             }
         })
