@@ -16,6 +16,8 @@ var CustomerSchema = new mongoose.Schema({
     services     : {type: Number, default:  0 },
     longClothes  : {type: Number, default:  0 },
     shortClothes : {type: Number, default:  0 },
+    longGiven    : {type: Number, default:  0 },
+    shortGiven   : {type: Number, default:  0 },
     numbers:  [
         {
            type: mongoose.Schema.Types.ObjectId,

@@ -615,7 +615,6 @@ module.exports = function(app, passport) {
                             newOrder.vendor = foundVendor._id;
                             newOrder.status = "booked";
                             newOrder.save();
-                            customer.history.push(newOrder);
                             foundDeliveryBoy.currentOrders.push(newOrder);
                             foundVendor.currentOrders.push(newOrder);
                             customer.history.push(newOrder);
@@ -691,6 +690,23 @@ module.exports = function(app, passport) {
           } else {
 
             getOrder.status = "washed";
+            getOrder.save(function(err) { 
+                if (err)
+                    throw err;
+
+            });
+            res.redirect('/vendor/' + req.params.id);
+          }
+       });
+    });
+
+    app.get('/vendor/:id/ironed/:oid', function(req, res){
+       Order.findById(req.params.oid, function(err, getOrder){
+          if(err) {
+              throw err;
+          } else {
+
+            getOrder.status = "ironed";
             getOrder.save(function(err) { 
                 if (err)
                     throw err;
@@ -781,49 +797,63 @@ module.exports = function(app, passport) {
 
                 if (req.body.customerKey == getOrder.customer.pickUpKey) {
 
-                    Customer.findById(getOrder.customer._id, function(err, foundCustomer) {
-
-                        if(getOrder.customer.tagNumber == '') {
-
-                            Customer.count(function(error, customerCount) {
-                                foundCustomer.tagNumber = 'lbc' + (customerCount + 1);
-                                foundCustomer.bagNumber = req.body.bagNumber;
-                                foundCustomer.save(function(err) { 
-                                    if (err)
-                                        throw err;
-                                });
-                            });
-
-                        } else {
-                            foundCustomer.bagNumber = req.body.bagNumber;
-                            foundCustomer.save(function(err) { 
-                                if (err)
-                                    throw err;
-                            });
-                        }
-
-                    });
-
                     Clothe.find({}, function(err, clothes){ 
                        if(err){
                            throw err;
                        } else {
                             var summary = "";
-                            var calculateCost = 0;
+                            var calculateCost = 0, longgiven = 0, shortgiven = 0;
                             if (req.body.onlyIron) {
+
                                 clothes.forEach(function(clothe){ 
                                     if(req.body[clothe.name] != 0) { 
                                         summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
                                         calculateCost = calculateCost + (clothe.ironPrice)*(req.body[clothe.name]);
                                 }});
                                 getOrder.onlyIron = true;
+
                             } else {
+
                                 clothes.forEach(function(clothe){ 
                                     if(req.body[clothe.name] != 0) { 
                                         summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
                                         calculateCost = calculateCost + (clothe.price)*(req.body[clothe.name]);
+                                        if(req.body[clothe.name] <= 4) {
+                                          shortgiven = shortgiven + 1;
+                                        } else {
+                                          longgiven = longgiven + 1;
+                                        }
                                 }});
+
                             }
+
+                            Customer.findById(getOrder.customer._id, function(err, foundCustomer) {
+
+                                if(getOrder.customer.tagNumber == '') {
+
+                                    Customer.count(function(error, customerCount) {
+                                        foundCustomer.tagNumber = 'lbc' + (customerCount + 1);
+                                        foundCustomer.bagNumber = req.body.bagNumber;
+                                        foundCustomer.longGiven = longgiven;
+                                        foundCustomer.shortGiven = shortgiven;
+                                        foundCustomer.save(function(err) { 
+                                            if (err)
+                                                throw err;
+                                        });
+                                    });
+
+                                } else {
+                                    foundCustomer.bagNumber = req.body.bagNumber;
+                                    foundCustomer.longGiven = longgiven;
+                                    foundCustomer.shortGiven = shortgiven;
+                                    foundCustomer.save(function(err) { 
+                                        if (err)
+                                            throw err;
+                                    });
+                                }
+
+                            });
+
                             getOrder.description = summary;
                             getOrder.status = "picked";
                             getOrder.cost = calculateCost;
@@ -943,10 +973,13 @@ module.exports = function(app, passport) {
                               newRecharge.deliveryBoy = deliveryboy._id;
                               newRecharge.save();
 
+                              deliveryboy.currentRecharges.push(newRecharge);
+                              deliveryboy.save();
+
                               customer.daysLeft = customer.daysLeft + plan.validity;
                               customer.longClothes = customer.longClothes + plan.longClothes;
                               customer.shortClothes = customer.shortClothes + plan.shortClothes;
-                              customer.services = customer.services + plan.services;
+                              customer.currentRecharges.push(newRecharge);
                               customer.save();
 
                               req.flash('rechargestatus', 'Recharge Done');

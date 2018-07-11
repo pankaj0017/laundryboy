@@ -13,8 +13,9 @@
 <div class="container">
     <center>
         <ul class="nav nav-tabs">
-            <li class="active col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#received">Receive</a></li>
-            <li class="col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#washed">Under Wash</a></li>
+            <li class="active col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#received">Receive</a></li>
+            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#washed">Wash</a></li>
+            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#ironed">Iron</a></li>
         </ul>
     </center>
 
@@ -26,7 +27,7 @@
 
                 <% vendor.currentOrders.forEach(function(order){ if(order.status === 'picked') { %>
           
-                    <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
                         <p><span>Tag : <%= order.customer.tagNumber %></span>
                         <span>Bag : <%= order.customer.bagNumber %></span>
@@ -49,12 +50,34 @@
 
                 <% vendor.currentOrders.forEach(function(order){ if(order.status === 'received') { %>
           
-                    <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
                         <span>Tag : <%= order.customer.tagNumber %></span>
                         <span>Only Iron : <%= order.onlyIron %></span>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/washed/<%=order._id%>" class="btn btn-default btn-sm">Washed</a>
+                        </span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+        
+        </div>
+
+        <div id="ironed" class="tab-pane fade">
+
+            <div class="row">
+                <h2><br></h2>
+
+                <% vendor.currentOrders.forEach(function(order){ if(order.status === 'washed') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
+                        <p>OrderID : <%= order._id %></p>
+                        <span>Tag : <%= order.customer.tagNumber %></span>
+                        <span>Only Iron : <%= order.onlyIron %></span>
+                        <span>
+                            <a href="/vendor/<%=vendor._id%>/ironed/<%=order._id%>" class="btn btn-default btn-sm">Ironed</a>
                         </span>
                     </div> 
 
