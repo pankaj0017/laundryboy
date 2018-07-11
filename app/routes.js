@@ -1043,13 +1043,17 @@ module.exports = function(app, passport) {
 
               var costWithPlan = 0;
               if ((order.customer.longClothes < order.customer.longGiven) && (order.customer.shortClothes < order.customer.shortGiven)) {
-                asd
+                costWithPlan = ((order.customer.longGiven - order.customer.longClothes) + (order.customer.shortGiven - order.customer.shortClothes)) * 10 ;
+              
               } else if (order.customer.longClothes < order.customer.longGiven) {
-                asd
+                if ((order.customer.longGiven - order.customer.longClothes)*2 > (order.customer.shortClothes - order.customer.shortGiven)) {
+                  costWithPlan = ((order.customer.longGiven - order.customer.longClothes)*2 - (order.customer.shortClothes - order.customer.shortGiven)) * 5;
+                }
+              
               } else if (order.customer.shortClothes < order.customer.shortGiven) {
-                asd
-              } else {
-                asd
+                if ((order.customer.shortGiven - order.customer.shortClothes)/2 > (order.customer.longClothes - order.customer.longGiven)) {
+                  costWithPlan = ((order.customer.shortGiven - order.customer.shortClothes)/2 - (order.customer.longClothes - order.customer.longGiven)) * 10;
+                }
               }
 
               res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan});
