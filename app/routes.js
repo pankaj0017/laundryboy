@@ -1154,40 +1154,8 @@ module.exports = function(app, passport) {
        });
     });
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // =====================================
-    // PAYMENT ROUTES =====================
+    // PAYMENT ROUTES ======================
     // =====================================
 
 
@@ -1359,19 +1327,38 @@ module.exports = function(app, passport) {
 
 
     // =====================================
-    // DELIVERY ROUTES ==================
+    // DELIVERY ROUTES =====================
     // =====================================
 
     app.get('/deliveryboy/:id/deliver/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
-          } else {
+          } else if (order && order.deliveryBoy._id == req.params.id) {
               if (order.isPaid) {
+
+                Customer.findById(order.customer._id, function(err, customer){
+
+                  var options = {
+                      min:  1000,
+                      max:  9999,
+                      integer: true
+                    }
+                    customer.pickUpKey = rn(options);
+
+                    customer.save(function(err) {   
+                        if (err)
+                            throw err;
+                    });
+                })
+
                 res.render('deliveryboy/deliverpage.ejs',{order : order});
+
               } else {
                 res.redirect('/deliveryboy/' + req.params.id + '/payment/' + req.params.oid);
               }
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
