@@ -1154,16 +1154,48 @@ module.exports = function(app, passport) {
        });
     });
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // =====================================
     // PAYMENT ROUTES =====================
     // =====================================
 
 
     app.get('/deliveryboy/:id/payment/:oid', function(req, res){
-       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
-          if(err){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order) {
+          if(err) {
               throw err;
-          } else {
+          } else if (order && order.deliveryBoy._id == req.params.id) {
 
               var costWithPlan = 0;
               if ((order.customer.longClothes < order.customer.longGiven) && (order.customer.shortClothes < order.customer.shortGiven)) {
@@ -1195,6 +1227,8 @@ module.exports = function(app, passport) {
                 });
                 res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan, message: req.flash('paymentstatus') });
               });
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -1203,86 +1237,94 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid, function(err, order){
           if(err){
               throw err;
-          } else {
+          } else if (order) {
 
             Customer.findById(order.customer, function(err, customer) {
 
-              DeliveryBoy.findById(order.deliveryBoy, function(err, deliveryboy) {
+              DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
 
-                if(req.body.dPass == deliveryBoy.password) {
-                  if (req.body.payWithPlan) {
+                if (deliveryBoy) {
 
-                    var costWithPlan = 0;
-                    if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
-                      costWithPlan = ((customer.longGiven - customer.longClothes) + (customer.shortGiven - customer.shortClothes)) * 10 ;
-                      customer.longClothes = 0;
-                      customer.shortClothes = 0;
-                      customer.daysLeft = 0;
-                    
-                    } else if (customer.longClothes < customer.longGiven) {
-                      if ((customer.longGiven - customer.longClothes)*2 >= (customer.shortClothes - customer.shortGiven)) {
-                        costWithPlan = ((customer.longGiven - customer.longClothes)*2 - (customer.shortClothes - customer.shortGiven)) * 5;
+                  if(req.body.dPass == deliveryBoy.password) {
+                    if (req.body.payWithPlan) {
+
+                      var costWithPlan = 0;
+                      if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
+                        costWithPlan = ((customer.longGiven - customer.longClothes) + (customer.shortGiven - customer.shortClothes)) * 10 ;
                         customer.longClothes = 0;
                         customer.shortClothes = 0;
                         customer.daysLeft = 0;
-                      } else {
-                        customer.longClothes = 0;
-                        customer.shortClothes = ((customer.shortClothes - customer.shortGiven) - (customer.longGiven - customer.longClothes)*2);
+                      
+                      } else if (customer.longClothes < customer.longGiven) {
+                        if ((customer.longGiven - customer.longClothes)*2 >= (customer.shortClothes - customer.shortGiven)) {
+                          costWithPlan = ((customer.longGiven - customer.longClothes)*2 - (customer.shortClothes - customer.shortGiven)) * 5;
+                          customer.longClothes = 0;
+                          customer.shortClothes = 0;
+                          customer.daysLeft = 0;
+                        } else {
+                          customer.longClothes = 0;
+                          customer.shortClothes = ((customer.shortClothes - customer.shortGiven) - (customer.longGiven - customer.longClothes)*2);
+                        }
+                      
+                      } else if (customer.shortClothes < customer.shortGiven) {
+                        if ((customer.shortGiven - customer.shortClothes)/2 >= (customer.longClothes - customer.longGiven)) {
+                          costWithPlan = ((customer.shortGiven - customer.shortClothes)/2 - (customer.longClothes - customer.longGiven)) * 10;
+                          customer.shortClothes = 0;
+                          customer.longClothes = 0;
+                          customer.daysLeft = 0;
+                        } else {
+                          customer.shortClothes = 0;
+                          customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
+                        }
                       }
-                    
-                    } else if (customer.shortClothes < customer.shortGiven) {
-                      if ((customer.shortGiven - customer.shortClothes)/2 >= (customer.longClothes - customer.longGiven)) {
-                        costWithPlan = ((customer.shortGiven - customer.shortClothes)/2 - (customer.longClothes - customer.longGiven)) * 10;
-                        customer.shortClothes = 0;
-                        customer.longClothes = 0;
-                        customer.daysLeft = 0;
-                      } else {
-                        customer.shortClothes = 0;
-                        customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
-                      }
-                    }
 
-                    customer.save();
+                      customer.save();
 
-                    order.cost = costWithPlan;
-                    order.isPaid = true;
-                    deliveryboy.amount = deliveryboy.amount + costWithPlan;
-                    deliveryboy.save();
-                    order.save();
-                    res.redirect('/deliveryboy/' + deliveryboy._id + '/deliver/' + order._id);
-
-                  } else {
-
-                    var costWithoutPlan = order.cost;
-                    var noOfClothes = (customer.longGiven + customer.shortGiven);
-                    var flag = true;
-
-                    SingleService.find({}).sort('totalClothes').exec(function(err, services) {
-
-                      services.forEach(function(service){ 
-
-                          if(noOfClothes <= service.totalClothes && flag) {
-                            costWithoutPlan = costWithoutPlan + service.amount;
-                            flag = false;
-                          }
-                      });
-                      order.cost = costWithoutPlan;
+                      order.cost = costWithPlan;
                       order.isPaid = true;
-                      deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
+                      deliveryboy.amount = deliveryboy.amount + costWithPlan;
                       deliveryboy.save();
                       order.save();
                       res.redirect('/deliveryboy/' + deliveryboy._id + '/deliver/' + order._id);
 
-                    });
+                    } else {
 
-                  }
+                      var costWithoutPlan = order.cost;
+                      var noOfClothes = (customer.longGiven + customer.shortGiven);
+                      var flag = true;
+
+                      SingleService.find({}).sort('totalClothes').exec(function(err, services) {
+
+                        services.forEach(function(service){ 
+
+                            if(noOfClothes <= service.totalClothes && flag) {
+                              costWithoutPlan = costWithoutPlan + service.amount;
+                              flag = false;
+                            }
+                        });
+                        order.cost = costWithoutPlan;
+                        order.isPaid = true;
+                        deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
+                        deliveryboy.save();
+                        order.save();
+                        res.redirect('/deliveryboy/' + deliveryboy._id + '/deliver/' + order._id);
+
+                      });
+
+                    }
+                  } else {
+                    req.flash('paymentstatus', 'Wrong Password');
+                    res.redirect('/deliveryboy/' + deliveryboy._id + '/payment/' + order._id);
+                  } 
+
                 } else {
-                  req.flash('paymentstatus', 'Wrong Password');
-                  res.redirect('/deliveryboy/' + deliveryboy._id + '/payment/' + order._id);
-                } 
+                  res.redirect('/deliveryboylogin');
+                }
 
               });  
             });
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
