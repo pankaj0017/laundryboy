@@ -783,8 +783,11 @@ module.exports = function(app, passport) {
        Vendor.findById(req.params.id).deepPopulate("currentOrders.customer").exec(function(err, vendor) {
           if(err){
               throw err;
-          } else {
+          } else if (vendor) {
               res.render('vendor/vendorpage.ejs',{vendor : vendor});
+          } else {
+              req.flash('vendormessage', 'Incorrect Username');
+              res.redirect('/vendorlogin');
           }
        });
     });
@@ -793,7 +796,7 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
               throw err;
-          } else {
+          } else if (getOrder && getOrder.vendor == req.params.id) {
 
             getOrder.status = "received";
             getOrder.save(function(err) { 
@@ -801,6 +804,8 @@ module.exports = function(app, passport) {
                     throw err;
             });
             res.redirect('/vendor/' + req.params.id);
+          } else {
+            res.redirect('/vendorlogin');
           }
        });
     });
@@ -809,7 +814,7 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
               throw err;
-          } else {
+          } else if (getOrder && getOrder.vendor == req.params.id) {
 
             getOrder.status = "washed";
             getOrder.save(function(err) { 
@@ -818,6 +823,8 @@ module.exports = function(app, passport) {
 
             });
             res.redirect('/vendor/' + req.params.id);
+          } else {
+            res.redirect('/vendorlogin');
           }
        });
     });
@@ -826,7 +833,7 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
               throw err;
-          } else {
+          } else if (getOrder && getOrder.vendor == req.params.id) {
 
             getOrder.status = "ironed";
             getOrder.save(function(err) { 
@@ -835,6 +842,8 @@ module.exports = function(app, passport) {
 
             });
             res.redirect('/vendor/' + req.params.id);
+          } else {
+            res.redirect('/vendorlogin');
           }
        });
     });
@@ -871,8 +880,10 @@ module.exports = function(app, passport) {
        DeliveryBoy.findById(req.params.id).deepPopulate("currentOrders.customer").exec(function(err, deliveryboy) {
           if(err){
               throw err;
-          } else {
+          } else if (deliveryboy) {
               res.render('deliveryboy/deliveryboypage.ejs',{deliveryboy : deliveryboy});
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -881,7 +892,8 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
-          } else {
+          } else if (order && order.deliveryBoy._id == req.params.id) {
+
             Clothe.find({}, function(err, allClothes){
                if(err){
                    console.log(err);
@@ -889,6 +901,9 @@ module.exports = function(app, passport) {
                     res.render('deliveryboy/pickuppage.ejs',{order : order , clothes : allClothes, message: req.flash('info') });
                }
             });
+
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -897,7 +912,8 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
               throw err;
-          } else {
+          } else if (order && order.deliveryBoy._id == req.params.id) {
+
             Clothe.find({}, function(err, allClothes){
                if(err){
                    console.log(err);
@@ -905,6 +921,8 @@ module.exports = function(app, passport) {
                     res.render('deliveryboy/pickuppageonlyiron.ejs',{order : order , clothes : allClothes, message: req.flash('info') });
                }
             });
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -914,7 +932,8 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, getOrder){
           if(err){
               throw err;
-          } else {
+          } else if (getOrder && getOrder.deliveryBoy._id == req.params.id) {
+
             if (req.body.password == getOrder.deliveryBoy.password) {
 
                 if (req.body.customerKey == getOrder.customer.pickUpKey) {
@@ -1004,6 +1023,8 @@ module.exports = function(app, passport) {
                     res.redirect('/deliveryboy/' + req.params.id + '/pickup/' + req.params.oid);
                   }
             }
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -1012,7 +1033,7 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
               throw err;
-          } else {
+          } else if (getOrder && getOrder.deliveryBoy._id == req.params.id) {
 
             getOrder.status = "out";
             getOrder.save(function(err) { 
@@ -1020,6 +1041,8 @@ module.exports = function(app, passport) {
                     throw err;
             });
             res.redirect('/deliveryboy/' + req.params.id);
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -1032,8 +1055,10 @@ module.exports = function(app, passport) {
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
           if(err){
               throw err;
-          } else {
+          } else if (deliveryboy) {
               res.render('deliveryboy/ctagforrecharge.ejs',{deliveryboy : deliveryboy, message: req.flash('tagforrecharge') });
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
@@ -1057,11 +1082,11 @@ module.exports = function(app, passport) {
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
           if(err){
               throw err;
-          } else {
+          } else if (deliveryboy) {
               Customer.findById(req.params.cid, function(err, customer) {
                 if(err){
                     throw err;
-                } else {
+                } else if (customer) {
                     Plan.find({}, function(err, plans){
                        if(err){
                            throw err;
@@ -1069,8 +1094,12 @@ module.exports = function(app, passport) {
                             res.render('deliveryboy/recharge.ejs',{ plans : plans, deliveryboy : deliveryboy , customer : customer, message: req.flash('rechargestatus') });
                        }
                     });
+                } else {
+                  res.redirect('/deliveryboy/' + req.params.id + '/recharge');
                 }
               })
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
