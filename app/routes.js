@@ -329,7 +329,7 @@ module.exports = function(app, passport) {
     app.get('/admin/pincodes', isAdmin, function(req, res) {
         PinCode.find({}).populate("vendor deliveryBoy").exec(function(err, allPincodes) {
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.render("admin/pincode.ejs",{pincodes : allPincodes});
            }
@@ -383,29 +383,31 @@ module.exports = function(app, passport) {
     app.get('/admin/vendors', isAdmin, function(req, res) {
         Vendor.find({}, function(err, allVendors){
            if(err){
-               console.log(err);
+               throw err;
            } else {
-                Vendor.count(function(error, vendorCount) {
-                    res.render("admin/vendor.ejs",{vendors : allVendors, vendorCount : vendorCount + 1});
-                });
+              Vendor.count(function(error, vendorCount) {
+                  res.render("admin/vendor.ejs",{vendors : allVendors, vendorCount : vendorCount + 1});
+              });
            }
         });
     });
     app.post('/admin/vendors', isAdmin, function(req, res) {
         Vendor.create(req.body.newVendor, function(err, newVendor){
-           if(err){
-               console.log(err);
-           } else {   
+           if(err) {
+               throw err;
+           } else {
                res.redirect('/admin/vendors');
            }
         });
     });
     app.get('/admin/vendors/:id', isAdmin, function(req, res){
        Vendor.findById(req.params.id, function(err, vendor){
-          if(err){
+          if(err) {
               throw err;
-          } else {
+          } else if (vendor) {
               res.render('admin/vendordetail.ejs',{vendor : vendor});
+          } else {
+            res.redirect('/admin/vendors');
           }
        });
     });
@@ -413,7 +415,7 @@ module.exports = function(app, passport) {
        Vendor.findById(req.params.id, function(err, foundVendor){
           if(err){
               throw err;
-          } else {
+          } else if (foundVendor) {
               foundVendor.name = req.body.vendor.name;
               foundVendor.username = req.body.vendor.username;
               foundVendor.password = req.body.vendor.password;
@@ -422,6 +424,8 @@ module.exports = function(app, passport) {
               foundVendor.mobile = req.body.vendor.mobile;
               foundVendor.save();
               res.redirect('/admin/vendors/' + req.params.id);
+          } else {
+              res.redirect('/admin/vendors');
           }
        });
     });
@@ -437,18 +441,18 @@ module.exports = function(app, passport) {
     app.get('/admin/deliveryboys', isAdmin, function(req, res) {
         DeliveryBoy.find({}, function(err, allDeliveryBoys){
            if(err){
-               console.log(err);
+               throw err;
            } else {
-                DeliveryBoy.count(function(error, deliveryBoyCount) {
-                    res.render("admin/deliveryboy.ejs",{deliveryboys : allDeliveryBoys , deliveryBoyCount : deliveryBoyCount + 1});
-                });
+              DeliveryBoy.count(function(error, deliveryBoyCount) {
+                res.render("admin/deliveryboy.ejs",{deliveryboys : allDeliveryBoys , deliveryBoyCount : deliveryBoyCount + 1});
+              });
            }
         });
     });
     app.post('/admin/deliveryboys', isAdmin, function(req, res) {
         DeliveryBoy.create(req.body.newDeliveryBoy, function(err, newDeliveryBoy){
            if(err){
-               console.log(err);
+               throw err;
            } else {   
                res.redirect('/admin/deliveryboys');
            }
@@ -458,8 +462,10 @@ module.exports = function(app, passport) {
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
           if(err){
               throw err;
-          } else {
+          } else if (deliveryboy) {
               res.render('admin/deliveryboydetail.ejs',{deliveryboy : deliveryboy});
+          } else {
+              res.redirect('/admin/deliveryboys');
           }
        });
     });
@@ -467,7 +473,7 @@ module.exports = function(app, passport) {
        DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
           if(err){
               throw err;
-          } else {
+          } else if (foundDeliveryBoy) {
               foundDeliveryBoy.name = req.body.deliveryboy.name;
               foundDeliveryBoy.username = req.body.deliveryboy.username;
               foundDeliveryBoy.password = req.body.deliveryboy.password;
@@ -476,6 +482,8 @@ module.exports = function(app, passport) {
               foundDeliveryBoy.mobile = req.body.deliveryboy.mobile;
               foundDeliveryBoy.save();
               res.redirect('/admin/deliveryboys/' + req.params.id);
+          } else {
+              res.redirect('/admin/deliveryboys');
           }
        });
     });
@@ -491,7 +499,7 @@ module.exports = function(app, passport) {
     app.get('/admin/clothes', isAdmin, function(req, res) {
         Clothe.find({}, function(err, allClothes){
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.render("admin/clothes.ejs",{clothes : allClothes});
            }
@@ -500,7 +508,7 @@ module.exports = function(app, passport) {
     app.post('/admin/clothes', isAdmin, function(req, res) {
         Clothe.create(req.body.newClothe, function(err, newClothe){
            if(err){
-               console.log(err);
+               throw err;
            } else {   
                res.redirect('/admin/clothes');
            }
@@ -509,7 +517,7 @@ module.exports = function(app, passport) {
     app.post('/admin/clothes/:id', isAdmin, function(req, res) {
         Clothe.findByIdAndRemove(req.params.id, function(err){
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.redirect("/admin/clothes");
            }
@@ -524,7 +532,7 @@ module.exports = function(app, passport) {
     app.get('/admin/plans', isAdmin, function(req, res) {
         Plan.find({}, function(err, allPlans){
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.render("admin/plan.ejs",{plans : allPlans});
            }
@@ -533,7 +541,7 @@ module.exports = function(app, passport) {
     app.post('/admin/plans', isAdmin, function(req, res) {
         Plan.create(req.body.newPlan, function(err, newPlan){
            if(err){
-               console.log(err);
+               throw err;
            } else {   
                res.redirect('/admin/plans');
            }
@@ -542,7 +550,7 @@ module.exports = function(app, passport) {
     app.post('/admin/plans/:id', isAdmin, function(req, res) {
         Plan.findByIdAndRemove(req.params.id, function(err){
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.redirect("/admin/plans");
            }
@@ -558,7 +566,7 @@ module.exports = function(app, passport) {
     app.get('/admin/singleservices', isAdmin, function(req, res) {
         SingleService.find({}, function(err, allSingleServices){
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.render("admin/singleservice.ejs",{singleServices : allSingleServices});
            }
@@ -567,7 +575,7 @@ module.exports = function(app, passport) {
     app.post('/admin/singleservices', isAdmin, function(req, res) {
         SingleService.create(req.body.newSingleService, function(err, newSingleService){
            if(err){
-               console.log(err);
+               throw err;
            } else {   
                res.redirect('/admin/singleservices');
            }
@@ -576,7 +584,7 @@ module.exports = function(app, passport) {
     app.post('/admin/singleservices/:id', isAdmin, function(req, res) {
         SingleService.findByIdAndRemove(req.params.id, function(err){
            if(err){
-               console.log(err);
+               throw err;
            } else {
               res.redirect("/admin/singleservices");
            }
