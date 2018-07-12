@@ -172,7 +172,7 @@ module.exports = function(app, passport) {
                        newMobile.save();
                        customer.numbers.push(newMobile);
                        customer.save();
-                       res.redirect('/update/mobile');
+                       res.redirect('/update');
                    }
                 });
             });
@@ -600,7 +600,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
                     throw err;
-                res.render('order/pincode.ejs', { customer : customer }); 
+                res.render('order/pincode.ejs', { customer : customer, message: req.flash('pincodeAvailability') }); 
             })
     });
     app.post('/pincode', isLoggedIn, function(req, res) {
@@ -612,13 +612,14 @@ module.exports = function(app, passport) {
                         if (err)
                             throw err;
                         customer.pinCode = req.body.pincode;
-                        customer.save(function(err) {   
+                        customer.save(function(err) { 
                             if (err)
                                 throw err;
                         });
                         res.redirect('/contact');
                     })
                 } else {
+                    req.flash('pincodeAvailability', 'Our Services Are Not There Yet!');
                     res.redirect("/pincode");
                 }
             })
