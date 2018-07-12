@@ -10,38 +10,33 @@
     <body>
 
         <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-            user id =  <p><%= customer.user %></p>
-            customer id = <p><%= customer._id %></p>
-            refered by <p><%= customer.referedBy %></p>
+            <p>user id : <%= customer.user %></p>
+            <p>customer id : <%= customer._id %></p>
+            <p>refered by : <%= customer.referedBy %></p>
+            <p>Name : <%= customer.name %></p>
+            <p>Customer Tag : <%= customer.tagNumber %></p>
+            <p>Address : <%= customer.address %></p>
+            <p>Pincode : <%= customer.pinCode %></p>
+            <p>Contact Numbers : 
+                <% customer.numbers.forEach(function(cell){ %>
+                         <%= cell.number %>. 
+                <% }) %>
+            </p>
+            <div class="page-header text-center">
+                <a href="/" class="btn btn-default btn-sm">Home</a>
+                <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+                <a href="/admin" class="btn btn-default btn-sm">Back</a>
+            </div>
 
-                <h1><span class="fa fa-sign-in"></span>Enter Details</h1>
+                <h1><span class="fa fa-sign-in"></span>Update Details</h1>
 
 
                 <!-- UPDATE FORM -->
                 <form action="/admin/customerdetails/<%=customer._id%>" method="post">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" name="customer[name]" value="<%= customer.name %>">
-                    </div>
-                    <div class="form-group">
-                        <label>Tag number</label>
-                        <input type="text" class="form-control" name="customer[tagNumber]" value="<%= customer.tagNumber %>">
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <textarea class="form-control" name="customer[address]"><%= customer.address %></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Pin Code</label>
-                        <input type="number" class="form-control" name="customer[pinCode]" value="<%= customer.pinCode %>">
-                    </div>
+
                     <div class="form-group">
                         <label>Days Left</label>
                         <input type="number" class="form-control" name="customer[daysLeft]" value="<%= customer.daysLeft %>">
-                    </div>
-                    <div class="form-group">
-                        <label>Services Left</label>
-                        <input type="number" class="form-control" name="customer[services]" value="<%= customer.services %>">
                     </div>
                     <div class="form-group">
                         <label>Long Clothes</label>
@@ -50,19 +45,6 @@
                     <div class="form-group">
                         <label>Short Clothes</label>
                         <input type="number" class="form-control" name="customer[shortClothes]" value="<%= customer.shortClothes %>">
-                    </div>
-                    <div class="form-group">
-                      <label for="sel1">Select a Mobile number</label>
-                      <select class="form-control" name="customer[mainNumber]">
-
-                        <option value="" selected disabled hidden><%= customer.mainNumber %></option>
-                        <% customer.numbers.forEach(function(cell){ %>
-                            <option>
-                                <%= cell.number %>
-                            </option>
-                        <% }) %>
-                        
-                      </select>
                     </div>
 
                     <button type="submit" class="btn btn-success btn-lg">Enter</button>

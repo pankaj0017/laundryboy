@@ -66,6 +66,12 @@ module.exports = function(app, passport) {
             } else if (user.forget.otp == req.body.otp) {
 
               user.local.password = user.generateHash(req.body.password);
+              var options = {
+                  min:  100000,
+                  max:  999999,
+                  integer: true
+                }
+              user.forget.otp = rn(options);
               user.save();
               req.flash('loginMessage', 'Password Changed');
               res.redirect('/login');
@@ -92,6 +98,7 @@ module.exports = function(app, passport) {
     app.get('/signup/:id', isLoggedOut, function(req, res) {
         Customer.findById(req.params.id, function(err, foundCustomer){
             if(!foundCustomer) {
+                req.flash('signupMessage', 'Wrong Refer ID');
                 res.redirect('/signup');
             } else {
                 res.render("signuprefer", {customer: foundCustomer, message: req.flash('signupMessage')});
@@ -112,39 +119,39 @@ module.exports = function(app, passport) {
 
     app.get('/profile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                // if there are any errors, return the error
-                if (err)
-                    throw err;
+            // if there are any errors, return the error
+            if (err)
+                throw err;
 
-                res.render('customer/profile.ejs',{customer : customer});
-            })
+            res.render('customer/profile.ejs',{customer : customer});
+        })
     });
 
     app.get('/update', isLoggedIn, function(req, res) {
-        Customer.findOne({ 'user' :  req.user._id }).populate("history numbers").exec(function(err, customer) {
-                // if there are any errors, return the error
-                if (err)
-                    throw err;
+        Customer.findOne({ 'user' :  req.user._id }).populate("history numbers currentRecharges").exec(function(err, customer) {
+            // if there are any errors, return the error
+            if (err)
+                throw err;
 
-                res.render('customer/update.ejs',{customer : customer});
-            })
+            res.render('customer/update.ejs',{customer : customer});
+        })
     });
     app.post('/update', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                // if there are any errors, return the error
+            // if there are any errors, return the error
+            if (err)
+                throw err;
+
+            customer.name = req.body.customer.name;
+            customer.pinCode = req.body.customer.pinCode;
+            customer.mainNumber = req.body.customer.mainNumber;
+            customer.address = req.body.customer.address;
+            customer.save(function(err) {   
                 if (err)
                     throw err;
-
-                customer.name = req.body.customer.name;
-                customer.pinCode = req.body.customer.pinCode;
-                customer.mainNumber = req.body.customer.mainNumber;
-                customer.address = req.body.customer.address;
-                customer.save(function(err) {   
-                    if (err)
-                        throw err;
-                    res.redirect('/profile');
-                });
-            })
+                res.redirect('/profile');
+            });
+        })
     });
     app.get('/update/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
@@ -191,9 +198,6 @@ module.exports = function(app, passport) {
     app.get('/admin/customer', isAdmin, function(req, res) {
             res.render('admin/customersection.ejs');
     });
-    app.post('/admin/customer', isAdmin, function(req, res) {                    //send email to all customer
-        res.redirect('admin/customer');
-    });
 
     // =====================================
     // ADMIN CUSTOMER ROUTES =====================
@@ -203,11 +207,13 @@ module.exports = function(app, passport) {
 
 
     app.get('/admin/customerdetails/:id', isAdmin, function(req, res){
-       Customer.findById(req.params.id, function(err, customer){
+       Customer.findById(req.params.id).populate("numbers").exec(function(err, customer) {
           if(err){
               throw err;
-          } else {
+          } else if (customer) {
               res.render('admin/customerdetail.ejs',{customer : customer});
+          } else {
+            res.redirect('/admin/customer');
           }
        });
     });
@@ -215,19 +221,15 @@ module.exports = function(app, passport) {
        Customer.findById(req.params.id, function(err, foundCustomer){
           if(err){
               throw err;
-          } else {
-              foundCustomer.name = req.body.customer.name;
-              foundCustomer.tagNumber = req.body.customer.tagNumber;
-              foundCustomer.mainNumber = req.body.customer.mainNumber;
-              foundCustomer.address = req.body.customer.address;
-              foundCustomer.pinCode = req.body.customer.pinCode;
+          } else if (customer) {
+
               foundCustomer.daysLeft = req.body.customer.daysLeft;
-              foundCustomer.services = req.body.customer.services;
               foundCustomer.longClothes = req.body.customer.longClothes;
               foundCustomer.shortClothes = req.body.customer.shortClothes;
               foundCustomer.save();
-              res.redirect('/admin/customerdetails/' + req.params.id
-                );
+              res.redirect('/admin/customerdetails/' + req.params.id);
+          } else {
+            res.redirect('/admin/customer');
           }
        });
     });
@@ -274,7 +276,7 @@ module.exports = function(app, passport) {
                                             })
 
                                         } else {  
-     
+                                              res.redirect('/admin/customer');
                                             }
                                     });
                                 }
@@ -288,14 +290,33 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'tagNumber' :  req.body.viaTag }, function(err, customer) {
             if (err)
                 throw err;
-            res.redirect('/admin/customerdetails/' + customer._id);
+            if (customer) {
+              res.redirect('/admin/customerdetails/' + customer._id);
+            } else {
+              res.redirect('/admin/customer');
+            }
+        })
+    });
+    app.post('/admin/customer/cid', isAdmin, function(req, res) {
+        Customer.findById(req.body.viaID, function(err, customer) {
+            if (err)
+                throw err;
+            if (customer) {
+              res.redirect('/admin/customerdetails/' + customer._id);
+            } else {
+              res.redirect('/admin/customer');
+            }
         })
     });
     app.post('/admin/customer/mobile', isAdmin, function(req, res) {
-        Customer.findOne({ 'mainNumber' :  req.body.viaMobile }, function(err, customer) {
+        Mobile.findOne({ 'number' :  req.body.viaMobile }, function(err, mobile) {
             if (err)
                 throw err;
-            res.redirect('/admin/customerdetails/' + customer._id);
+            if (mobile) {
+              res.redirect('/admin/customerdetails/' + mobile.owner);
+            } else {
+              res.redirect('/admin/customer');
+            }
         })
     });
 
@@ -316,18 +337,30 @@ module.exports = function(app, passport) {
     });
     app.post('/admin/pincodes', isAdmin, function(req, res) {
         Vendor.findOne({ 'username' :  req.body.vendorTag }, function(err, foundVendor) {
-            if (err)
-                throw err;
-            DeliveryBoy.findOne({ 'username' :  req.body.deliveryBoyTag }, function(err, foundDeliveryBoy) {
-                if (err)
-                    throw err;
-                newPinCode = new PinCode();
-                newPinCode.pinCode = req.body.pinCode;
-                newPinCode.vendor = foundVendor._id;
-                newPinCode.deliveryBoy = foundDeliveryBoy._id;
-                newPinCode.save();
-                res.redirect("/admin/pincodes");
-            })
+            if (err) {
+              throw err;
+            } else if (foundVendor) {
+
+              DeliveryBoy.findOne({ 'username' :  req.body.deliveryBoyTag }, function(err, foundDeliveryBoy) {
+                  if (err) {
+                      throw err;
+                  } else if (foundDeliveryBoy) {
+
+                    newPinCode = new PinCode();
+                    newPinCode.pinCode = req.body.pinCode;
+                    newPinCode.vendor = foundVendor._id;
+                    newPinCode.deliveryBoy = foundDeliveryBoy._id;
+                    newPinCode.save();
+                    res.redirect("/admin/pincodes");
+
+                  } else {
+                    res.redirect("/admin/pincodes");
+                  }
+              })
+
+            } else {
+              res.redirect("/admin/pincodes");
+            }
         })
     });
     app.post('/admin/pincodes/:id', isAdmin, function(req, res){
@@ -1097,81 +1130,88 @@ module.exports = function(app, passport) {
     });
 
     app.post('/deliveryboy/:id/payment/:oid', function(req, res){
-       Order.findById(req.params.oid).populate("deliveryBoy").exec(function(err, order){
+       Order.findById(req.params.oid, function(err, order){
           if(err){
               throw err;
           } else {
 
-            Customer.findById(order.customer, function(err, customer){
+            Customer.findById(order.customer, function(err, customer) {
 
-              if(req.body.dPass == order.deliveryBoy.password) {
-                if (req.body.payWithPlan) {
+              DeliveryBoy.findById(order.deliveryBoy, function(err, deliveryboy) {
 
-                  var costWithPlan = 0;
-                  if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
-                    costWithPlan = ((customer.longGiven - customer.longClothes) + (customer.shortGiven - customer.shortClothes)) * 10 ;
-                    customer.longClothes = 0;
-                    customer.shortClothes = 0;
-                    customer.daysLeft = 0;
-                  
-                  } else if (customer.longClothes < customer.longGiven) {
-                    if ((customer.longGiven - customer.longClothes)*2 >= (customer.shortClothes - customer.shortGiven)) {
-                      costWithPlan = ((customer.longGiven - customer.longClothes)*2 - (customer.shortClothes - customer.shortGiven)) * 5;
+                if(req.body.dPass == deliveryBoy.password) {
+                  if (req.body.payWithPlan) {
+
+                    var costWithPlan = 0;
+                    if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
+                      costWithPlan = ((customer.longGiven - customer.longClothes) + (customer.shortGiven - customer.shortClothes)) * 10 ;
                       customer.longClothes = 0;
                       customer.shortClothes = 0;
                       customer.daysLeft = 0;
-                    } else {
-                      customer.longClothes = 0;
-                      customer.shortClothes = ((customer.shortClothes - customer.shortGiven) - (customer.longGiven - customer.longClothes)*2);
+                    
+                    } else if (customer.longClothes < customer.longGiven) {
+                      if ((customer.longGiven - customer.longClothes)*2 >= (customer.shortClothes - customer.shortGiven)) {
+                        costWithPlan = ((customer.longGiven - customer.longClothes)*2 - (customer.shortClothes - customer.shortGiven)) * 5;
+                        customer.longClothes = 0;
+                        customer.shortClothes = 0;
+                        customer.daysLeft = 0;
+                      } else {
+                        customer.longClothes = 0;
+                        customer.shortClothes = ((customer.shortClothes - customer.shortGiven) - (customer.longGiven - customer.longClothes)*2);
+                      }
+                    
+                    } else if (customer.shortClothes < customer.shortGiven) {
+                      if ((customer.shortGiven - customer.shortClothes)/2 >= (customer.longClothes - customer.longGiven)) {
+                        costWithPlan = ((customer.shortGiven - customer.shortClothes)/2 - (customer.longClothes - customer.longGiven)) * 10;
+                        customer.shortClothes = 0;
+                        customer.longClothes = 0;
+                        customer.daysLeft = 0;
+                      } else {
+                        customer.shortClothes = 0;
+                        customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
+                      }
                     }
-                  
-                  } else if (customer.shortClothes < customer.shortGiven) {
-                    if ((customer.shortGiven - customer.shortClothes)/2 >= (customer.longClothes - customer.longGiven)) {
-                      costWithPlan = ((customer.shortGiven - customer.shortClothes)/2 - (customer.longClothes - customer.longGiven)) * 10;
-                      customer.shortClothes = 0;
-                      customer.longClothes = 0;
-                      customer.daysLeft = 0;
-                    } else {
-                      customer.shortClothes = 0;
-                      customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
-                    }
-                  }
 
-                  customer.save();
+                    customer.save();
 
-                  order.cost = costWithPlan;
-                  order.isPaid = true;
-                  order.save();
-                  res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/deliver/' + order._id);
-
-                } else {
-
-                  var costWithoutPlan = order.cost;
-                  var noOfClothes = (customer.longGiven + customer.shortGiven);
-                  var flag = true;
-
-                  SingleService.find({}).sort('totalClothes').exec(function(err, services) {
-
-                    services.forEach(function(service){ 
-
-                        if(noOfClothes <= service.totalClothes && flag) {
-                          costWithoutPlan = costWithoutPlan + service.amount;
-                          flag = false;
-                        }
-                    });
-                    order.cost = costWithoutPlan;
+                    order.cost = costWithPlan;
                     order.isPaid = true;
+                    deliveryboy.amount = deliveryboy.amount + costWithPlan;
+                    deliveryboy.save();
                     order.save();
-                    res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/deliver/' + order._id);
+                    res.redirect('/deliveryboy/' + deliveryboy._id + '/deliver/' + order._id);
 
-                  });
+                  } else {
 
-                }
-              } else {
-                req.flash('paymentstatus', 'Wrong Password');
-                res.redirect('/deliveryboy/' + order.deliveryBoy._id + '/payment/' + order._id);
-              }   
+                    var costWithoutPlan = order.cost;
+                    var noOfClothes = (customer.longGiven + customer.shortGiven);
+                    var flag = true;
 
+                    SingleService.find({}).sort('totalClothes').exec(function(err, services) {
+
+                      services.forEach(function(service){ 
+
+                          if(noOfClothes <= service.totalClothes && flag) {
+                            costWithoutPlan = costWithoutPlan + service.amount;
+                            flag = false;
+                          }
+                      });
+                      order.cost = costWithoutPlan;
+                      order.isPaid = true;
+                      deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
+                      deliveryboy.save();
+                      order.save();
+                      res.redirect('/deliveryboy/' + deliveryboy._id + '/deliver/' + order._id);
+
+                    });
+
+                  }
+                } else {
+                  req.flash('paymentstatus', 'Wrong Password');
+                  res.redirect('/deliveryboy/' + deliveryboy._id + '/payment/' + order._id);
+                } 
+
+              });  
             });
           }
        });

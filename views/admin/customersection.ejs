@@ -24,50 +24,40 @@
     <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
         <p><%= user.local.email %></p>
 
-        <h3><span class="fa fa-sign-in"></span>Send Email to all Customer</h3>
-
-        <!-- CREATING -->
-                <form action="/admin/customer" method="post">
-                    <div class="form-group">
-                        <label>Subject</label>
-                        <input type="text" class="form-control" name="subject">
-                    </div>
-                    <div class="form-group">
-                        <label>Content</label>
-                        <textarea class="form-control" name="content"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-success btn-lg">Send</button>
-                    
-                </form>
-        <!-- CREATING -->
-
         <h3><span class="fa fa-sign-in"></span>Enter Any Detail to find</h3>
 
-        <form action="/admin/customer/email" class="form-inline"  method="post" >
-            <div class="form-group">
-                <label class="sr-only" for="finding via email">Email:</label>
-                <input type="text" class="form-control" name="viaEmail" placeholder="Enter Email Id">
-            </div>
+            <form action="/admin/customer/cid" class="form-inline"  method="post" >
+                <div class="form-group">
+                    <label class="sr-only">Customer ID:</label>
+                    <input type="text" class="form-control" name="viaID" placeholder="Enter Customer ID">
+                </div>
 
-            <button type="submit" class="btn btn-primary btn-sm">Find</button>
-        </form>
-        <form action="/admin/customer/tag" class="form-inline"  method="post" >
-            <div class="form-group">
-                <label class="sr-only" for="finding via tag">Tag Number:</label>
-                <input type="text" class="form-control" name="viaTag" placeholder="Enter Tag Number">
-            </div>
+                <button type="submit" class="btn btn-primary btn-sm">Find</button>
+            </form>
+            <form action="/admin/customer/email" class="form-inline"  method="post" >
+                <div class="form-group">
+                    <label class="sr-only">Email:</label>
+                    <input type="text" class="form-control" name="viaEmail" placeholder="Enter Email Id">
+                </div>
 
-            <button type="submit" class="btn btn-primary btn-sm">Find</button>
-        </form>
-        <form action="/admin/customer/mobile" class="form-inline"  method="post" >
-            <div class="form-group">
-                <label class="sr-only" for="finding via mobile">Mobile Number:</label>
-                <input type="text" class="form-control" name="viaMobile" placeholder="Enter Mobile Number">
-            </div>
+                <button type="submit" class="btn btn-primary btn-sm">Find</button>
+            </form>
+            <form action="/admin/customer/tag" class="form-inline"  method="post" >
+                <div class="form-group">
+                    <label class="sr-only">Tag Number:</label>
+                    <input type="text" class="form-control" name="viaTag" placeholder="Enter Tag Number">
+                </div>
 
-            <button type="submit" class="btn btn-primary btn-sm">Find</button>
-        </form>
+                <button type="submit" class="btn btn-primary btn-sm">Find</button>
+            </form>
+            <form action="/admin/customer/mobile" class="form-inline"  method="post" >
+                <div class="form-group">
+                    <label class="sr-only">Mobile Number:</label>
+                    <input type="text" class="form-control" name="viaMobile" placeholder="Enter Mobile Number">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm">Find</button>
+            </form>
 
     </div>
 

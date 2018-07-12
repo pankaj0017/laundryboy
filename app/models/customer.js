@@ -5,6 +5,7 @@ var CustomerSchema = new mongoose.Schema({
 	  user         : {type: mongoose.Schema.Types.ObjectId, ref: "User"},       //to extract details of customer who is currently logged in
     name         : {type: String , default: ''},
     referedBy    : {type: mongoose.Schema.Types.ObjectId, ref: "Customer"},
+    discount     : {type: Number, default:  0 },
     tagNumber    : {type: String , default: ''},
     bagNumber    : {type: String , default: ''},
     pickUpKey    : {type: Number , default: 0 },                                //generated randomly when order is placed
