@@ -1108,15 +1108,16 @@ module.exports = function(app, passport) {
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
           if(err){
               throw err;
-          } else {
+          } else if (deliveryboy) {
               Customer.findById(req.params.cid, function(err, customer) {
                 if(err){
                     throw err;
-                } else {
+                } else if (customer) {
+
                     Plan.findOne({ 'amount' :  req.body.getPlan }, function(err, plan){
                        if(err){
                            throw err;
-                       } else {
+                       } else if (plan) {
                             if (deliveryboy.password == req.body.dPass) {
 
                               var newRecharge = new Recharge();
@@ -1139,10 +1140,16 @@ module.exports = function(app, passport) {
                               req.flash('rechargestatus', 'Wrong Password');
                             }
                             res.redirect('/deliveryboy/' + req.params.id + '/recharge/' + req.params.cid);
+                       } else {
+                          res.redirect('/deliveryboy/' + req.params.id + '/recharge/' + customer._id);
                        }
                     });
+                } else {
+                  res.redirect('/deliveryboy/' + req.params.id + '/recharge');
                 }
               })
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });
