@@ -28,7 +28,8 @@
 	    </nav>
 
     	<div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-    		<p><%= customer.user %></p>
+
+    		<p>Your Phone Numbers : </p>
 
     		<% customer.numbers.forEach(function(cell){ %>
     			
@@ -40,6 +41,10 @@
     		<% }) %>
 
 		    <h3><span class="fa fa-sign-in"></span>Enter New Phone Number</h3>
+
+		    <% if (message.length > 0) { %>
+        	<div class="alert alert-danger"><%= message %></div>
+    		<% } %>
 
 		    <form action="/update/mobile" class="form-inline"  method="post" >
 		    	<div class="form-group">

@@ -13,6 +13,10 @@
 
 		    <h3><span class="fa fa-sign-in"></span>Enter New Phone Number</h3>
 
+		    <% if (message.length > 0) { %>
+    	    <div class="alert alert-danger"><%= message %></div>
+    		<% } %>
+
 		    <form action="/contact/mobile" class="form-inline"  method="post" >
 		    	<div class="form-group">
 		    		<label>Number:</label>

@@ -157,25 +157,35 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
                     throw err;
-                res.render('customer/mobile.ejs',{customer : customer});
+                res.render('customer/mobile.ejs',{customer : customer, message: req.flash('addMobileMessage')});
             })
     });
     app.post('/update/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                if (err)
-                    throw err;
-                Mobile.create(req.body.newMobile, function(err, newMobile){
-                   if(err){
-                       console.log(err);
-                   } else {   
-                       newMobile.owner    = customer._id;
-                       newMobile.save();
-                       customer.numbers.push(newMobile);
-                       customer.save();
-                       res.redirect('/update');
-                   }
-                });
-            });
+              if (err)
+                  throw err;
+              Mobile.findOne({ 'number' :  req.body.newMobile.number }, function(err, mobile) {
+                  if (err)
+                      throw err;
+                  if (mobile) {
+                    req.flash('addMobileMessage', 'Mobile Number already in use');
+                    res.redirect('/update/mobile');
+                  } else {
+                    Mobile.create(req.body.newMobile, function(err, newMobile){
+                       if(err){
+                           console.log(err);
+                       } else {   
+                           newMobile.owner    = customer._id;
+                           newMobile.save();
+                           customer.mainNumber = newMobile.number;
+                           customer.numbers.push(newMobile);
+                           customer.save();
+                           res.redirect('/update');
+                       }
+                    });
+                  }
+              })
+        });
     });
     app.post('/update/mobile/:id', isLoggedIn, function(req, res){
        Mobile.findByIdAndRemove(req.params.id, function(err){
@@ -646,82 +656,97 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
                     throw err;
-                res.render('order/mobile.ejs',{customer : customer});
+                res.render('order/mobile.ejs',{customer : customer, message : req.flash('addMobileMessage')});
             })
     });
     app.post('/contact/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                if (err)
-                    throw err;
-                Mobile.create(req.body.newMobile, function(err, newMobile){
-                   if(err){
-                       console.log(err);
-                   } else {   
-                       newMobile.owner    = customer._id;
-                       newMobile.save();
-                       customer.mainNumber = newMobile.number;
-                       customer.numbers.push(newMobile);
-                       customer.save();
-                       res.redirect('/order');
-                   }
-                });
-            });
+              if (err)
+                  throw err;
+              Mobile.findOne({ 'number' :  req.body.newMobile.number }, function(err, mobile) {
+                  if (err)
+                      throw err;
+                  if (mobile) {
+                    req.flash('addMobileMessage', 'Mobile Number Already Taken');
+                    res.redirect('/contact/mobile');
+                  } else {
+                    Mobile.create(req.body.newMobile, function(err, newMobile){
+                       if(err){
+                           console.log(err);
+                       } else {   
+                           newMobile.owner = customer._id;
+                           newMobile.save();
+                           customer.mainNumber = newMobile.number;
+                           customer.numbers.push(newMobile);
+                           customer.save();
+                           res.redirect('/order');
+                       }
+                    });
+                  }
+              })
+        });
     });
 
 
     app.get('/order', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
-                if (err)
-                    throw err;
-                res.render("order/order.ejs",{customer : customer});
-            })
+            if (err)
+                throw err;
+            res.render("order/order.ejs",{customer : customer, message : req.flash('customerOrderMessage')});
+        })
     });
 
     app.post('/order', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
                     throw err;
-                customer.name = req.body.customer.name;
-                customer.address = req.body.customer.address;
-                customer.isBusy = true;
-                var options = {
-                  min:  1000,
-                  max:  9999,
-                  integer: true
-                }
-                customer.pickUpKey = rn(options);
+                if (customer.isBusy) {
+                    req.flash('customerOrderMessage', 'Please Wait Till Your Order Completed');
+                    res.redirect("/order");
+                } else {
 
-                customer.save(function(err) {   
-                    if (err)
-                        throw err;
-                });
+                    customer.name = req.body.customer.name;
+                    customer.address = req.body.customer.address;
+                    customer.isBusy = true;
+                    var options = {
+                      min:  1000,
+                      max:  9999,
+                      integer: true
+                    }
+                    customer.pickUpKey = rn(options);
 
-                var newOrder = new Order();
-                newOrder.customer = customer._id;
-                PinCode.findOne({ 'pinCode' :  req.body.customer.pinCode }, function(err, foundPinCode) {
-                    if (err)
-                        throw err;
-                    DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
+                    customer.save(function(err) {   
                         if (err)
                             throw err;
-                        Vendor.findById(foundPinCode.vendor, function(err, foundVendor) {
+                    });
+
+                    var newOrder = new Order();
+                    newOrder.customer = customer._id;
+                    PinCode.findOne({ 'pinCode' :  req.body.customer.pinCode }, function(err, foundPinCode) {
+                        if (err)
+                            throw err;
+                        DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
                             if (err)
                                 throw err;
+                            Vendor.findById(foundPinCode.vendor, function(err, foundVendor) {
+                                if (err)
+                                    throw err;
 
-                            newOrder.deliveryBoy = foundDeliveryBoy._id;
-                            newOrder.vendor = foundVendor._id;
-                            newOrder.status = "booked";
-                            newOrder.save();
-                            foundDeliveryBoy.currentOrders.push(newOrder);
-                            foundVendor.currentOrders.push(newOrder);
-                            customer.history.push(newOrder);
-                            customer.save();
-                            foundDeliveryBoy.save();
-                            foundVendor.save();
-                            res.redirect("/profile");
-                        })
-                    })                 
-                })
+                                newOrder.deliveryBoy = foundDeliveryBoy._id;
+                                newOrder.vendor = foundVendor._id;
+                                newOrder.status = "booked";
+                                newOrder.save();
+                                foundDeliveryBoy.currentOrders.push(newOrder);
+                                foundVendor.currentOrders.push(newOrder);
+                                customer.history.push(newOrder);
+                                customer.save();
+                                foundDeliveryBoy.save();
+                                foundVendor.save();
+                                res.redirect("/profile");
+                            })
+                        })                 
+                    })
+                }
             })
     });
 

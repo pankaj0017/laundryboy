@@ -1,33 +1,850 @@
-<html>
-	<head>
-		<title>
-			LaundryBuoy
-		</title>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-        <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
-	</head>
-	<body>
-		<nav class="navbar navbar-default">
-	        <div class="container-fluid">
-	            <div class="navbar-header">
-	                <a class="navbar-brand" href="/">laundrybuoy</a>
-	            </div>
-	            <div class="collapse navbar-collapse">
-	                <ul class="nav navbar-nav navbar-right">
-	                    <% if(!user){ %>
-	                        <li><a href="/login"><span class="glyphicon glyphicon-log-in" style="color:black;"></span> <span style="color:black;"> Login </span></a></li>
-	                        <li ><a href="/signup"><span class="glyphicon glyphicon-user" style="color:black;" ></span> <span style="color:black;">Sign Up</span></a></li>
-	                    <% } else { %>
-	                    	<li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;"> Signed In As <%= user.local.email %> </span></a></li>
-	                        <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
-	                    <% } %>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Welcome To LaundryBuoy</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Favicons -->
+  <link href="/img/favicon.png" rel="icon">
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="/lib/nivo-slider/css/nivo-slider.css" rel="stylesheet">
+  <link href="/lib/owlcarousel/owl.carousel.css" rel="stylesheet">
+  <link href="/lib/owlcarousel/owl.transitions.css" rel="stylesheet">
+  <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/lib/animate/animate.min.css" rel="stylesheet">
+  <link href="/lib/venobox/venobox.css" rel="stylesheet">
+
+  <!-- Nivo Slider Theme -->
+  <link href="/css/nivo-slider-theme.css" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="/css/style.css" rel="stylesheet">
+
+  <!-- Responsive Stylesheet File -->
+  <link href="/css/responsive.css" rel="stylesheet">
+</head>
+
+<body data-spy="scroll" data-target="#navbar-example">
+
+  <div id="preloader"></div>
+
+  <header>
+    <!-- header-area start -->
+    <div id="sticker" class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+
+            <!-- Navigation -->
+            <nav class="navbar navbar-default">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-example-navbar-collapse-1" aria-expanded="false">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+                <!-- Brand -->
+                <a class="navbar-brand page-scroll sticky-logo" href="#home">
+                  <h1><span>Laundry</span>Buoy</h1>
+                   <img src="img/logo.png" alt="" title=""> 
+								</a>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              
+              <div class="tab-menu collapse navbar-collapse main-menu bs-example-navbar-collapse-1" id="navbar-example">
+	            <!-- Nav tabs -->
+	             <ul class="nav navbar-nav navbar-right nav-pills nav-stacked" role="tablist">
+                        <a style="font-size:40px; " class="nav-link active" href="#home" role="tab" data-toggle="tab">Home</a>
+	                      <a style="font-size:40px" class="nav-link" href="#services" role="tab" data-toggle="tab">About</a>
+	                      <a style="font-size:40px" class="nav-link" href="#pricing" role="tab" data-toggle="tab">Prices</a>
+	                      <a style="font-size:40px" class="nav-link" href="#about" role="tab" data-toggle="tab">Services</a>
+	                      <a style="font-size:40px" class="nav-link" href="#contact" role="tab" data-toggle="tab">Contact</a>
 	                </ul>
-	            </div>
-	        </div>
-	    </nav>
-	    <div class="jumbotron text-center">
-	    	<div id="pankaj"><h1>Welcome to our page</h1></div>
-	    </div>
-	</body>
+	          </div>
+              <!-- navbar-collapse -->
+            </nav>
+            <!-- END: Navigation -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- header-area end -->
+  </header>
+  <!-- header end -->
+
+
+
+
+
+
+
+
+  <!-- Start Slider Area -->
+  <div class="tab-content">
+            <div class="tab-pane active slider-area" id="home">
+              <div class="tab-inner">
+    <div class="bend niceties preview-2">
+      <div id="ensign-nivoslider" class="slides">
+        <img src="img/slider/slider1.jpg" alt="" title="#slider-direction-1" />
+        <img src="img/slider/slider2.jpg" alt="" title="#slider-direction-2" />
+        <img src="img/slider/slider3.jpg" alt="" title="#slider-direction-3" />
+      </div>
+
+      <!-- direction 1 -->
+      <div id="slider-direction-1" class="slider-direction slider-one">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="slider-content">
+                <!-- layer 1 -->
+                <div class="layer-1-1 hidden-xs wow slideInDown" data-wow-duration="2s" data-wow-delay=".2s">
+                  <h2 class="title1">Freedom from Laundry </h2>
+                </div>
+                <!-- layer 2 -->
+                <div class="layer-1-2 wow slideInUp" data-wow-duration="2s" data-wow-delay=".1s">
+                  <h1 class="title2">We do the job you hate to do.</h1>
+                </div>
+                <!-- layer 3 -->
+                <div class="layer-1-3 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                  <a class="ready-btn right-btn page-scroll" href="#services">See Services</a>
+                  <a class="ready-btn page-scroll" href="#about">Learn More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- direction 2 -->
+      <div id="slider-direction-2" class="slider-direction slider-two">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="slider-content text-center">
+                <!-- layer 1 -->
+                <div class="layer-1-1 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                  <h2 class="title1">The Business Information </h2>
+                </div>
+                <!-- layer 2 -->
+                <div class="layer-1-2 wow slideInUp" data-wow-duration="2s" data-wow-delay=".1s">
+                  <h1 class="title2">We're In The Business Of Quality Service</h1>
+                </div>
+                <!-- layer 3 -->
+                <div class="layer-1-3 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                  <a class="ready-btn right-btn page-scroll" href="#services">See Services</a>
+                  <a class="ready-btn page-scroll" href="#about">Learn More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- direction 3 -->
+      <div id="slider-direction-3" class="slider-direction slider-two">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="slider-content">
+                <!-- layer 1 -->
+                <div class="layer-1-1 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                  <h2 class="title1">Just one click away.</h2>
+                </div>
+                <!-- layer 2 -->
+                <div class="layer-1-2 wow slideInUp" data-wow-duration="2s" data-wow-delay=".1s">
+                  <h1 class="title2">Save your precious time and efforts.</h1>
+                </div>
+                <!-- layer 3 -->
+                <div class="layer-1-3 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                  <a class="ready-btn right-btn page-scroll" href="#services">See Services</a>
+                  <a class="ready-btn page-scroll" href="#about">Learn More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- End Slider Area -->
+  
+
+  <!-- Start Service area -->
+  <div id="services" class="tab-pane services-area area-padding">
+    <div class="tab-inner">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline services-head text-center">
+            <br><br>
+            <h2>Why Us?</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="services-contents">
+          <!-- Start Left services -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="about-move">
+              <div class="services-details">
+                <div class="single-services">
+                  <a class="services-icon" href="#">
+											<i class="fa fa-code"></i>
+										</a>
+                  <h4>Save Time</h4>
+                  <p>
+                    Even if you only do one load a day, you're still spending anywhere from 7-12 hrs on your laundry alone per week. Outsourcing this chore will save you lots of time.
+                  </p>
+                </div>
+              </div>
+              <!-- end about-details -->
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="about-move">
+              <div class="services-details">
+                <div class="single-services">
+                  <a class="services-icon" href="#">
+											<i class="fa fa-camera-retro"></i>
+										</a>
+                  <h4>Outsourcing is in</h4>
+                  <p>
+                    The average Indian has never been busier, but everyone wants a clean house. Your outsource your housekeeping, why not outsource your laundry too.
+                  </p>
+                </div>
+              </div>
+              <!-- end about-details -->
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <!-- end col-md-4 -->
+            <div class=" about-move">
+              <div class="services-details">
+                <div class="single-services">
+                  <a class="services-icon" href="#">
+											<i class="fa fa-wordpress"></i>
+										</a>
+                  <h4>Easy to use</h4>
+                  <p>
+                    We're just one click away. Rest yourselves at home and we'll manage everything from pickup to washing, ironing and delivering at your doorsteps.
+                  </p>
+                </div>
+              </div>
+              <!-- end about-details -->
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <!-- end col-md-4 -->
+            <div class=" about-move">
+              <div class="services-details">
+                <div class="single-services">
+                  <a class="services-icon" href="#">
+											<i class="fa fa-camera-retro"></i>
+										</a>
+                  <h4>Do Something else </h4>
+                  <p>
+                    With all that extra time, you can finish that presentation for work, go on adventure with your kids, or spend some time with your loved ones.
+                  </p>
+                </div>
+              </div>
+              <!-- end about-details -->
+            </div>
+          </div>
+          <!-- End Left services -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <!-- end col-md-4 -->
+            <div class=" about-move">
+              <div class="services-details">
+                <div class="single-services">
+                  <a class="services-icon" href="#">
+											<i class="fa fa-bar-chart"></i>
+										</a>
+                  <h4>It's Green</h4>
+                  <p>
+                   We use natural laundry detergents and high efficiency machines keeping your laundry clean and the planet green.
+                  </p>
+                </div>
+              </div>
+              <!-- end about-details -->
+            </div>
+          </div>
+          <!-- End Left services -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <!-- end col-md-4 -->
+            <div class=" about-move">
+              <div class="services-details">
+                <div class="single-services">
+                  <a class="services-icon" href="#">
+											<i class="fa fa-ticket"></i>
+										</a>
+                  <h4>You're in Charge</h4>
+                  <p>
+                    At Laundry Buoy, we do our best to accommodate your needs and requests.
+                  </p>
+                </div>
+              </div>
+              <!-- end about-details -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+  <!-- End Service area -->
+  <!-- start pricing area -->
+
+  <div id="pricing" class="tab-pane pricing-area area-padding">
+    <div class="tab-inner">
+    <div class="container">
+      <div class="tab-menu">
+            <!-- Nav tabs -->
+            <br><br>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active">
+                <a href="#p-view-1" role="tab" data-toggle="tab"><h3>Single Order</h3></a>
+              </li>
+              <li>
+                <a href="#p-view-2" role="tab" data-toggle="tab"><h3>Monthly Plans</h3></a>
+              </li>
+              <li>
+                <a href="#p-view-3" role="tab" data-toggle="tab"><h3>Top-Ups</h3></a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane active " id="p-view-1">
+              <div class="tab-inner">
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline text-center">
+            <br><br>
+            <h2>Single Order</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="pri_table_list">
+            <h3>Single Order (Without Membership)<br/> <span>65N</span></h3>
+            <ol text-align:center>
+              <li>Cost : Rs. 65</li>
+              <li>Big Clothes : 6</li>
+              <li>Small Clothes : 7</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>Order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+           <div class="pri_table_list">
+            <h3>Single Order (Without Membership)<br/> <span>120N</span></h3>
+            <ol text-align:center>
+              <li>Cost : Rs. 120</li>
+              <li>Big Clothes : 12</li>
+              <li>Small Clothes : 13</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>Order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+           <div class="pri_table_list">
+            <h3>Single Order <br>(With the Membership)<br/> <span>55M</span></h3>
+            <ol text-align:center>
+              <li>Cost : Rs. 55</li>
+              <li>Big Clothes : 6</li>
+              <li>Small Clothes : 7</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>Order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+           <div class="pri_table_list">
+            <h3>Single Order <br>(With the Membership)<br/> <span>100M</span></h3>
+            <ol text-align:center>
+              <li>Cost : Rs. 100</li>
+              <li>Big Clothes : 12</li>
+              <li>Small Clothes : 13</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>Order pickup now</button>
+          </div>
+        </div>
+      </div></div></div>
+
+            <div class="tab-pane" id="p-view-2">
+              <div class="tab-inner">
+                <div class="row">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline text-center">
+            <br><br>
+            <h2>Monthly Plans</h2>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="pri_table_list">
+            <span class="saleon">most frequent</span>
+            <h3>PLAN<br/> <span>255N</span></h3>
+            <ol text-align:center>
+              <li>Cost : Rs. 255</li>
+              <li>Validity : 30 days</li>
+              <li>Big Clothes : 15</li>
+              <li>Small Clothes : 15</li>
+              <li>Services per week : 2</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>Order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="pri_table_list">
+            <h3>plan <br/> <span>525N</span></h3>
+            <ol>
+              <li>Cost : Rs. 525</li>
+              <li>Validity : 60 days</li>
+              <li>Big Clothes : 30</li>
+              <li>Small Clothes : 30</li>
+              <li>Services per week : 2</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="pri_table_list">
+            <h3>plan <br/> <span>875N</span></h3>
+            <ol>
+              <li>Cost : Rs. 875</li>
+              <li>Validity : 90 days</li>
+              <li>Big Clothes : 50</li>
+              <li>Small Clothes : 50</li>
+              <li>Services per week : 2</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="pri_table_list">
+            <h3>plan <br/> <span>1111N</span></h3>
+            <ol>
+              <li>Cost : Rs. 1111</li>
+              <li>Validity : 120 days</li>
+              <li>Big Clothes : 60</li>
+              <li>Small Clothes : 60</li>
+              <li>Services per week : 2</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>order pickup now</button>
+          </div>
+        </div>
+      </div></div></div>
+
+            <div class="tab-pane" id="p-view-3">
+              <div class="tab-inner">
+                <div class="row">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline text-center">
+            <br><br>
+            <h2>Top-Ups</h2>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="pri_table_list">
+            <h3>PLAN<br/> <span>100MiniT</span></h3>
+            <ol text-align:center>
+              <li>Cost : Rs. 100</li>
+              <li>Validity : 30 days</li>
+              <li>Small Clothes : 20</li>
+              <li>Services per week : 2</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>Order pickup now</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="pri_table_list">
+            <h3>plan <br/> <span>180BigT</span></h3>
+            <ol>
+              <li>Cost : Rs. 180</li>
+              <li>Validity : 30 days</li>
+              <li>Big Clothes : 20</li>
+              <li>Services per week : 2</li>
+              <li class="check">Washing</li>
+              <li class="check">Ironing</li>
+            </ol>
+            <button>order pickup now</button>
+          </div>
+        </div>
+      </div></div></div></div>
+    </div>
+  </div>
+  <div>
+      <div class="pri_table_list">
+        <br><br>
+        <button><a href="rate.ejs">View Complete Rate List</a></button>
+      </div>
+  </div>
+  <div >
+      <div class="row">
+      </div>
+  </div>
+</div>
+   
+
+  <!-- End pricing table area -->
+ 
+  <!-- Start About area -->
+              
+  <div id="about" class="tab-pane about-area area-padding">
+    <div class="tab-inner">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline text-center">
+      <br><br>
+            <h2>Our Services</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- single-well start-->
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="well-left">
+            <div class="single-well">
+              <a href="#">
+                  <img src="img/about/laundry.jpg" alt="">
+                </a>
+            </div>
+          </div>
+        </div>
+        <!-- single-well end-->
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="well-middle">
+            <div class="single-well">
+              <a href="#">
+                <center><h3>We Offer</h3></center>
+              </a>
+              <h4>
+               <center> 48 Hours Delivery!<br> Free Pickup Delivery!!</center>
+              </h4>
+              <br>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="well-middle">
+            <div class="single-well">
+              <ul><center>
+                <li>
+                  <i class="fa fa-check"></i> Cloth Wash
+                </li>
+                <li>
+                  <i class="fa fa-check"></i> Cloth Iron
+                </li>
+                <li>
+                  <i class="fa fa-check"></i>We Fold
+                </li></center>
+              </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="well-middle">
+            <div class="single-well">
+              <ul><center>
+                <li>
+                  <i class="fa fa-check"></i> Dry Clean
+                </li>
+                <li>
+                  <i class="fa fa-check"></i> Shoe Clean
+                </li>
+                <li>
+                  <i class="fa fa-check"></i> Cloth Packing
+                </li></center>
+              </ul>
+            </div>
+          </div>
+        </div>
+            </div>
+          </div>
+        </div>
+        <!-- End col-->
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- End About area -->
+  <!-- Start contact Area -->
+  <div id="contact" class="tab-pane contact-area">
+    <div class="contact-inner area-padding">
+      <div class="tab-inner">
+      <div class="contact-overly"></div>
+      <div class="container ">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="section-headline text-center">
+              <br><br>
+              <h2>Contact us</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Start contact icon column -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="contact-icon text-center">
+              <div class="single-icon">
+                <i class="fa fa-mobile"></i>
+                <p>
+                  Call: +91 8178 33 5478<br>
+                 Call: +91 8510 90 8590
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Start contact icon column -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="contact-icon text-center">
+              <div class="single-icon">
+                <i class="fa fa-envelope-o"></i>
+                <p>
+                  Email: laundrybuoy@gmail.com<br>
+                  <span>Web: www.laundrybuoy.com</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Start contact icon column -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="contact-icon text-center">
+              <div class="single-icon">
+                <i class="fa fa-map-marker"></i>
+                <p>
+                  Location: D6/200 Lane No. 1, sec-6<br>
+                  <span>Rohini, Delhi-85</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <!-- Start Google Map -->
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <!-- Start Map -->
+              <div id="google-map" data-latitude="28.7183693" data-longitude="77.2580268"></div>
+            <!-- End Map -->
+          </div>
+          <!-- End Google Map -->
+
+          <!-- Start  contact -->
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="form contact-form">
+              <div id="sendmessage">Your message has been sent. Thank you!</div>
+              <div id="errormessage"></div>
+              <form action="" method="post" role="form" class="contactForm">
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                  <div class="validation"></div>
+                </div>
+                <div class="text-center"><button type="submit">Send Message</button></div>
+              </form>
+            </div>
+          </div>
+          <!-- End Left contact -->
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+  <!-- End Contact Area -->
+ <!-- Start Testimonials -->
+
+  <div class="testimonials-area">
+    <div class="testi-inner area-padding">
+      <div class="testi-overly"></div>
+      <div class="container ">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <!-- Start testimonials Start -->
+            <div class="testimonial-content text-center">
+              <a class="quate" href="#"><i class="fa fa-quote-right"></i></a>
+              <!-- start testimonial carousel -->
+              <div class="testimonial-carousel">
+                <div class="single-testi">
+                  <div class="testi-text">
+                    <p>I am highly impressed by the professionalism these young guys have demonstrated. They not only picked it from my doorstep but also delivered it within the given time and at a much cheaper rates. Keep up the good work! 
+                    </p>
+                    <h6>Rahul</h6>
+                  </div>
+                </div>
+                <!-- End single item -->
+                <div class="single-testi">
+                  <div class="testi-text">
+                    <p>
+                      Have had them since their inauguration, after others service didn't work out. They have been outstanding. I have weekly pickups. They're like laundry fairies. They're incredibly professional, punctual, reliable, and do a fantastic job.
+                    </p>
+                    <h6>Anjali</h6>
+                  </div>
+                </div>
+                <!-- End single item -->
+                <div class="single-testi">
+                  <div class="testi-text">
+                    <p>
+                      I got their flyer few days back and I am a regular user of their service since then. The quality they provide is satisfactory and the turnaround time is pretty fast. No one gives back in just 1 day. The best laundry service for a senior citizen like me.
+                    </p>
+                    <h6>Karan</h6>
+                  </div>
+                </div>
+                <!-- End single item -->
+              </div>
+            </div>
+            <!-- End testimonials end -->
+          </div>
+          <!-- End Right Feature -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Testimonials -->
+  <!-- Start Footer bottom Area -->
+  <footer>
+    <div class="footer-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="footer-content">
+              <div class="footer-head">
+                <div class="footer-logo">
+                  <h2><span>Laundry</span>Buoy</h2>
+                </div>
+
+                <p>Freedom from laundry.<br>We do the job you hate to do.</p>
+                <div class="footer-icons">
+                  <ul>
+                    <li>
+                      <a href="https://www.facebook.com/LaundryBuoy/"><i class="fa fa-facebook"></i></a>
+                    </li>
+                    <li>
+                      <a href="https://plus.google.com/114646534090280070226"><i class="fa fa-google"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end single footer -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="footer-content">
+              <div class="footer-head">
+                <h4>Contact Us</h4>
+                <p>
+                 You can connect to us through
+                </p>
+                <div class="footer-contacts">
+                  <p><span>Mobile/WhatsApp:</span> 8178335478</p>
+                  <p><span>Email:</span> laundrybuoy@gmail.com</p>
+                  <p><span>Working Hours:</span> 9am-9pm</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end single footer -->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="footer-content">
+              <div class="footer-head">
+                <h4>Instagram</h4>
+                <div class="flicker-img">
+                  <a href="#"><img src="img/portfolio/1.jpg" alt=""></a>
+                  <a href="#"><img src="img/portfolio/2.jpg" alt=""></a>
+                  <a href="#"><img src="img/portfolio/3.jpg" alt=""></a>
+                  <a href="#"><img src="img/portfolio/4.jpg" alt=""></a>
+                  <a href="#"><img src="img/portfolio/5.jpg" alt=""></a>
+                  <a href="#"><img src="img/portfolio/6.jpg" alt=""></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-area-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="copyright text-center">
+              <p>
+                &copy; Copyright <strong>LaundryBuoy</strong>. All Rights Reserved
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  <!-- JavaScript Libraries -->
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="lib/venobox/venobox.min.js"></script>
+  <script src="lib/knob/jquery.knob.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/parallax/parallax.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/nivo-slider/js/jquery.nivo.slider.js" type="text/javascript"></script>
+  <script src="lib/appear/jquery.appear.js"></script>
+  <script src="lib/isotope/isotope.pkgd.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
+
+  <!-- Contact Form JavaScript File -->
+  <script src="contactform/contactform.js"></script>
+
+  <script src="js/main.js"></script>
+</body>
+
 </html>

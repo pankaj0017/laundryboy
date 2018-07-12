@@ -12,6 +12,10 @@
 
                 <h1><span class="fa fa-sign-in"></span>Order Details</h1>
 
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
                 <form action="/order" method="post">
                     <div class="form-group">
                         <label>Name</label>
