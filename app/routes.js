@@ -10,8 +10,8 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com") {
             res.redirect("/admin");
         } else {
-          Plan.findOne({}, function(err, plans) {
-            SingleService.findOne({}, function(err, singleservices) {
+          Plan.find({}, function(err, plans) {
+            SingleService.find({}, function(err, singleservices) {
 
               res.render('index.ejs', {plans : plans, singleservices : singleservices});
             })
