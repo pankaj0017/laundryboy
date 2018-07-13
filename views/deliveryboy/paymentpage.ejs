@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Node Authentication</title>
+    <title>LaundryBuoy</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <style>
@@ -11,15 +11,29 @@
 </head>
 <body>
 <div class="container">
-
+<h1 style="color: solid grey"><center>Payment Page</center></h1><br>
 <div class="col-sm-6 col-sm-offset-3">
-
-    <p>Long Clothes Left : <%= order.customer.longClothes %></p>
-    <p>Short Clothes Left : <%= order.customer.shortClothes %></p>
-    <p>Long Clothes Given : <%= order.customer.longGiven %></p>
-    <p>Short Clothes Given : <%= order.customer.shortGiven %></p>
-    <p>Cost With Plan : <%= costWithPlan %><p>
-    <p>Cost Without Plan : <%= costWithoutPlan %><p>
+<div class="table-responsive">          
+  <table class="table">    
+    <tr>
+        <td>Long Clothes Left : </td><td><%= order.customer.longClothes %></td>
+    </tr>
+    <tr>
+        <td>Short Clothes Left : </td><td><%= order.customer.shortClothes %></td>
+    </tr>
+    <tr>
+        <td>Long Clothes Given : </td><td><%= order.customer.longGiven %></td>
+    </tr>
+    <tr>
+        <td>Short Clothes Given : </td><td><%= order.customer.shortGiven %></td>
+    </tr>
+    <tr>
+        <td>Cost With Plan : </td><td><%= costWithPlan %></td>
+    </tr>
+    <tr>
+        <td>Cost Without Plan : </td><td><%= costWithoutPlan %></td>
+    </tr>
+</table>
 
     <% if (message.length > 0) { %>
     <div class="alert alert-danger"><%= message %></div>
@@ -39,7 +53,7 @@
         <button type="submit" class="btn btn-warning btn-lg">Pay</button>
     </form>
 
-
+</div>
 </div>
 
 </div>

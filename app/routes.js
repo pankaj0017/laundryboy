@@ -994,8 +994,10 @@ module.exports = function(app, passport) {
 
                                 if(getOrder.customer.tagNumber == '') {
 
-                                    Customer.count(function(error, customerCount) {
-                                        foundCustomer.tagNumber = 'lbc' + (customerCount + 1);
+                                  CustomerCount.findOne({ countingOf : 'customer'}, function(err, customerCount) { 
+
+                                        foundCustomer.tagNumber = 'lbc' + (customerCount[0].noOfCustomer + 1);
+                                        customerCount[0].noOfCustomer = customerCount[0].noOfCustomer + 1;
                                         foundCustomer.bagNumber = req.body.bagNumber;
                                         foundCustomer.longGiven = longgiven;
                                         foundCustomer.shortGiven = shortgiven;
@@ -1003,6 +1005,7 @@ module.exports = function(app, passport) {
                                             if (err)
                                                 throw err;
                                         });
+                                        customerCount[0].save();
                                     });
 
                                 } else {
