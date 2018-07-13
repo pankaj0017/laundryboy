@@ -1040,6 +1040,20 @@ module.exports = function(app, passport) {
                 if (err)
                     throw err;
             });
+            Customer.findById(getOrder.customer, function(err, customer){
+
+              var options = {
+                  min:  1000,
+                  max:  9999,
+                  integer: true
+                }
+                customer.pickUpKey = rn(options);
+
+                customer.save(function(err) {   
+                    if (err)
+                        throw err;
+                });
+            })
             res.redirect('/deliveryboy/' + req.params.id);
           } else {
             res.redirect('/deliveryboylogin');
@@ -1211,9 +1225,9 @@ module.exports = function(app, passport) {
 
               DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
 
-                if (deliveryBoy) {
+                if (deliveryboy) {
 
-                  if(req.body.dPass == deliveryBoy.password) {
+                  if(req.body.dPass == deliveryboy.password) {
                     if (req.body.payWithPlan) {
 
                       var costWithPlan = 0;
@@ -1337,6 +1351,24 @@ module.exports = function(app, passport) {
           } else if (order && order.deliveryBoy._id == req.params.id) {
               if (order.isPaid) {
 
+                res.render('deliveryboy/deliverpage.ejs',{order : order, message : req.flash('deliveryMessage')});
+
+              } else {
+                res.redirect('/deliveryboy/' + req.params.id + '/payment/' + req.params.oid);
+              }
+          } else {
+            res.redirect('/deliveryboylogin');
+          }
+       });
+    });
+
+    app.get('/deliveryboy/:id/deliver/:oid/resend', function(req, res){
+       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+          if(err){
+              throw err;
+          } else if (order && order.deliveryBoy._id == req.params.id) {
+              if (order.isPaid) {
+
                 Customer.findById(order.customer._id, function(err, customer){
 
                   var options = {
@@ -1351,8 +1383,8 @@ module.exports = function(app, passport) {
                             throw err;
                     });
                 })
-
-                res.render('deliveryboy/deliverpage.ejs',{order : order});
+                req.flash('deliveryMessage', 'OTP resend');
+                res.redirect('/deliveryboy/' + req.params.id + '/deliver/' + req.params.oid);
 
               } else {
                 res.redirect('/deliveryboy/' + req.params.id + '/payment/' + req.params.oid);
@@ -1362,15 +1394,45 @@ module.exports = function(app, passport) {
           }
        });
     });
+
     app.post('/deliveryboy/:id/deliver/:oid', function(req, res){
-       Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
+       Order.findById(req.params.oid).populate("deliveryBoy").exec(function(err, order){
           if(err){
               throw err;
-          } else {
+          } else if (order && order.deliveryBoy._id == req.params.id) {
               if (order.isPaid) {
+
+                if (req.body.dPass == order.deliveryBoy.password) {
+
+                  Customer.findById(order.customer, function(err, customer){
+
+                    if (req.body.otp == customer.pickUpKey) {
+
+                      order.status = 'delivered';
+                      order.deliveryDate = Date.now() ;
+                      customer.isBusy = false;
+                      order.save();
+                      customer.save();
+
+                      res.redirect('/deliveryboy/' + req.params.id);
+
+                    } else {
+                      req.flash('deliveryMessage', 'Incorrect OTP');
+                      res.redirect('/deliveryboy/' + req.params.id + '/deliver/' + req.params.oid);
+                    }
+
+                  })
+
+                } else {
+                  req.flash('deliveryMessage', 'Wrong DeliveryBoy Password');
+                  res.redirect('/deliveryboy/' + req.params.id + '/deliver/' + req.params.oid);
+                }
+
               } else {
                 res.redirect('/deliveryboy/' + req.params.id + '/payment/' + req.params.oid);
               }
+          } else {
+            res.redirect('/deliveryboylogin');
           }
        });
     });

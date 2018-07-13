@@ -1,0 +1,51 @@
+<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body        { padding-top:80px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<div class="col-sm-6 col-sm-offset-3">
+
+    <p>Name : <%= order.customer.name %></p>
+    <p>Tag Number : <%= order.customer.tagNumber %><p>
+    <p>Address : <%= order.customer.address %></p>
+    <p>Number : <%= order.customer.mainNumber %></p>
+    <p>Cost : <%= order.cost %></p>
+    <p>Description : <%= order.description %><p>
+    <a href="/deliveryboy/<%= order.deliveryBoy._id %>/deliver/<%= order._id %>/resend">Resend OTP</a>
+
+    <% if (message.length > 0) { %>
+        <% if (message == 'OTP resend') { %>
+            <div class="alert alert-success"><%= message %></div>
+        <% } else { %>
+            <div class="alert alert-danger"><%= message %></div>
+    <% }} %>
+
+    <form action="/deliveryboy/<%= order.deliveryBoy._id %>/deliver/<%= order._id %>" method="post">
+
+        <div class="form-group">
+            <label>Enter OTP</label>
+            <input type="number" class="form-control" name="otp">
+        </div>
+        <div class="form-group">
+            <label>DeliveryBoy Password</label>
+            <input type="password" class="form-control" name="dPass">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg">Pay</button>
+    </form>
+
+
+</div>
+
+</div>
+</body>
+</html>
