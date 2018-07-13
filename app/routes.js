@@ -10,7 +10,12 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com") {
             res.redirect("/admin");
         } else {
-            res.render('index.ejs'); // load the index.ejs file
+          Plan.findOne({}, function(err, plans) {
+            SingleService.findOne({}, function(err, singleservices) {
+
+              res.render('index.ejs', {plans : plans, singleservices : singleservices});
+            })
+          })
         }
     });
 
@@ -118,7 +123,7 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.get('/profile', isLoggedIn, function(req, res) {
-        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+        Customer.findOne({ 'user' :  req.user._id }).populate("history numbers currentRecharges").exec(function(err, customer) {
             // if there are any errors, return the error
             if (err)
                 throw err;
@@ -128,7 +133,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/update', isLoggedIn, function(req, res) {
-        Customer.findOne({ 'user' :  req.user._id }).populate("history numbers currentRecharges").exec(function(err, customer) {
+        Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
             // if there are any errors, return the error
             if (err)
                 throw err;
@@ -1311,35 +1316,6 @@ module.exports = function(app, passport) {
        });
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // =====================================
     // DELIVERY ROUTES =====================
     // =====================================
@@ -1437,47 +1413,6 @@ module.exports = function(app, passport) {
        });
     });
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // =====================================
     // FACEBOOK ROUTES =====================
@@ -1533,7 +1468,7 @@ function isAdmin(req, res, next) {
         return next();
     res.redirect('/login');
 }
-var cleanUp = schedule.scheduleJob('0 2 * * *', function(){
+var cleanUp = schedule.scheduleJob('0 0 * * *', function(){
   console.log('The answer to life, the universe, and everything!');
   // for(var i = array.length - 1; i >= 0; i--) {
   //     if(array[i] === number) {
