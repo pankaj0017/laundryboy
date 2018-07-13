@@ -759,7 +759,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
                     throw err;
-            Order.findById(req.params.oid, function(err, order){
+            Order.findById(req.params.id, function(err, order){
 
               if (order && order.status == 'booked') {
                 order.status = 'terminated';
@@ -1075,6 +1075,13 @@ module.exports = function(app, passport) {
                     if (err)
                         throw err;
                 });
+                if (customer.history.length == 1) {
+                  Customer.findById(customer.referedBy, function(err, referedByCustomer){
+                    referedByCustomer.discount = discount + 1;
+                    referedByCustomer.save();
+                  })
+                }
+
             })
             res.redirect('/deliveryboy/' + req.params.id);
           } else {
@@ -1229,6 +1236,10 @@ module.exports = function(app, passport) {
                       flag = false;
                     }
                 });
+
+                if (order.customer.discount) {
+                  costWithoutPlan = costWithoutPlan - (costWithoutPlan/10);
+                }
                 res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan, message: req.flash('paymentstatus') });
               });
           } else {
@@ -1238,7 +1249,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/deliveryboy/:id/payment/:oid', function(req, res){
-       Order.findById(req.params.oid, function(err, order){
+       Order.findById(req.params.oid, function(err, order) {
           if(err){
               throw err;
           } else if (order) {
@@ -1306,6 +1317,11 @@ module.exports = function(app, passport) {
                               flag = false;
                             }
                         });
+                        if (customer.discount) {
+                          costWithoutPlan = costWithoutPlan - (costWithoutPlan/10);
+                          customer.discount = customer.discount - 1;
+                          customer.save();
+                        }
                         order.cost = costWithoutPlan;
                         order.isPaid = true;
                         deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
@@ -1325,8 +1341,8 @@ module.exports = function(app, passport) {
                   res.redirect('/deliveryboylogin');
                 }
 
-              });  
-            });
+              })  
+            })
           } else {
             res.redirect('/deliveryboylogin');
           }
@@ -1502,6 +1518,3 @@ var cleanUp = schedule.scheduleJob('0 0 * * *', function(){
   // │    └──────────────────── minute (0 - 59)
   // └───────────────────────── second (0 - 59, OPTIONAL)
 });
-
-
-//AIzaSyARATL5BzsQmYSh8oRM4ZfsFvgRiiSz6oA
