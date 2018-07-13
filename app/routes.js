@@ -996,8 +996,16 @@ module.exports = function(app, passport) {
 
                                   CustomerCount.findOne({ countingOf : 'customer'}, function(err, customerCount) { 
 
-                                        foundCustomer.tagNumber = 'lbc' + (customerCount[0].noOfCustomer + 1);
-                                        customerCount[0].noOfCustomer = customerCount[0].noOfCustomer + 1;
+                                      if (!customerCount) {
+                                        var newCount = new CustomerCount();
+                                        newCount.countingOf = 'customer';
+                                        newCount.save();
+                                      }
+                                    });
+                                  CustomerCount.findOne({ countingOf : 'customer'}, function(err, customerCount) { 
+
+                                        foundCustomer.tagNumber = 'lbc' + (customerCount.totalNumber + 1);
+                                        customerCount.totalNumber = customerCount.totalNumber + 1;
                                         foundCustomer.bagNumber = req.body.bagNumber;
                                         foundCustomer.longGiven = longgiven;
                                         foundCustomer.shortGiven = shortgiven;
@@ -1005,7 +1013,7 @@ module.exports = function(app, passport) {
                                             if (err)
                                                 throw err;
                                         });
-                                        customerCount[0].save();
+                                        customerCount.save();
                                     });
 
                                 } else {
