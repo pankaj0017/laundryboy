@@ -755,6 +755,23 @@ module.exports = function(app, passport) {
             })
     });
 
+    app.get('/order/:id/cancel', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    throw err;
+            Order.findById(req.params.oid, function(err, order){
+
+              if (order && order.status == 'booked') {
+                order.status = 'terminated';
+                customer.isBusy = false;
+                order.save();
+                customer.save();
+              }
+            })
+            res.redirect('/profile');
+        })
+    });
+
 
 
     // =====================================

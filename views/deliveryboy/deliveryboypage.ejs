@@ -94,6 +94,79 @@
         
         </div>
     </div>
+
+    <br><br><br><br>
+
+        <center>
+        <ul class="nav nav-tabs">
+            <li class="active col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#alreadypicked">Picked</a></li>
+            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#alreadydelivered">Delivered</a></li>
+            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#alreadyterminated">Terminated</a></li>
+        </ul>
+    </center>
+
+    <div class="tab-content">
+
+        <br><br>
+
+        <div id="alreadypicked" class="tab-pane fade in active">
+
+            <div class="row">
+
+                <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'picked') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+        
+        </div>
+
+        <div id="alreadydelivered" class="tab-pane fade">
+
+            <div class="row">
+
+                <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'delivered') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+
+        </div>
+
+        <div id="alreadyterminated" class="tab-pane fade">
+
+            <div class="row">
+
+                <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'terminated') { %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
+                        <p>OrderID : <%= order._id %></p>
+                        <span><%= order.customer.name %></span>
+                        <span> : <%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span>
+                    </div> 
+
+                <% }}) %>
+                     
+            </div>
+
+        </div>
+
+    </div>
         
             
 </div>
