@@ -997,23 +997,24 @@ module.exports = function(app, passport) {
                                   CustomerCount.findOne({ countingOf : 'customer'}, function(err, customerCount) { 
 
                                       if (!customerCount) {
-                                        var newCount = new CustomerCount();
-                                        newCount.countingOf = 'customer';
-                                        newCount.save();
-                                      }
-                                    });
-                                  CustomerCount.findOne({ countingOf : 'customer'}, function(err, customerCount) { 
-
-                                        foundCustomer.tagNumber = 'lbc' + (customerCount.totalNumber + 1);
-                                        customerCount.totalNumber = customerCount.totalNumber + 1;
-                                        foundCustomer.bagNumber = req.body.bagNumber;
-                                        foundCustomer.longGiven = longgiven;
-                                        foundCustomer.shortGiven = shortgiven;
-                                        foundCustomer.save(function(err) { 
-                                            if (err)
-                                                throw err;
-                                        });
+                                        var customerCount = new CustomerCount();
+                                        customerCount.countingOf = 'customer';
                                         customerCount.save();
+                                        foundCustomer.tagNumber = 'lbc1';
+                                        console.log("here");
+                                      } else {
+                                          foundCustomer.tagNumber = 'lbc' + (customerCount.totalNumber + 1);
+                                          customerCount.totalNumber = customerCount.totalNumber + 1;
+                                          customerCount.save();
+                                      }
+                                      foundCustomer.bagNumber = req.body.bagNumber;
+                                      foundCustomer.longGiven = longgiven;
+                                      foundCustomer.shortGiven = shortgiven;
+                                      foundCustomer.save(function(err) { 
+                                          if (err)
+                                              throw err;
+                                      });
+                                          
                                     });
 
                                 } else {
