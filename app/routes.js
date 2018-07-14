@@ -1516,7 +1516,7 @@ function isAdmin(req, res, next) {
     res.redirect('/login');
 }
 var cleanUp = schedule.scheduleJob('0 0 * * *', function(){
-  console.log('The answer to life, the universe, and everything!');
+  console.log('Auto Cleaning');
 
   // *    *    *    *    *    *
   // ┬    ┬    ┬    ┬    ┬    ┬
@@ -1532,12 +1532,21 @@ var cleanUp = schedule.scheduleJob('0 0 * * *', function(){
     deliveryboys.forEach(function(deliveryboy){ 
       deliveryboy.currentOrders.forEach(function(order){
         if (order.status == 'delivered' || order.status == 'terminated') {
-          console.log(order);
-          console.log("hello");
           deliveryboy.currentOrders.remove(order);
         }
       })
       deliveryboy.save();
+    })
+  })
+  Vendor.find({}).populate("currentOrders").exec(function(err, vendors){
+    vendors.forEach(function(vendor){ 
+      vendor.currentOrders.forEach(function(order){
+        if (order.status == 'delivered' || order.status == 'terminated') {
+          console.log(order);
+          vendor.currentOrders.remove(order);
+        }
+      })
+      vendor.save();
     })
   })
 });
