@@ -12,9 +12,28 @@
 <body>
 <div class="container">
 
+    <h1 style="color: solid grey"><center>Recharge</center></h1><br>
 <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span>Recharge</h1>
+    <div class="table-responsive">          
+        <table class="table">    
+            <tr>
+                <td>DeliveryBoy Name : </td><td><%= deliveryboy.name %></td>
+            </tr>
+            <tr>
+                <td>DeliveryBoy Tag : </td><td><%= deliveryboy.username %></td>
+            </tr>
+            <tr>
+                <td>Customer Name : </td><td><%= customer.name %></td>
+            </tr>
+            <tr>
+                <td>Customer Tag : </td><td><%= customer.tagNumber %></td>
+            </tr>
+            <tr>
+                <td>Customer Address : </td><td><%= customer.address %></td>
+            </tr>
+        </table>
+    </div>
 
     <% if (message.length > 0) { %>
         <% if (message == "Recharge Done") { %>

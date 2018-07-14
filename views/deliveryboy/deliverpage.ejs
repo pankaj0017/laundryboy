@@ -14,12 +14,35 @@
 
 <div class="col-sm-6 col-sm-offset-3">
 
-    <p>Name : <%= order.customer.name %></p>
-    <p>Tag Number : <%= order.customer.tagNumber %><p>
-    <p>Address : <%= order.customer.address %></p>
-    <p>Number : <%= order.customer.mainNumber %></p>
-    <p>Cost : <%= order.cost %></p>
-    <p>Description : <%= order.description %><p>
+    <div class="table-responsive">          
+        <table class="table">    
+            <tr>
+                <td>DeliveryBoy Name : </td><td><%= order.deliveryBoy.name %></td>
+            </tr>
+            <tr>
+                <td>DeliveryBoy Tag : </td><td><%= order.deliveryBoy.username %></td>
+            </tr>
+            <tr>
+                <td>Customer Name : </td><td><%= order.customer.name %></td>
+            </tr>
+            <tr>
+                <td>Customer Tag : </td><td><%= order.customer.tagNumber %></td>
+            </tr>
+            <tr>
+                <td>Customer Address : </td><td><%= order.customer.address %></td>
+            </tr>
+            <tr>
+                <td>Customer Number : </td><td><%= order.customer.mainNumber %></td>
+            </tr>
+            <tr>
+                <td>Order Cost : </td><td><%= order.cost%></td>
+            </tr>
+            <tr>
+                <td>Order Description : </td><td><%= order.description %></td>
+            </tr>
+        </table>
+    </div>
+
     <a href="/deliveryboy/<%= order.deliveryBoy._id %>/deliver/<%= order._id %>/resend">Resend OTP</a>
 
     <% if (message.length > 0) { %>
