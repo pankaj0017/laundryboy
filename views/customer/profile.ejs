@@ -50,6 +50,7 @@
                     <li>Name : <%= customer.name %></li>
                     <li>Address : Rs. <%= customer.address %></li>
                     <li>Contact No.: <%= customer.mainNumber %></li>
+                    <li>Customer Tag : <%= customer.tagNumber %></li>
                   </ol>
                 <form method="get" action="/update">
                      <button type="submit">Edit Details</button>
@@ -60,9 +61,10 @@
                 <div class="pri_table_list">
                   <h3>Remaining<br/> <span>Plan Details</span></h3>
                   <ol text-align:center>
-                    <li>Long Clothes : Rs. <%= customer.longClothes %></li>
+                    <li>Long Clothes : <%= customer.longClothes %></li>
                     <li>Short Clothes : <%= customer.shortClothes %></li>
                     <li>Validity : <%= customer.daysLeft %></li>
+                    <li>Pickup Key : <%= customer.pickUpKey %></li>
                   </ol>
                 <form method="get" action="/pincode">
                      <button type="submit" 

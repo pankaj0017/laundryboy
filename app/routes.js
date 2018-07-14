@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/', function(req, res) {
-        if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com") {
+        if (req.isAuthenticated() && req.user.local.email == "laundrybuoy@gmail.com") {
             res.redirect("/admin");
         } else {
           Plan.find({}, function(err, plans) {
@@ -1089,8 +1089,10 @@ module.exports = function(app, passport) {
                 });
                 if (customer.history.length == 1) {
                   Customer.findById(customer.referedBy, function(err, referedByCustomer){
-                    referedByCustomer.discount = discount + 1;
-                    referedByCustomer.save();
+                    if (referedByCustomer) {
+                      referedByCustomer.discount = discount + 1;
+                      referedByCustomer.save();
+                    }
                   })
                 }
 
@@ -1273,7 +1275,7 @@ module.exports = function(app, passport) {
                 if (deliveryboy) {
 
                   if(req.body.dPass == deliveryboy.password) {
-                    if (req.body.payWithPlan) {
+                    if (req.body.payWithPlan && customer.daysLeft) {
 
                       var costWithPlan = 0;
                       if ((customer.longClothes < customer.longGiven) && (customer.shortClothes < customer.shortGiven)) {
@@ -1509,7 +1511,7 @@ function isLoggedOut(req, res, next) {
     res.redirect('/profile');
 }
 function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.local.email == "pkj0017@gmail.com")
+    if (req.isAuthenticated() && req.user.local.email == "laundrybuoy@gmail.com")
         return next();
     res.redirect('/login');
 }
