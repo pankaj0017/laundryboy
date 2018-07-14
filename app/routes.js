@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
     app.post('/forget', isLoggedOut, function(req, res) {
       User.findOne({ 'local.email' :  req.body.email }, function(err, user) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if (!user) {
               req.flash('forgetMessage', 'Incorrect Username');
               res.redirect('/forget');
@@ -62,7 +62,7 @@ module.exports = function(app, passport) {
     app.post('/forget/:email', isLoggedOut, function(req, res) {
       User.findOne({ 'local.email' :  req.params.email }, function(err, user) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if (!user) {
 
               req.flash('forgetMessage', 'Incorrect Username');
@@ -126,7 +126,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }).populate("history numbers currentRecharges").exec(function(err, customer) {
             // if there are any errors, return the error
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
 
             res.render('customer/profile.ejs',{customer : customer});
         })
@@ -136,7 +136,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
             // if there are any errors, return the error
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
 
             res.render('customer/update.ejs',{customer : customer});
         })
@@ -145,7 +145,7 @@ module.exports = function(app, passport) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
             // if there are any errors, return the error
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
 
             customer.name = req.body.customer.name;
             customer.pinCode = req.body.customer.pinCode;
@@ -153,7 +153,7 @@ module.exports = function(app, passport) {
             customer.address = req.body.customer.address;
             customer.save(function(err) {   
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 res.redirect('/profile');
             });
         })
@@ -161,17 +161,17 @@ module.exports = function(app, passport) {
     app.get('/update/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 res.render('customer/mobile.ejs',{customer : customer, message: req.flash('addMobileMessage')});
             })
     });
     app.post('/update/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
               if (err)
-                  throw err;
+                  console.log(err),res.redirect('/logout');
               Mobile.findOne({ 'number' :  req.body.newMobile.number }, function(err, mobile) {
                   if (err)
-                      throw err;
+                      console.log(err),res.redirect('/logout');
                   if (mobile) {
                     req.flash('addMobileMessage', 'Mobile Number already in use');
                     res.redirect('/update/mobile');
@@ -195,7 +195,7 @@ module.exports = function(app, passport) {
     app.post('/update/mobile/:id', isLoggedIn, function(req, res){
        Mobile.findByIdAndRemove(req.params.id, function(err){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else {
               res.redirect("/update/mobile");
           }
@@ -224,7 +224,7 @@ module.exports = function(app, passport) {
     app.get('/admin/customerdetails/:id', isAdmin, function(req, res){
        Customer.findById(req.params.id).populate("numbers").exec(function(err, customer) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (customer) {
               res.render('admin/customerdetail.ejs',{customer : customer});
           } else {
@@ -235,7 +235,7 @@ module.exports = function(app, passport) {
     app.post('/admin/customerdetails/:id', isAdmin, function(req, res){
        Customer.findById(req.params.id, function(err, foundCustomer){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (customer) {
 
               foundCustomer.daysLeft = req.body.customer.daysLeft;
@@ -259,20 +259,20 @@ module.exports = function(app, passport) {
 
                     Customer.findOne({ 'user' :  foundUser._id }, function(err, customer) {
                         if (err)
-                            throw err;
+                            console.log(err),res.redirect('/logout');
                         res.redirect('/admin/customerdetails/' + customer._id);
                     })
                 } else {
 
                         User.findOne({ 'facebook.email' : req.body.viaEmail }, function(err, foundUser) {
 
-                            if (err) throw err;
+                            if (err) console.log(err),res.redirect('/logout');
 
                             if (foundUser) {
 
                                 Customer.findOne({ 'user' :  foundUser._id }, function(err, customer) {
                                     if (err)
-                                        throw err;
+                                        console.log(err),res.redirect('/logout');
                                     res.redirect('/admin/customerdetails/' + customer._id);
                                 })
 
@@ -280,13 +280,13 @@ module.exports = function(app, passport) {
 
                                     User.findOne({ 'google.email' : req.body.viaEmail }, function(err, foundUser) {
 
-                                        if (err) throw err;
+                                        if (err) console.log(err),res.redirect('/logout');
 
                                         if (foundUser) {
 
                                             Customer.findOne({ 'user' :  foundUser._id }, function(err, customer) {
                                                 if (err)
-                                                    throw err;
+                                                    console.log(err),res.redirect('/logout');
                                                 res.redirect('/admin/customerdetails/' + customer._id);
                                             })
 
@@ -304,7 +304,7 @@ module.exports = function(app, passport) {
     app.post('/admin/customer/tag', isAdmin, function(req, res) {
         Customer.findOne({ 'tagNumber' :  req.body.viaTag }, function(err, customer) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if (customer) {
               res.redirect('/admin/customerdetails/' + customer._id);
             } else {
@@ -315,7 +315,7 @@ module.exports = function(app, passport) {
     app.post('/admin/customer/cid', isAdmin, function(req, res) {
         Customer.findById(req.body.viaID, function(err, customer) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if (customer) {
               res.redirect('/admin/customerdetails/' + customer._id);
             } else {
@@ -326,7 +326,7 @@ module.exports = function(app, passport) {
     app.post('/admin/customer/mobile', isAdmin, function(req, res) {
         Mobile.findOne({ 'number' :  req.body.viaMobile }, function(err, mobile) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if (mobile) {
               res.redirect('/admin/customerdetails/' + mobile.owner);
             } else {
@@ -344,7 +344,7 @@ module.exports = function(app, passport) {
     app.get('/admin/pincodes', isAdmin, function(req, res) {
         PinCode.find({}).populate("vendor deliveryBoy").exec(function(err, allPincodes) {
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.render("admin/pincode.ejs",{pincodes : allPincodes});
            }
@@ -353,12 +353,12 @@ module.exports = function(app, passport) {
     app.post('/admin/pincodes', isAdmin, function(req, res) {
         Vendor.findOne({ 'username' :  req.body.vendorTag }, function(err, foundVendor) {
             if (err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
             } else if (foundVendor) {
 
               DeliveryBoy.findOne({ 'username' :  req.body.deliveryBoyTag }, function(err, foundDeliveryBoy) {
                   if (err) {
-                      throw err;
+                      console.log(err),res.redirect('/logout');
                   } else if (foundDeliveryBoy) {
 
                     newPinCode = new PinCode();
@@ -381,7 +381,7 @@ module.exports = function(app, passport) {
     app.post('/admin/pincodes/:id', isAdmin, function(req, res){
        PinCode.findByIdAndRemove(req.params.id, function(err){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else {
               res.redirect("/admin/pincodes");
           }
@@ -398,7 +398,7 @@ module.exports = function(app, passport) {
     app.get('/admin/vendors', isAdmin, function(req, res) {
         Vendor.find({}, function(err, allVendors){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               Vendor.count(function(error, vendorCount) {
                   res.render("admin/vendor.ejs",{vendors : allVendors, vendorCount : vendorCount + 1});
@@ -409,7 +409,7 @@ module.exports = function(app, passport) {
     app.post('/admin/vendors', isAdmin, function(req, res) {
         Vendor.create(req.body.newVendor, function(err, newVendor){
            if(err) {
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
                res.redirect('/admin/vendors');
            }
@@ -418,7 +418,7 @@ module.exports = function(app, passport) {
     app.get('/admin/vendors/:id', isAdmin, function(req, res){
        Vendor.findById(req.params.id, function(err, vendor){
           if(err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (vendor) {
               res.render('admin/vendordetail.ejs',{vendor : vendor});
           } else {
@@ -429,7 +429,7 @@ module.exports = function(app, passport) {
     app.post('/admin/vendors/:id', isAdmin, function(req, res){
        Vendor.findById(req.params.id, function(err, foundVendor){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (foundVendor) {
               foundVendor.name = req.body.vendor.name;
               foundVendor.username = req.body.vendor.username;
@@ -456,7 +456,7 @@ module.exports = function(app, passport) {
     app.get('/admin/deliveryboys', isAdmin, function(req, res) {
         DeliveryBoy.find({}, function(err, allDeliveryBoys){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               DeliveryBoy.count(function(error, deliveryBoyCount) {
                 res.render("admin/deliveryboy.ejs",{deliveryboys : allDeliveryBoys , deliveryBoyCount : deliveryBoyCount + 1});
@@ -467,7 +467,7 @@ module.exports = function(app, passport) {
     app.post('/admin/deliveryboys', isAdmin, function(req, res) {
         DeliveryBoy.create(req.body.newDeliveryBoy, function(err, newDeliveryBoy){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {   
                res.redirect('/admin/deliveryboys');
            }
@@ -476,7 +476,7 @@ module.exports = function(app, passport) {
     app.get('/admin/deliveryboys/:id', isAdmin, function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (deliveryboy) {
               res.render('admin/deliveryboydetail.ejs',{deliveryboy : deliveryboy});
           } else {
@@ -487,7 +487,7 @@ module.exports = function(app, passport) {
     app.post('/admin/deliveryboys/:id', isAdmin, function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, foundDeliveryBoy){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (foundDeliveryBoy) {
               foundDeliveryBoy.name = req.body.deliveryboy.name;
               foundDeliveryBoy.username = req.body.deliveryboy.username;
@@ -514,7 +514,7 @@ module.exports = function(app, passport) {
     app.get('/admin/clothes', isAdmin, function(req, res) {
         Clothe.find({}, function(err, allClothes){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.render("admin/clothes.ejs",{clothes : allClothes});
            }
@@ -523,7 +523,7 @@ module.exports = function(app, passport) {
     app.post('/admin/clothes', isAdmin, function(req, res) {
         Clothe.create(req.body.newClothe, function(err, newClothe){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {   
                res.redirect('/admin/clothes');
            }
@@ -532,7 +532,7 @@ module.exports = function(app, passport) {
     app.post('/admin/clothes/:id', isAdmin, function(req, res) {
         Clothe.findByIdAndRemove(req.params.id, function(err){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.redirect("/admin/clothes");
            }
@@ -547,7 +547,7 @@ module.exports = function(app, passport) {
     app.get('/admin/plans', isAdmin, function(req, res) {
         Plan.find({}, function(err, allPlans){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.render("admin/plan.ejs",{plans : allPlans});
            }
@@ -556,7 +556,7 @@ module.exports = function(app, passport) {
     app.post('/admin/plans', isAdmin, function(req, res) {
         Plan.create(req.body.newPlan, function(err, newPlan){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {   
                res.redirect('/admin/plans');
            }
@@ -565,7 +565,7 @@ module.exports = function(app, passport) {
     app.post('/admin/plans/:id', isAdmin, function(req, res) {
         Plan.findByIdAndRemove(req.params.id, function(err){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.redirect("/admin/plans");
            }
@@ -581,7 +581,7 @@ module.exports = function(app, passport) {
     app.get('/admin/singleservices', isAdmin, function(req, res) {
         SingleService.find({}, function(err, allSingleServices){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.render("admin/singleservice.ejs",{singleServices : allSingleServices});
            }
@@ -590,7 +590,7 @@ module.exports = function(app, passport) {
     app.post('/admin/singleservices', isAdmin, function(req, res) {
         SingleService.create(req.body.newSingleService, function(err, newSingleService){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {   
                res.redirect('/admin/singleservices');
            }
@@ -599,7 +599,7 @@ module.exports = function(app, passport) {
     app.post('/admin/singleservices/:id', isAdmin, function(req, res) {
         SingleService.findByIdAndRemove(req.params.id, function(err){
            if(err){
-               throw err;
+               console.log(err),res.redirect('/logout');
            } else {
               res.redirect("/admin/singleservices");
            }
@@ -614,22 +614,22 @@ module.exports = function(app, passport) {
     app.get('/pincode', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 res.render('order/pincode.ejs', { customer : customer, message: req.flash('pincodeAvailability') }); 
             })
     });
     app.post('/pincode', isLoggedIn, function(req, res) {
         PinCode.findOne({ 'pinCode' :  req.body.pincode }, function(err, foundPinCode) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 if (foundPinCode) {
                     Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                         if (err)
-                            throw err;
+                            console.log(err),res.redirect('/logout');
                         customer.pinCode = req.body.pincode;
                         customer.save(function(err) { 
                             if (err)
-                                throw err;
+                                console.log(err),res.redirect('/logout');
                         });
                         res.redirect('/contact');
                     })
@@ -643,14 +643,14 @@ module.exports = function(app, passport) {
     app.get('/contact', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }).populate("numbers").exec(function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 res.render('order/contact.ejs',{customer : customer});
             })
     });
     app.post('/contact', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 customer.mainNumber = req.body.mobile;
                 customer.save();
                 res.redirect('/order');
@@ -660,17 +660,17 @@ module.exports = function(app, passport) {
     app.get('/contact/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 res.render('order/mobile.ejs',{customer : customer, message : req.flash('addMobileMessage')});
             })
     });
     app.post('/contact/mobile', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
               if (err)
-                  throw err;
+                  console.log(err),res.redirect('/logout');
               Mobile.findOne({ 'number' :  req.body.newMobile.number }, function(err, mobile) {
                   if (err)
-                      throw err;
+                      console.log(err),res.redirect('/logout');
                   if (mobile) {
                     req.flash('addMobileMessage', 'Mobile Number Already Taken');
                     res.redirect('/contact/mobile');
@@ -696,7 +696,7 @@ module.exports = function(app, passport) {
     app.get('/order', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             res.render("order/order.ejs",{customer : customer, message : req.flash('customerOrderMessage')});
         })
     });
@@ -704,7 +704,7 @@ module.exports = function(app, passport) {
     app.post('/order', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 if (customer.isBusy) {
                     req.flash('customerOrderMessage', 'Please Wait Till Your Order Completed');
                     res.redirect("/order");
@@ -722,20 +722,20 @@ module.exports = function(app, passport) {
 
                     customer.save(function(err) {   
                         if (err)
-                            throw err;
+                            console.log(err),res.redirect('/logout');
                     });
 
                     var newOrder = new Order();
                     newOrder.customer = customer._id;
                     PinCode.findOne({ 'pinCode' :  req.body.customer.pinCode }, function(err, foundPinCode) {
                         if (err)
-                            throw err;
+                            console.log(err),res.redirect('/logout');
                         DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
                             if (err)
-                                throw err;
+                                console.log(err),res.redirect('/logout');
                             Vendor.findById(foundPinCode.vendor, function(err, foundVendor) {
                                 if (err)
-                                    throw err;
+                                    console.log(err),res.redirect('/logout');
 
                                 newOrder.deliveryBoy = foundDeliveryBoy._id;
                                 newOrder.vendor = foundVendor._id;
@@ -758,7 +758,7 @@ module.exports = function(app, passport) {
     app.get('/order/:id/cancel', isLoggedIn, function(req, res) {
         Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
             Order.findById(req.params.id, function(err, order){
 
               if (order && order.status == 'booked') {
@@ -786,7 +786,7 @@ module.exports = function(app, passport) {
     app.post('/vendorlogin', function(req, res) {
         Vendor.findOne({ 'username' :  req.body.tag }, function(err, vendor) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if(vendor) {
                 if(req.body.password == vendor.password) {
                     res.redirect('/vendor/' + vendor._id);
@@ -804,7 +804,7 @@ module.exports = function(app, passport) {
     app.get('/vendor/:id', function(req, res){
        Vendor.findById(req.params.id).deepPopulate("currentOrders.customer").exec(function(err, vendor) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (vendor) {
               res.render('vendor/vendorpage.ejs',{vendor : vendor});
           } else {
@@ -817,13 +817,13 @@ module.exports = function(app, passport) {
     app.get('/vendor/:id/received/:oid', function(req, res){
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (getOrder && getOrder.vendor == req.params.id) {
 
             getOrder.status = "received";
             getOrder.save(function(err) { 
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
             });
             res.redirect('/vendor/' + req.params.id);
           } else {
@@ -835,13 +835,13 @@ module.exports = function(app, passport) {
     app.get('/vendor/:id/washed/:oid', function(req, res){
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (getOrder && getOrder.vendor == req.params.id) {
 
             getOrder.status = "washed";
             getOrder.save(function(err) { 
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
 
             });
             res.redirect('/vendor/' + req.params.id);
@@ -854,13 +854,13 @@ module.exports = function(app, passport) {
     app.get('/vendor/:id/ironed/:oid', function(req, res){
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (getOrder && getOrder.vendor == req.params.id) {
 
             getOrder.status = "ironed";
             getOrder.save(function(err) { 
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
 
             });
             res.redirect('/vendor/' + req.params.id);
@@ -883,7 +883,7 @@ module.exports = function(app, passport) {
     app.post('/deliveryboylogin', function(req, res) {
         DeliveryBoy.findOne({ 'username' :  req.body.tag }, function(err, deliveryboy) {
             if (err)
-                throw err;
+                console.log(err),res.redirect('/logout');
             if(deliveryboy) {
                 if(req.body.password == deliveryboy.password) {
                     res.redirect('/deliveryboy/' + deliveryboy._id);
@@ -901,7 +901,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id', function(req, res){
        DeliveryBoy.findById(req.params.id).deepPopulate("currentOrders.customer").exec(function(err, deliveryboy) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (deliveryboy) {
               res.render('deliveryboy/deliveryboypage.ejs',{deliveryboy : deliveryboy});
           } else {
@@ -913,7 +913,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/pickup/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order && order.deliveryBoy._id == req.params.id) {
 
             Clothe.find({}, function(err, allClothes){
@@ -933,7 +933,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/pickup/:oid/onlyiron', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order && order.deliveryBoy._id == req.params.id) {
 
             Clothe.find({}, function(err, allClothes){
@@ -953,7 +953,7 @@ module.exports = function(app, passport) {
     app.post('/deliveryboy/:id/pickup/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, getOrder){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (getOrder && getOrder.deliveryBoy._id == req.params.id) {
 
             if (req.body.password == getOrder.deliveryBoy.password) {
@@ -962,7 +962,7 @@ module.exports = function(app, passport) {
 
                     Clothe.find({}, function(err, clothes){ 
                        if(err){
-                           throw err;
+                           console.log(err),res.redirect('/logout');
                        } else {
                             var summary = "";
                             var calculateCost = 0, longgiven = 0, shortgiven = 0;
@@ -1012,7 +1012,7 @@ module.exports = function(app, passport) {
                                       foundCustomer.shortGiven = shortgiven;
                                       foundCustomer.save(function(err) { 
                                           if (err)
-                                              throw err;
+                                              console.log(err),res.redirect('/logout');
                                       });
                                           
                                     });
@@ -1023,7 +1023,7 @@ module.exports = function(app, passport) {
                                     foundCustomer.shortGiven = shortgiven;
                                     foundCustomer.save(function(err) { 
                                         if (err)
-                                            throw err;
+                                            console.log(err),res.redirect('/logout');
                                     });
                                 }
 
@@ -1034,7 +1034,7 @@ module.exports = function(app, passport) {
                             getOrder.cost = calculateCost;
                             getOrder.save(function(err) { 
                                 if (err)
-                                    throw err;
+                                    console.log(err),res.redirect('/logout');
                             });
                        }
                     });
@@ -1066,13 +1066,13 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/out/:oid', function(req, res){
        Order.findById(req.params.oid, function(err, getOrder){
           if(err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (getOrder && getOrder.deliveryBoy._id == req.params.id) {
 
             getOrder.status = "out";
             getOrder.save(function(err) { 
                 if (err)
-                    throw err;
+                    console.log(err),res.redirect('/logout');
             });
             Customer.findById(getOrder.customer, function(err, customer){
 
@@ -1085,7 +1085,7 @@ module.exports = function(app, passport) {
 
                 customer.save(function(err) {   
                     if (err)
-                        throw err;
+                        console.log(err),res.redirect('/logout');
                 });
                 if (customer.history.length == 1) {
                   Customer.findById(customer.referedBy, function(err, referedByCustomer){
@@ -1111,7 +1111,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/recharge', function(req, res){ 
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (deliveryboy) {
               res.render('deliveryboy/ctagforrecharge.ejs',{deliveryboy : deliveryboy, message: req.flash('tagforrecharge') });
           } else {
@@ -1123,7 +1123,7 @@ module.exports = function(app, passport) {
     app.post('/deliveryboy/:id/recharge', function(req, res){
         Customer.findOne({ 'tagNumber' :  req.body.customerTag }, function(err, customer) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else {
             if (!customer) {
               req.flash('tagforrecharge', 'No Customer Found');
@@ -1138,15 +1138,15 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/recharge/:cid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (deliveryboy) {
               Customer.findById(req.params.cid, function(err, customer) {
                 if(err){
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 } else if (customer) {
                     Plan.find({}, function(err, plans){
                        if(err){
-                           throw err;
+                           console.log(err),res.redirect('/logout');
                        } else {
                             res.render('deliveryboy/recharge.ejs',{ plans : plans, deliveryboy : deliveryboy , customer : customer, message: req.flash('rechargestatus') });
                        }
@@ -1164,16 +1164,16 @@ module.exports = function(app, passport) {
     app.post('/deliveryboy/:id/recharge/:cid', function(req, res){
        DeliveryBoy.findById(req.params.id, function(err, deliveryboy) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (deliveryboy) {
               Customer.findById(req.params.cid, function(err, customer) {
                 if(err){
-                    throw err;
+                    console.log(err),res.redirect('/logout');
                 } else if (customer) {
 
                     Plan.findOne({ 'amount' :  req.body.getPlan }, function(err, plan){
                        if(err){
-                           throw err;
+                           console.log(err),res.redirect('/logout');
                        } else if (plan) {
                             if (deliveryboy.password == req.body.dPass) {
 
@@ -1219,7 +1219,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/payment/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order) {
           if(err) {
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order && order.deliveryBoy._id == req.params.id) {
 
               var costWithPlan = 0;
@@ -1265,7 +1265,7 @@ module.exports = function(app, passport) {
     app.post('/deliveryboy/:id/payment/:oid', function(req, res){
        Order.findById(req.params.oid, function(err, order) {
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order) {
 
             Customer.findById(order.customer, function(err, customer) {
@@ -1370,7 +1370,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/deliver/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order && order.deliveryBoy._id == req.params.id) {
               if (order.isPaid) {
 
@@ -1388,7 +1388,7 @@ module.exports = function(app, passport) {
     app.get('/deliveryboy/:id/deliver/:oid/resend', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order && order.deliveryBoy._id == req.params.id) {
               if (order.isPaid) {
 
@@ -1403,7 +1403,7 @@ module.exports = function(app, passport) {
 
                     customer.save(function(err) {   
                         if (err)
-                            throw err;
+                            console.log(err),res.redirect('/logout');
                     });
                 })
                 req.flash('deliveryMessage', 'OTP resend');
@@ -1421,7 +1421,7 @@ module.exports = function(app, passport) {
     app.post('/deliveryboy/:id/deliver/:oid', function(req, res){
        Order.findById(req.params.oid).populate("deliveryBoy").exec(function(err, order){
           if(err){
-              throw err;
+              console.log(err),res.redirect('/logout');
           } else if (order && order.deliveryBoy._id == req.params.id) {
               if (order.isPaid) {
 
