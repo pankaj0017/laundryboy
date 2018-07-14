@@ -1183,9 +1183,6 @@ module.exports = function(app, passport) {
                               newRecharge.deliveryBoy = deliveryboy._id;
                               newRecharge.save();
 
-                              deliveryboy.currentRecharges.push(newRecharge);
-                              deliveryboy.save();
-
                               customer.daysLeft = customer.daysLeft + plan.validity;
                               customer.longClothes = customer.longClothes + plan.longClothes;
                               customer.shortClothes = customer.shortClothes + plan.shortClothes;
@@ -1520,11 +1517,7 @@ function isAdmin(req, res, next) {
 }
 var cleanUp = schedule.scheduleJob('0 0 * * *', function(){
   console.log('The answer to life, the universe, and everything!');
-  // for(var i = array.length - 1; i >= 0; i--) {
-  //     if(array[i] === number) {
-  //        array.splice(i, 1);
-  //     }
-  // }
+
   // *    *    *    *    *    *
   // ┬    ┬    ┬    ┬    ┬    ┬
   // │    │    │    │    │    │
@@ -1534,4 +1527,17 @@ var cleanUp = schedule.scheduleJob('0 0 * * *', function(){
   // │    │    └─────────────── hour (0 - 23)
   // │    └──────────────────── minute (0 - 59)
   // └───────────────────────── second (0 - 59, OPTIONAL)
+
+  DeliveryBoy.find({}).populate("currentOrders").exec(function(err, deliveryboys){
+    deliveryboys.forEach(function(deliveryboy){ 
+      deliveryboy.currentOrders.forEach(function(order){
+        if (order.status == 'delivered' || order.status == 'terminated') {
+          console.log(order);
+          console.log("hello");
+          deliveryboy.currentOrders.remove(order);
+        }
+      })
+      deliveryboy.save();
+    })
+  })
 });

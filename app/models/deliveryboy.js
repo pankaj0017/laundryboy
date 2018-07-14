@@ -16,12 +16,6 @@ var DeliveryBoySchema = new mongoose.Schema({
          type: mongoose.Schema.Types.ObjectId,
          ref: "Order"
       }
-   ],
-   currentRecharges: [
-      {
-         type: mongoose.Schema.Types.ObjectId,
-         ref: "Recharge"
-      }
    ]
 });
 
