@@ -4,7 +4,8 @@
 <head>
     <title>LaundryBuoy</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+
   <link href="/css/style.css" rel="stylesheet">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,7 +20,8 @@
       var copyText = document.getElementById("invite-link");
       copyText.select();
       document.execCommand("copy");
-      alert("Copied the text: " + copyText.value);
+      $(".invite-button").removeClass("btn-default");
+      $(".invite-button").addClass("btn-info");
     }
     </script>
 </head>
@@ -35,7 +37,7 @@
             <span class="icon-bar"></span>
           </button>
         <a class="navbar-brand page-scroll sticky-logo" href="/">
-            <h1><span>LaundryBuoy</span></h1>
+            <h1><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
         </a>
     </div>
     <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
@@ -98,11 +100,12 @@
 <div>
     <label>SHARE VIA</label>
     <a href="whatsapp://send?text=SignUp with this link https://www.laundrybuoy.com/signup/<%= customer._id %> and get 10% off on your first order. I'll get 10% off too, on my next order." data-action="share/whatsapp/share"><i class="fa fa-whatsapp" style="font-size:36px;color:green"></i></a>
+    <a href=”fb-messenger://share/?link= https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fsharing%2Freference%2Fsend-dialog&app_id=123456789”><i class="fa fa-facebook" style="font-size:30px;color:blue"></i></a>
 </div>
 
 
-            <!-- Nav tabs -->
-            <br><br>
+    <!-- Nav tabs -->
+    <br><br>
         <center>
         <ul class="nav nav-tabs">
             <li class="active col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#rechargehistory">Recharge History</a></li>
@@ -121,8 +124,8 @@
                 <% customer.currentRecharges.forEach(function(recharge){  %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <span><%= recharge.rechargeDate %></span>
-                        <span> : <%= recharge.amount %></span>
+                        <span><strong>Recharge Date : </strong><%= recharge.rechargeDate %></span>
+                        <span><strong>Amount : </strong><%= recharge.amount %></span>
                     </div> 
 
                 <% }) %>
@@ -139,12 +142,12 @@
                 <% customer.history.forEach(function(order){  %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <p>OrderID : <%= order._id %></p>
-                        <span><%= order.description %></span>
-                        <span> : <%= order.cost %></span>
-                        <span> : <%= order.status %></span>
-                        <span> : <%= order.orderDate %></span>
-                        <span> : <%= order.deliveryDate %></span>
+                        <p><strong>OrderID : </strong><%= order._id %></p>
+                        <p><strong>Description : </strong><%= order.description %></p>
+                        <span><strong>Cost : </strong><%= order.cost %></span>
+                        <span><strong>Status : </strong><%= order.status %></span>
+                        <p><strong>Order Date : </strong><%= order.orderDate %></p>
+                        <span><strong>Delivered Date : </strong><%= order.deliveryDate %></span>
                     </div> 
 
                 <% }) %>

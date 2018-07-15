@@ -33,12 +33,16 @@
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
-                        <span><%= order.customer.name %></span>
-                        <span> : <%= order.customer.address %></span>
-                        <span> : <%= order.customer.pinCode %></span>
+                        <p><span>Tag : <%= order.customer.tagNumber %></span>
+                        <span>Bag : <%= order.customer.bagNumber %></span>
+                        <% if (order.onlyIron) { %>
+                            <span>Only Iron</span>
+                        <% } %>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/out/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
                         </span>
+                        <p>Description : <%= order.description %></p>
+                        <p>Contact Number : <%= order.customer.mainNumber %></p>
                     </div> 
 
                 <% }}) %>
@@ -62,6 +66,7 @@
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
                         </span>
+                        <p>Contact Number : <%= order.customer.mainNumber %></p>
                     </div> 
 
                 <% }}) %>
@@ -79,13 +84,14 @@
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
-                        <p>Clothes : <%= order.description %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
                         <span> : <%= order.customer.pinCode %></span>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/deliver/<%=order._id%>" class="btn btn-default btn-sm">Deliver</a>
                         </span>
+                        <p>Description : <%= order.description %></p>
+                        <p>Contact Number : <%= order.customer.mainNumber %></p>
                     </div> 
 
                 <% }}) %>

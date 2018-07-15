@@ -28,14 +28,19 @@
                 <% vendor.currentOrders.forEach(function(order){ if(order.status === 'picked') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
+
                         <p>OrderID : <%= order._id %></p>
                         <p><span>Tag : <%= order.customer.tagNumber %></span>
                         <span>Bag : <%= order.customer.bagNumber %></span>
-                        <span>Only Iron : <%= order.onlyIron %></span>
+                        <% if (order.onlyIron) { %>
+                            <span>Only Iron</span>
+                        <% } %>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/received/<%=order._id%>" class="btn btn-default btn-sm">Received</a>
                         </span></p>
-                    </div> 
+                        <p>Description : <%= order.description %></p>
+                        <p>Contact Number : <%= order.customer.mainNumber %></p>
+                    </div>
 
                 <% }}) %>
                      
@@ -52,11 +57,16 @@
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
-                        <span>Tag : <%= order.customer.tagNumber %></span>
-                        <span>Only Iron : <%= order.onlyIron %></span>
+                        <p><span>Tag : <%= order.customer.tagNumber %></span>
+                        <span>Bag : <%= order.customer.bagNumber %></span>
+                        <% if (order.onlyIron) { %>
+                            <span>Only Iron</span>
+                        <% } %>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/washed/<%=order._id%>" class="btn btn-default btn-sm">Washed</a>
                         </span>
+                        <p>Description : <%= order.description %></p>
+                        <p>Contact Number : <%= order.customer.mainNumber %></p>
                     </div> 
 
                 <% }}) %>
@@ -74,11 +84,16 @@
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
-                        <span>Tag : <%= order.customer.tagNumber %></span>
-                        <span>Only Iron : <%= order.onlyIron %></span>
+                        <p><span>Tag : <%= order.customer.tagNumber %></span>
+                        <span>Bag : <%= order.customer.bagNumber %></span>
+                        <% if (order.onlyIron) { %>
+                            <span>Only Iron</span>
+                        <% } %>
                         <span>
                             <a href="/vendor/<%=vendor._id%>/ironed/<%=order._id%>" class="btn btn-default btn-sm">Ironed</a>
                         </span>
+                        <p>Description : <%= order.description %></p>
+                        <p>Contact Number : <%= order.customer.mainNumber %></p>
                     </div> 
 
                 <% }}) %>

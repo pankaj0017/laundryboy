@@ -820,7 +820,11 @@ module.exports = function(app, passport) {
               console.log(err),res.redirect('/logout');
           } else if (getOrder && getOrder.vendor == req.params.id) {
 
-            getOrder.status = "received";
+            if (getOrder.onlyIron) {
+              getOrder.status = "washed";
+            } else {
+              getOrder.status = "received";
+            }
             getOrder.save(function(err) { 
                 if (err)
                     console.log(err),res.redirect('/logout');
@@ -987,6 +991,7 @@ module.exports = function(app, passport) {
                                           longgiven = longgiven + Number(req.body[clothe.name]);
                                         }
                                 }});
+                                summary = summary + req.body.customMessage;
 
                             }
 

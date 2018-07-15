@@ -256,10 +256,12 @@ preview-1
 
 .nivo-prevNav {
   left: 15px;
+  display: none;
 }
 
 .nivo-nextNav {
   right: 15px;
+  display: none;
 }
 
 .preview-1 a.nivo-nextNav {
