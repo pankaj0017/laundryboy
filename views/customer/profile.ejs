@@ -4,8 +4,7 @@
 <head>
     <title>LaundryBuoy</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
   <link href="/css/style.css" rel="stylesheet">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,8 +13,15 @@
 
     <style>
         body        { padding-top:80px; word-wrap:break-word; }
-
     </style>
+    <script>
+    function copyToClipboard() {
+      var copyText = document.getElementById("invite-link");
+      copyText.select();
+      document.execCommand("copy");
+      alert("Copied the text: " + copyText.value);
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -83,6 +89,17 @@
               </div> 
           </center>
     </div>
+    <br>
+<div>
+    <label>INVITE LINK</label>
+    <input readonly="" style="border:none;box-shadow: none;" type="text" class="form-control" id="invite-link" value="https://www.laundrybuoy.com/signup/<%= customer._id %>">
+    <button onclick="copyToClipboard()" class="btn btn-default invite-button">Copy Link</button>
+</div>
+<div>
+    <label>SHARE VIA</label>
+    <a href="whatsapp://send?text=SignUp with this link https://www.laundrybuoy.com/signup/<%= customer._id %> and get 10% off on your first order. I'll get 10% off too, on my next order." data-action="share/whatsapp/share"><i class="fa fa-whatsapp" style="font-size:36px;color:green"></i></a>
+</div>
+
 
             <!-- Nav tabs -->
             <br><br>

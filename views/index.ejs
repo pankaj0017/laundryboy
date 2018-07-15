@@ -10,8 +10,6 @@
   <!-- Favicons -->
   <link href="/img/favicon.png" rel="icon">
   <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900" rel="stylesheet">
 
@@ -28,7 +26,6 @@
 
   <!-- Nivo Slider Theme -->
   <link href="/css/nivo-slider-theme.css" rel="stylesheet">
-
   <!-- Main Stylesheet File -->
   <link href="/css/style.css" rel="stylesheet">
 
@@ -67,12 +64,12 @@
               
               <div class="tab-menu collapse navbar-collapse main-menu bs-example-navbar-collapse-1" id="navbar-example">
               <!-- Nav tabs -->
-               <ul class="nav navbar-nav navbar-right nav-pills nav-stacked" role="tablist">
-                        <a style="font-size:40px; " class="nav-link active" href="#home" role="tab" data-toggle="tab">Home</a>
-                        <a style="font-size:40px" class="nav-link" href="#services" role="tab" data-toggle="tab">About</a>
-                        <a style="font-size:40px" class="nav-link" href="#pricing" role="tab" data-toggle="tab">Prices</a>
-                        <a style="font-size:40px" class="nav-link" href="#about" role="tab" data-toggle="tab">Services</a>
-                        <a style="font-size:40px" class="nav-link" href="#contact" role="tab" data-toggle="tab">Contact</a>
+               <ul id="myTab" class="nav navbar-nav navbar-right nav-pills nav-stacked" role="tablist">
+                        <li class="active"><a class="nav-link" href="#home" role="tab" data-toggle="tab">Home</a></li>
+                        <li><a class="nav-link" href="#services" role="tab" data-toggle="tab">About</a></li>
+                        <li><a class="nav-link" href="#pricing" role="tab" data-toggle="tab">Prices</a></li>
+                        <li><a class="nav-link" href="#about" role="tab" data-toggle="tab">Services</a></li>
+                        <li><a class="nav-link" href="#contact" role="tab" data-toggle="tab">Contact</a></li>
                   </ul>
             </div>
               <!-- navbar-collapse -->
@@ -93,15 +90,33 @@
 
 
 
+
+<div class="zoom">
+  <li style="font-size: 80px;" class="zoom-fab zoom-btn-large" id="zoomBtn">+</li>
+  <ul class="zoom-menu">
+    <li class="zoom-fab zoom-btn-sm zoom-btn-person scale-transition scale-out"><a style="font-size: 20px;" href="/signup"><center>SignUp</center></a></li>
+    <li class="zoom-fab zoom-btn-sm zoom-btn-feedback scale-transition scale-out"><a style="font-size: 20px;" href="/login"><center>Login</center></a></li>
+    <li class="zoom-fab zoom-btn-sm zoom-btn-tangram scale-transition scale-out"><a style="font-size: 20px;line-height: 15px;" href="/deliveryboylogin"><center>Delivery Boy Login</center></a></li>
+    <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out"><a style="font-size: 20px; line-height: 15px;" href="/vendorlogin"><center>Vendor Login</center></a></li>
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
   <!-- Start Slider Area -->
   <div class="tab-content">
             <div class="tab-pane active slider-area" id="home">
               <div class="tab-inner">
     <div class="bend niceties preview-2">
       <div id="ensign-nivoslider" class="slides">
-        <img src="img/slider/slider1.jpg" alt="" title="#slider-direction-1" />
-        <img src="img/slider/slider2.jpg" alt="" title="#slider-direction-2" />
-        <img src="img/slider/slider3.jpg" alt="" title="#slider-direction-3" />
+        <img src="img/slider/slider3.jpg" alt="" title="#slider-direction-1" />
       </div>
 
       <!-- direction 1 -->
@@ -128,58 +143,8 @@
           </div>
         </div>
       </div>
-
-      <!-- direction 2 -->
-      <div id="slider-direction-2" class="slider-direction slider-two">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="slider-content text-center">
-                <!-- layer 1 -->
-                <div class="layer-1-1 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
-                  <h2 class="title1">The Business Information </h2>
-                </div>
-                <!-- layer 2 -->
-                <div class="layer-1-2 wow slideInUp" data-wow-duration="2s" data-wow-delay=".1s">
-                  <h1 class="title2">We're In The Business Of Quality Service</h1>
-                </div>
-                <!-- layer 3 -->
-                <div class="layer-1-3 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
-                  <a class="ready-btn right-btn page-scroll" href="#services">See Services</a>
-                  <a class="ready-btn page-scroll" href="#about">Learn More</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- direction 3 -->
-      <div id="slider-direction-3" class="slider-direction slider-two">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="slider-content">
-                <!-- layer 1 -->
-                <div class="layer-1-1 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
-                  <h2 class="title1">Just one click away.</h2>
-                </div>
-                <!-- layer 2 -->
-                <div class="layer-1-2 wow slideInUp" data-wow-duration="2s" data-wow-delay=".1s">
-                  <h1 class="title2">Save your precious time and efforts.</h1>
-                </div>
-                <!-- layer 3 -->
-                <div class="layer-1-3 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
-                  <a class="ready-btn right-btn page-scroll" href="#services">See Services</a>
-                  <a class="ready-btn page-scroll" href="#about">Learn More</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
 </div>
   <!-- End Slider Area -->
   
@@ -204,7 +169,6 @@
               <div class="services-details">
                 <div class="single-services">
                   <a class="services-icon" href="#">
-                      <i class="fa fa-code"></i>
                     </a>
                   <h4>Save Time</h4>
                   <p>
@@ -220,7 +184,6 @@
               <div class="services-details">
                 <div class="single-services">
                   <a class="services-icon" href="#">
-                      <i class="fa fa-camera-retro"></i>
                     </a>
                   <h4>Outsourcing is in</h4>
                   <p>
@@ -237,7 +200,6 @@
               <div class="services-details">
                 <div class="single-services">
                   <a class="services-icon" href="#">
-                      <i class="fa fa-wordpress"></i>
                     </a>
                   <h4>Easy to use</h4>
                   <p>
@@ -254,7 +216,6 @@
               <div class="services-details">
                 <div class="single-services">
                   <a class="services-icon" href="#">
-                      <i class="fa fa-camera-retro"></i>
                     </a>
                   <h4>Do Something else </h4>
                   <p>
@@ -272,7 +233,6 @@
               <div class="services-details">
                 <div class="single-services">
                   <a class="services-icon" href="#">
-                      <i class="fa fa-bar-chart"></i>
                     </a>
                   <h4>It's Green</h4>
                   <p>
@@ -290,7 +250,6 @@
               <div class="services-details">
                 <div class="single-services">
                   <a class="services-icon" href="#">
-                      <i class="fa fa-ticket"></i>
                     </a>
                   <h4>You're in Charge</h4>
                   <p>
@@ -540,8 +499,8 @@
               <div class="single-icon">
                 <i class="fa fa-map-marker"></i>
                 <p>
-                  Location: D6/200 Lane No. 1, sec-6<br>
-                  <span>Rohini, Delhi-85</span>
+                  Location: Pkt C5, H. No. 328/329<br>
+                  <span>Rohini Sec-6, Delhi-85</span>
                 </p>
               </div>
             </div>
@@ -655,7 +614,7 @@
                   <h2><span>Laundry</span>Buoy</h2>
                 </div>
 
-                <p>Freedom from laundry.<br>We do the job you hate to do.</p>
+                <p>Freedom from laundry.<br>We do the job you hate to do.<br><br>Follow us on :</p>
                 <div class="footer-icons">
                   <ul>
                     <li>
@@ -678,9 +637,10 @@
                  You can connect to us through
                 </p>
                 <div class="footer-contacts">
-                  <p><span>Mobile/WhatsApp:</span> 8178335478</p>
+                  <p><span>Mobile:</span> 8178335478</p>
+                  <p><span>WhatsApp:</span> 8510908590</p>
                   <p><span>Email:</span> laundrybuoy@gmail.com</p>
-                  <p><span>Working Hours:</span> 9am-9pm</p>
+                  <p><span>Working Hours:</span> 9am-9pm (Fridays Off)</p>
                 </div>
               </div>
             </div>
@@ -710,7 +670,7 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="copyright text-center">
               <p>
-                &copy; Copyright <strong>LaundryBuoy</strong>. All Rights Reserved
+                &copy; Copyright 2018 <strong>LaundryBuoy</strong>. All Rights Reserved
               </p>
             </div>
           </div>
@@ -721,6 +681,105 @@
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
+<style type="text/css">
+  .zoom {
+  position: fixed;
+  bottom: 45px;
+  right: 24px;
+  height: 70px;
+}
+
+.zoom-fab {
+  display: inline-block;
+  width: 100px;
+  height: 60px;
+  line-height: 20px;
+  border-radius: 10%;
+  background-color: #009688;
+  vertical-align: middle;
+  text-decoration: none;
+  text-align: center;
+  transition: 0.2s ease-out;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  color: #FFF;
+}
+
+.zoom-fab:hover {
+  background-color: grey;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+}
+
+.zoom-btn-large {
+  width: 60px;
+  height: 60px;
+  line-height: 55px;
+  background-color: black;
+}
+
+.zoom-menu {
+  position: absolute;
+  right: 70px;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%;
+  width: 500px;
+  list-style: none;
+  text-align: right;
+}
+
+.zoom-menu li {
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.zoom-card {
+  position: absolute;
+  right: 150px;
+  bottom: 70px;
+  transition: box-shadow 0.25s;
+  padding: 24px;
+  border-radius: 2px;
+  background-color: #009688;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  color: #FFF;
+}
+
+.zoom-card ul {
+  -webkit-padding-start: 0;
+  list-style: none;
+  text-align: left;
+}
+.zoom-btn-person { background-color: #F44336; }
+
+.zoom-btn-person:hover { background-color: #e57373; }
+
+.zoom-btn-doc { background-color: #ffeb3b; }
+
+.zoom-btn-doc:hover { background-color: #fff176; }
+
+.zoom-btn-tangram { background-color: #4CAF50; }
+
+.zoom-btn-tangram:hover { background-color: #81c784; }
+
+.zoom-btn-report { background-color: #2196F3; }
+
+.zoom-btn-report:hover { background-color: #64b5f6; }
+
+.zoom-btn-feedback { background-color: #9c27b0; }
+
+.zoom-btn-feedback:hover { background-color: #ba68c8; }
+
+.scale-transition { transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important; }
+
+.scale-transition.scale-out {
+  transform: scale(0);
+  transition: transform 0.2s !important;
+}
+
+.scale-transition.scale-in { transform: scale(1); }
+</style>
   <!-- JavaScript Libraries -->
   <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/bootstrap/js/bootstrap.min.js"></script>
@@ -739,6 +798,40 @@
   <script src="contactform/contactform.js"></script>
 
   <script src="js/main.js"></script>
+<script type="text/javascript">
+  $('#zoomBtn').click(function() {
+  $('.zoom-btn-sm').toggleClass('scale-out');
+  if (!$('.zoom-card').hasClass('scale-out')) {
+    $('.zoom-card').toggleClass('scale-out');
+  }
+});
+
+$('.zoom-btn-sm').click(function() {
+  var btn = $(this);
+  var card = $('.zoom-card');
+  if ($('.zoom-card').hasClass('scale-out')) {
+    $('.zoom-card').toggleClass('scale-out');
+  }
+  if (btn.hasClass('zoom-btn-person')) {
+    card.css('background-color', '#d32f2f');
+  } else if (btn.hasClass('zoom-btn-doc')) {
+    card.css('background-color', '#fbc02d');
+  } else if (btn.hasClass('zoom-btn-tangram')) {
+    card.css('background-color', '#388e3c');
+  } else if (btn.hasClass('zoom-btn-report')) {
+    card.css('background-color', '#1976d2');
+  } else {
+    card.css('background-color', '#7b1fa2');
+  }
+});
+
+</script>
+  <script>
+   $('#myTab a').click(function (e) {
+     e.preventDefault()
+     $(this).tab('show')
+   })
+</script>
 </body>
 
 </html>
