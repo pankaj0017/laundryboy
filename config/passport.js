@@ -59,66 +59,26 @@ module.exports = function(passport) {
                     return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                 } else {
 
-                        User.findOne({ 'facebook.email' : email }, function(err, user) {
+                    // if there is no user with that email, create the user
+                        var newUser  = new User();
+                        newUser.local.email    = email;
+                        newUser.local.password = newUser.generateHash(password);
+                        
 
-                            if (err) return done(err);
+                        // save the user
+                        newUser.save(function(err) {
+                            if (err)
+                                console.log(err);
+                            var newCustomer = new Customer();
+                            newCustomer.user = newUser._id;
+                            newCustomer.referedBy = req.params.id;
 
-                            if (user) {
-
-                                user.local.email    = email;
-                                user.local.password = user.generateHash(password);
-
-                                // save the user
-                                user.save(function(err) {
-                                    if (err)
-                                        throw err;
-                                    return done(null, user);
-                                }); 
-
-                            } else {
-
-                                    User.findOne({ 'google.email' : email }, function(err, user) {
-
-                                        if (err) return done(err);
-
-                                        if (user) {
-
-                                            user.local.email    = email;
-                                            user.local.password = user.generateHash(password);
-
-                                            // save the user
-                                            user.save(function(err) {
-                                                if (err)
-                                                    throw err;
-                                                return done(null, user);
-                                            }); 
-
-                                        } else {  
-
-                                                // if there is no user with that email, create the user
-                                                var newUser  = new User();
-                                                newUser.local.email    = email;
-                                                newUser.local.password = newUser.generateHash(password);
-                                                
-
-                                                // save the user
-                                                newUser.save(function(err) {
-                                                    if (err)
-                                                        throw err;
-                                                    var newCustomer = new Customer();
-                                                    newCustomer.user = newUser._id;
-                                                    newCustomer.referedBy = req.params.id;
-
-                                                        newCustomer.save(function(err) {
-                                                                if (err)
-                                                                    throw err;  
-                                                                return done(null, newUser);
-                                                            });
-                                                });       
-                                            }
+                                newCustomer.save(function(err) {
+                                        if (err)
+                                            console.log(err);  
+                                        return done(null, newUser);
                                     });
-                                }
-                        });
+                        }); 
                     }
 
             });    
@@ -209,7 +169,7 @@ module.exports = function(passport) {
                                     // save our user to the database
                                     user.save(function(err) {
                                         if (err)
-                                            throw err;
+                                            console.log(err);
 
                                         // if successful, return the new user
                                         return done(null, user);
@@ -217,52 +177,26 @@ module.exports = function(passport) {
 
                                 } else {  
 
-                                        User.findOne({ 'local.email' :  profile.emails[0].value }, function(err, user) {
+                                        // if there is no user found with that facebook email, create them
+                                        var newUser = new User();
+                                        // set all of the facebook information in our user model
+                                        newUser.facebook.id    = profile.id; // set the users facebook id                   
+                                        newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
+                                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+                                        newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
-                                            if (err) return done(err);
+                                        // save our user to the database
+                                        newUser.save(function(err) {
+                                            if (err)
+                                                console.log(err);
                                             
-                                            if (user) {
-
-                                                // set all of the facebook information in our user model
-                                                user.facebook.id    = profile.id; // set the users facebook id                   
-                                                user.facebook.token = token; // we will save the token that facebook provides to the user                    
-                                                user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                                                user.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-
-                                                // save our user to the database
-                                                user.save(function(err) {
-                                                    if (err)
-                                                        throw err;
-
-                                                    // if successful, return the new user
-                                                    return done(null, user);
-                                                });
-
-                                            } else {
-
-                                                    // if there is no user found with that facebook email, create them
-                                                    var newUser = new User();
-                                                    // set all of the facebook information in our user model
-                                                    newUser.facebook.id    = profile.id; // set the users facebook id                   
-                                                    newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-                                                    newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                                                    newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-
-                                                    // save our user to the database
-                                                    newUser.save(function(err) {
+                                            var newCustomer = new Customer();
+                                            newCustomer.user = newUser._id;
+                                                newCustomer.save(function(err) {
                                                         if (err)
-                                                            throw err;
-                                                        
-                                                        var newCustomer = new Customer();
-                                                        newCustomer.user = newUser._id;
-                                                            newCustomer.save(function(err) {
-                                                                    if (err)
-                                                                        throw err;
-                                                                    return done(null, newUser);
-                                                                });
+                                                            console.log(err);
+                                                        return done(null, newUser);
                                                     });
-
-                                                }
                                         });
                                     }
 
@@ -315,56 +249,32 @@ module.exports = function(passport) {
                             // save the user
                             user.save(function(err) {
                                 if (err)
-                                    throw err;
+                                    console.log(err);
                                 return done(null, user);
                             });
 
                         } else {  
 
-                                User.findOne({ 'local.email' :  profile.emails[0].value }, function(err, user) {
+                                // if there is no user found with that google email, create them
+                                var newUser = new User();
+                                // set all of the relevant information
+                                newUser.google.id    = profile.id;
+                                newUser.google.token = token;
+                                newUser.google.name  = profile.displayName;
+                                newUser.google.email = profile.emails[0].value; // pull the first email
 
-                                    if (err) return done(err);
-                                    
-                                    if (user) {
+                                // save the user
+                                newUser.save(function(err) {
+                                    if (err)
+                                        console.log(err);
+                                    var newCustomer = new Customer();
+                                            newCustomer.user = newUser._id;
 
-                                        // set all of the relevant information
-                                        user.google.id    = profile.id;
-                                        user.google.token = token;
-                                        user.google.name  = profile.displayName;
-                                        user.google.email = profile.emails[0].value; // pull the first email
-
-                                        // save the user
-                                        user.save(function(err) {
-                                            if (err)
-                                                throw err;
-                                            return done(null, user);
-                                        });
-
-                                    } else {
-
-                                            // if there is no user found with that google email, create them
-                                            var newUser = new User();
-                                            // set all of the relevant information
-                                            newUser.google.id    = profile.id;
-                                            newUser.google.token = token;
-                                            newUser.google.name  = profile.displayName;
-                                            newUser.google.email = profile.emails[0].value; // pull the first email
-
-                                            // save the user
-                                            newUser.save(function(err) {
-                                                if (err)
-                                                    throw err;
-                                                var newCustomer = new Customer();
-                                                        newCustomer.user = newUser._id;
-
-                                                            newCustomer.save(function(err) {
-                                                                    if (err)
-                                                                        throw err;
-                                                                    return done(null, newUser);
-                                                                });
-                                            });
-
-                                        }
+                                                newCustomer.save(function(err) {
+                                                        if (err)
+                                                            console.log(err);
+                                                        return done(null, newUser);
+                                                    });
                                 });
                             }
 

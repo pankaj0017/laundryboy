@@ -1254,7 +1254,7 @@ module.exports = function(app, passport) {
                 });
 
                 if (order.customer.discount) {
-                  costWithoutPlan = costWithoutPlan - (costWithoutPlan/10);
+                  costWithoutPlan = costWithoutPlan - 25;
                 }
                 res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan, message: req.flash('paymentstatus') });
               });
@@ -1334,7 +1334,7 @@ module.exports = function(app, passport) {
                             }
                         });
                         if (customer.discount) {
-                          costWithoutPlan = costWithoutPlan - (costWithoutPlan/10);
+                          costWithoutPlan = costWithoutPlan - 25;
                           customer.discount = customer.discount - 1;
                           customer.save();
                         }

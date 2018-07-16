@@ -38,6 +38,7 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
     "passport-twitter": "^1.0.4",
+    "path": "^0.12.7",
     "random-number": "0.0.9"
   }
 }
