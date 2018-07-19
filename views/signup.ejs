@@ -1,47 +1,130 @@
-<!-- views/signup.ejs -->
-<!doctype html>
 <html>
-<head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <head>
+        <title>
+            LaundryBuoy
+        </title>
+   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+
+  <link href="/css/style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <style>
-        body        { padding-top:80px; }
+        body        { padding:10px; word-wrap:break-word; }
+    </style>
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding:10px;
+    }
+    .othertop{margin-top:1px;}
     </style>
 </head>
-<body>
-<div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+    <body>    
+            <nav class="navbar navbar-default">
+  <div class="container-fluid">
 
-    <h1><span class="fa fa-sign-in"></span> Signup</h1>
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand page-scroll sticky-logo" href="/">
+            <h1><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
+            <img src="img/logo.png" alt="" title=""> 
+        </a>
+    </div>
+    <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/login"><span class="glyphicon glyphicon-log-in" style="color:black;"></span> <span style="color:black;"> Login </span></a></li>
+            <li ><a href="/signup"><span class="glyphicon glyphicon-user" style="color:black;" ></span> <span style="color:black;">Sign Up</span></a></li>
+          </ul>
+    </div>
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
 
-    <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" class="form-control" required pattern="([a-z0-9A-Z]){4,}" name="email">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
+  </div>
+</nav>
+           
+   <div class="container">
+<div class="row">
+<div class="col-md-10 ">
+<fieldset class="form-horizontal">
+<br>
+<!-- Form Name -->
+<center><legend><b><h1 style="font-family: courier new;font-size: 40px;">Customer Sign Up</h1></b></legend></center>
 
-        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
-    </form>
-
+    <center>
+        <h3><b>EASILY WITH</b></h3>
+            <a href="/auth/facebook" class="btn btn-primary btn-lg"><span class="fa fa-facebook"></span> Facebook</a>
+            <a href="/auth/google" class="btn btn-danger btn-lg"><span class="fa fa-google-plus"></span> Google</a>
+    </center>
     <hr>
 
-    <p>Already have an account? <a href="/login">Login</a></p>
-    <p>Or go <a href="/">home</a>.</p>
+    <!-- show any messages that come back with authentication -->
+   <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+<!-- Text input-->
 
+<center><h3><b>OR</b></h3></center>
+                <!-- UPDATE FORM -->
+
+<form action="/signup" method="post">
+    <div class="form-group">
+            <label class="col-md-4 control-label" for="Usename">Name</label>
+            <div class="col-md-4">
+ <div class="input-group">
+       <div class="input-group-addon">
+        <i class="fa fa-user">
+        </i>
+       </div>
+            <input type="text" class="form-control" required pattern="([a-zA-Z]){4,}" name="name">
+        </div>
+    </div>
 </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Usename">Username</label>
+            <div class="col-md-4">
+ <div class="input-group">
+       <div class="input-group-addon">
+        <i class="fa fa-user">
+        </i>
+       </div>
+            <input type="text" class="form-control" required pattern="([a-z0-9A-Z]){4,}" name="email">
+        </div>
+    </div>
+</div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="Password">Password</label>
+            <div class="col-md-4">
+ <div class="input-group">
+    <div class="input-group-addon">
+        <i class="fa fa-lock">
+        </i>
+       </div>
+            <input type="password" class="form-control" id="password" required name="password">
+        </div>
+    </div>
+</div>
+                <div class="form-group"><br>
+  <label class="col-md-4 control-label" ></label> 
+  <button class="btn btn-success btn-lg">SignUp</button>
+</div>
+    </form>
 
+</fieldset>
+<br>
+   <center>         
+    <h3>Already have an account?&nbsp; <a style="font-size: 30px" href="/login">Login</a></h3>
+    <h3>Or go &nbsp;<a style="font-size: 30px" href="/">Home</a>.</h3>
+</div>
+</div>
 </div>
 </body>
 </html>

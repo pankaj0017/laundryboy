@@ -31,6 +31,11 @@
 
   <!-- Responsive Stylesheet File -->
   <link href="/css/responsive.css" rel="stylesheet">
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 </head>
 
 <body data-spy="scroll" data-target="#navbar-example">
@@ -50,9 +55,9 @@
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
                   </button>
                 <!-- Brand -->
                 <a class="navbar-brand page-scroll sticky-logo" href="/">
@@ -67,7 +72,8 @@
                <ul id="myTab" class="nav navbar-nav navbar-right nav-pills nav-stacked" role="tablist">
                         <li class="active"><a class="nav-link" href="#home" role="tab" data-toggle="tab">Home</a></li>
                         <li><a class="nav-link" href="#services" role="tab" data-toggle="tab">About</a></li>
-                        <li><a class="nav-link" href="#pricing" role="tab" data-toggle="tab">Prices</a></li>
+                        <li><a class="nav-link" href="#pricing" role="tab" data-toggle="tab">Plans</a></li>
+                        <li><a class="nav-link" href="#rate" role="tab" data-toggle="tab">Prices</a></li>
                         <li><a class="nav-link" href="#about" role="tab" data-toggle="tab">Services</a></li>
                         <li><a class="nav-link" href="#contact" role="tab" data-toggle="tab">Contact</a></li>
                   </ul>
@@ -92,12 +98,21 @@
 
 
 <div class="zoom">
-  <li style="font-size: 80px;" class="zoom-fab zoom-btn-large" id="zoomBtn">+</li>
+  <li style="font-size: 50px;" class="zoom-fab zoom-btn-large" id="zoomBtn">+</li>
   <ul class="zoom-menu">
-    <li class="zoom-fab zoom-btn-sm zoom-btn-person scale-transition scale-out"><a style="font-size: 20px; " href="/signup"><center>SignUp</center></a></li>
-    <li class="zoom-fab zoom-btn-sm zoom-btn-tangram scale-transition scale-out"><a style="font-size: 20px;coor:black;" href="/login"><center>Login</center></a></li>
-    <li class="zoom-fab zoom-btn-sm zoom-btn-feedback scale-transition scale-out"><a style="font-size: 20px;line-height: 15px;" href="/deliveryboylogin"><center>Delivery Boy Login</center></a></li>
-    <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out"><a style="font-size: 20px; color:black; line-height: 15px;" href="/vendorlogin"><center>Vendor Login</center></a></li>
+    <% if(!user){ %>
+
+      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="Login"><a style="font-size: 40px;line-height: 0px" href="/login"><center><span class="glyphicon glyphicon-log-in" style="color:black;"></span></center></a></li>
+
+    <% } else { %>
+
+      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="Logout"><a style="font-size: 40px;line-height: 0px" href="/logout"><center><span class="glyphicon glyphicon-log-out" style="color:black;"></span></center></a></li>
+
+    <% } %>
+
+      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="Call"><a style="font-size: 40px;line-height: 0px" href="tel:918178335478"><center><span class="fa fa-phone" style="color:black;"></span></center></a></li>
+
+      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="WhatsApp"><a style="font-size: 40px;line-height: 0px" href="https://wa.me/918510908590"><center><span class="fa fa-whatsapp" style="color:green;"></span></center></a></li>
   </ul>
 </div>
 
@@ -136,7 +151,11 @@
                 <!-- layer 3 -->
                 <div class="layer-1-3 hidden-xs wow slideInUp" data-wow-duration="2s" data-wow-delay=".2s">
                   <a class="ready-btn right-btn page-scroll" href="/pincode">Order Pickup Now</a>
-                  <a class="ready-btn page-scroll" href="/rate">View Complete Rate List</a>
+                  <% if(!user) { %>
+                    <a class="ready-btn page-scroll" href="/signup">Create your free account</a>
+                  <% } else { %>
+                    <a class="ready-btn page-scroll" href="/profile">Profile Page</a>
+                  <% } %>
                 </div>
               </div>
             </div>
@@ -170,6 +189,7 @@
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
+                    <span style="font-size: 70px">&#10004;</span>
                   <h4>Save Time</h4>
                   <p>
                     Even if you only do one load a day, you're still spending anywhere from 7-12 hrs on your laundry alone per week. Outsourcing this chore will save you lots of time.
@@ -185,6 +205,7 @@
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
+                    <span style="font-size: 70px">&#10004;</span>
                   <h4>Outsourcing is in</h4>
                   <p>
                     The average Indian has never been busier, but everyone wants a clean house. Your outsource your housekeeping, why not outsource your laundry too.
@@ -201,6 +222,7 @@
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
+                    <span style="font-size: 70px">&#10004;</span>
                   <h4>Easy to use</h4>
                   <p>
                     We're just one click away. Rest yourselves at home and we'll manage everything from pickup to washing, ironing and delivering at your doorsteps.
@@ -217,6 +239,7 @@
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
+                    <span style="font-size: 70px">&#10004;</span>
                   <h4>Do Something else </h4>
                   <p>
                     With all that extra time, you can finish that presentation for work, go on adventure with your kids, or spend some time with your loved ones.
@@ -234,6 +257,7 @@
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
+                    <span style="font-size: 70px">&#10004;</span>
                   <h4>It's Green</h4>
                   <p>
                    We use natural laundry detergents and high efficiency machines keeping your laundry clean and the planet green.
@@ -251,6 +275,7 @@
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
+                    <span style="font-size: 70px">&#10004;</span>
                   <h4>You're in Charge</h4>
                   <p>
                     At Laundry Buoy, we do our best to accommodate your needs and requests.
@@ -281,7 +306,6 @@
               <li>
                 <a href="#p-view-2" role="tab" data-toggle="tab"><h3>Monthly Plans</h3></a>
               </li>
-              
             </ul>
           </div>
           <div class="tab-content">
@@ -293,6 +317,7 @@
           <div class="section-headline text-center">
             <br><br>
             <h2>Single Order</h2>
+          <h4>* Service Charges are extra as applicable.</h4>
           </div>
         </div>
       </div>
@@ -307,10 +332,9 @@
                   <ol text-align:center>
                     <li>Cost : Rs. <%= singleservice.amount %></li>
                     <li>Total Clothes : <%= singleservice.totalClothes %></li>
+                    <br>
+                    <button><center><a data-toggle="modal" data-target="#single<%= singleservice.amount %>" style="font-size: 15px">View More</a></center></button>
                   </ol>
-                <form method="get" action="/pincode">
-                     <button type="submit">Order pickup now</button>
-                </form>
                 </div>
               </div>     
           
@@ -330,6 +354,7 @@
           <div class="section-headline text-center">
             <br><br>
             <h2>Monthly Plans</h2>
+          <h4>* Service Charges are extra as applicable.</h4>
           </div>
         </div>
       </div>
@@ -342,14 +367,15 @@
                 <div class="pri_table_list">
                   <h3>Monthly Plans<br/> <span><%= plan.amount %>N</span></h3>
                   <ol text-align:center>
+                    <center>
                     <li>Cost : Rs. <%= plan.amount %></li>
-                    <li>Short Clothes : <%= plan.shortClothes %></li>
-                    <li>Long Clothes : <%= plan.longClothes %></li>
+                    <li>Small Clothes : <%= plan.shortClothes %></li>
+                    <li>Big Clothes : <%= plan.longClothes %></li>
                     <li>Validity : <%= plan.validity %></li>
+                    <br>
+                    <button><center><a data-toggle="modal" data-target="#plan<%=plan.amount %>" style="font-size: 15px">View More</a></center></button>
+                  </center>
                   </ol>
-                <form method="get" action="/pincode">
-                     <button type="submit">Order pickup now</button>
-                </form>
                 </div>
               </div> 
         <% }) %>
@@ -364,18 +390,152 @@
   <div>
       <div class="pri_table_list">
         <br><br>
-        <button><a href="rate.ejs">View Complete Rate List</a></button>
-      </div>
-  </div>
-  <div >
-      <div class="row">
+        <button><a href="/pincode">Order Pickup Now</a></button>
       </div>
   </div>
 </div>
-   
 
+ <div id="rate" class="tab-pane pricing-area area-padding">
+    <div class="tab-inner">
+    <div class="container">
+      <div class="tab-menu">
+      <div class="pri_table_list">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline text-center">
+            <br><br>
+            <h2>Complete Rate List</h2>
+            <h4>* Service Charges are extra as applicable.</h4>
+          </div>
+        </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="pri_table_list">
+                  <h3>Small Clothes<br/></h3>
+                  <ol text-align:center>
+                    <li>Tie : Rs.2</li>
+                    <li>Handkerchief : Rs.2</li>
+                    <li>Undergarment(Lower) : Rs.2</li>
+                    <li>Undergarment(Upper) : Rs.3</li>
+                    <li>Socks: Rs.3</li>
+                    <li>Scarf : Rs.3</li>
+                    <li>Shrug : Rs.3</li>
+                    <li>Blouse : Rs.3</li>
+                    <li>Short Skirt : Rs.3</li>
+                    <li>1/2 Pants : Rs.3</li>
+                    <li>Dupatta : Rs.3</li>
+                    <li>Pillow Cover : Rs.3</li>
+                    <li>Hand Towel : Rs.3</li>
+                    <li>Cap : Rs.3</li>
+                  </ol>
+                </div>
+              </div> 
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="pri_table_list">
+                  <h3>Big Clothes<br/></h3>
+                  <ol text-align:center>
+                    <li>3/4 Pants : Rs.4</li>
+                    <li>Half Sleeve Shirt : Rs.4</li>
+                    <li>Half Sleeve T-Shirt : Rs.4</li>
+                    <li>Full Sleeve Shirt : Rs.5</li>
+                    <li>Full Sleeve T-Shirt : Rs.5</li>
+                    <li>Jegging : Rs.5</li>
+                    <li>Legging : Rs.5</li>
+                    <li>Pyjama : Rs.5</li>
+                    <li>Salwar : Rs.5</li>
+                    <li>Trousers : Rs.5</li>
+                    <li>Plazo : Rs.5</li>
+                    <li>Lungi : Rs.5</li>
+                    <li>Suit : Rs.6</li>
+                    <li>Jeans : Rs.6</li>
+                    <li>Kurti : Rs.7</li>
+                    <li>Kurta : Rs.7</li>
+                    <li>Long Towel : Rs.9</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="pri_table_list">
+                  <h3>Super Big Clothes<br/></h3>
+                  <ol text-align:center>
+                    <li>Vest Coat : Rs.4</li>
+                    <li>Turban (S) : Rs.5</li>
+                    <li>Jump Suit : Rs.6</li>
+                    <li>Peticot : Rs.6</li>
+                    <li>Turban (M) : Rs.7</li>
+                    <li>Nighty : Rs.7</li>
+                    <li>Turban (L) : Rs.10</li>
+                    <li>Saree : Rs.10</li>
+                    <li>Bathrobe : Rs.12</li>
+                    <li>Inner Woolen : Rs.15</li>
+                    <li>Sweater : Rs.20</li>
+                    <li>Jacket : Rs.20</li>
+                    <li>Blanket : Rs.30</li>
+                    <li>Bedsheet (SB) : Rs.30</li>
+                    <li>Quilt : Rs.50</li>
+                    <li>Bedsheet (DB) : Rs.50</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+    </div>
+
+  <div>
+      <div class="pri_table_list">
+        <br><br>
+        <button><a href="/pincode">Order Pickup Now</a></button>
+      </div>
+  </div>
+   </div>
+</div>
+</div>
+</div>
   <!-- End pricing table area -->
- 
+   <% singleservices.forEach(function(singleservice){ %>  
+
+ <div class="modal fade" style="z-index: 9999999999999; padding-top: 200px;" id="single<%= singleservice.amount %>" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><center><b>Single Plan : <%= singleservice.amount %>N</b></center></h4>
+        </div>
+        <div class="modal-body">
+          <h4><center>
+            Cost of the plan is Rs.<%= singleservice.amount %>/- per order.<br>
+            <%= singleservice.totalClothes %> clothes can be washed and ironed.
+          </h4></center>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <% }) %>
+
+          <% plans.forEach(function(plan){ %>  
+
+ <div class="modal fade" style="z-index: 9999999999999; padding-top:200px;" id="plan<%=plan.amount %>" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><center><b>Monthly Plan : <%= plan.amount %>N</b></center></h4>
+        </div>
+        <div class="modal-body">
+          <h4><center>
+            Cost of the plan is Rs.<%= plan.amount %>/- per order.<br>
+            <%= plan.shortClothes %> small clothes and <%= plan.longClothes %> big clothes can be washed and ironed.<br>
+            *Plan doesn't include super big clothes.
+          </h4></center>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <% }) %>
   <!-- Start About area -->
               
   <div id="about" class="tab-pane about-area area-padding">
@@ -404,42 +564,28 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
           <div class="well-middle">
             <div class="single-well">
-              <a href="#">
-                <center><h3>We Offer</h3></center>
-              </a>
-              <h4>
-               <center> 48 Hours Delivery!<br> Free Pickup Delivery!!</center>
-              </h4>
+              <h2>
+               <center>Turnaround Time : 48 hrs.<br> Free Pickup & Delivery!!</center>
+              </h2>
               <br>
-              <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="well-middle">
             <div class="single-well">
               <ul><center>
-                <li>
-                  <i class="fa fa-check"></i> Cloth Wash
+                <li style="font-size: 25px;">
+                  <i class="fa fa-check"></i> Clothes Washing
                 </li>
-                <li>
-                  <i class="fa fa-check"></i> Cloth Iron
+                <li style="font-size: 25px;">
+                  <i class="fa fa-check"></i> Clothes Ironing
                 </li>
-                <li>
-                  <i class="fa fa-check"></i>We Fold
-                </li></center>
-              </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-sm-6 col-xs-12">
-          <div class="well-middle">
-            <div class="single-well">
-              <ul><center>
-                <li>
-                  <i class="fa fa-check"></i> Dry Clean
+                <li style="font-size: 25px;">
+                  <i class="fa fa-check"></i> Dry Cleaning
                 </li>
-                <li>
-                  <i class="fa fa-check"></i> Shoe Clean
+                <li style="font-size: 25px;">
+                  <i class="fa fa-check"></i> Shoes Cleaning
                 </li>
-                <li>
-                  <i class="fa fa-check"></i> Cloth Packing
+                <li style="font-size: 25px;">
+                  <i class="fa fa-check"></i> Clothes Packing
                 </li></center>
               </ul>
             </div>
@@ -475,8 +621,8 @@
               <div class="single-icon">
                 <i class="fa fa-mobile"></i>
                 <p>
-                  Call: +91 8178 33 5478<br>
-                 Call: +91 8510 90 8590
+                  Call: +91 8178 33 5478
+                 WhatsApp: +91 8510 90 8590
                 </p>
               </div>
             </div>
@@ -487,7 +633,7 @@
               <div class="single-icon">
                 <i class="fa fa-envelope-o"></i>
                 <p>
-                  Email: laundrybuoy@gmail.com<br>
+                  Email: laundrybuoy@gmail.com</a><br>
                   <span>Web: www.laundrybuoy.com</span>
                 </p>
               </div>
@@ -508,43 +654,7 @@
         </div>
         <div class="row">
 
-          <!-- Start Google Map -->
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <!-- Start Map -->
-              <div id="google-map" data-latitude="28.7183693" data-longitude="77.2580268"></div>
-            <!-- End Map -->
-          </div>
-          <!-- End Google Map -->
 
-          <!-- Start  contact -->
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <div class="form contact-form">
-              <div id="sendmessage">Your message has been sent. Thank you!</div>
-              <div id="errormessage"></div>
-
-              <form action="/feedback" method="post" role="form" class="contactForm">
-                 <div class="form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                  <div class="validation"></div>
-                </div>
-                <div class="form-group">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-                  <div class="validation"></div>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                  <div class="validation"></div>
-                </div>
-                <div class="form-group">
-                  <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-                  <div class="validation"></div>
-                </div>
-                <div class="text-center"><button type="submit">Send Message</button></div>
-              </form>
-              
-            </div>
-          </div>
-          <!-- End Left contact -->
         </div>
       </div>
     </div>
@@ -637,16 +747,16 @@
                  You can connect to us through
                 </p>
                 <div class="footer-contacts">
-                  <p><span>Mobile:</span> 8178335478</p>
-                  <p><span>WhatsApp:</span> 8510908590</p>
-                  <p><span>Email:</span> laundrybuoy@gmail.com</p>
+                  <p><span>Mobile:</span><a href="tel:918178335478" style="font-size: 15px;color:black"> 8178335478</a></p>
+                  <p><span>WhatsApp:</span><a href="https://wa.me/918510908590" style="font-size: 15px;color:black"> 8510908590</a></p>
+                  <p><span>Email:</span><a href="mailto: laundrybuoy@gmail.com" style="font-size: 15px;color:black"> laundrybuoy@gmail.com</a></p>
                   <p><span>Working Hours:</span> 9am-9pm (Fridays Off)</p>
                 </div>
               </div>
             </div>
           </div>
           <!-- end single footer -->
-          <div class="col-md-4 col-sm-4 col-xs-12">
+         <!-- <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="footer-content">
               <div class="footer-head">
                 <h4>Instagram</h4>
@@ -660,7 +770,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -679,13 +789,11 @@
     </div>
   </footer>
 
-  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-
 <style type="text/css">
   .zoom {
   position: fixed;
-  bottom: 45px;
-  right: 24px;
+  bottom: 10px;
+  right: 10px;
   height: 70px;
   border-radius: 50%;
   z-index: 9999999999;
@@ -693,10 +801,10 @@
 
 .zoom-fab {
   display: inline-block;
-  width: 100px;
+  width: 60px;
   height: 60px;
-  line-height: 20px;
-  border-radius: 10%;
+  line-height: 0px;
+  border-radius: 50%;
   background-color: #009688;
   vertical-align: middle;
   text-decoration: none;
@@ -713,9 +821,9 @@
 }
 
 .zoom-btn-large {
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
   border-radius: 50%;
   background-color:  red;
 }
@@ -725,9 +833,11 @@
   bottom: 70px;
   top: auto;
   left: 50%;
+  right: 150px;
   transform: translateX(-50%);
   width: 100%;
-  height: 300px;
+  height: 210px;
+  line-height: 20px;
   list-style: none;
   text-align: bottom;
 }
@@ -740,7 +850,7 @@
 .zoom-card {
   position: absolute;
   bottom:  150px;
-  right : 70px;
+  right :70px;
   transition: box-shadow 0.25s;
   padding: 24px;
   border-radius: 2px;

@@ -13,7 +13,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style>
-        body        { padding-top:80px; word-wrap:break-word; }
+        body        { padding:10px; word-wrap:break-word; }
     </style>
     <script>
     function copyToClipboard() {
@@ -26,7 +26,7 @@
     </script>
 </head>
 <body>
-<nav class="navbar navbar-default">
+ <nav class="navbar navbar-default">
   <div class="container-fluid">
 
     <div class="navbar-header">
@@ -41,17 +41,20 @@
         </a>
     </div>
     <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-                <li><a href="/update"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;"> 
-                Update</span></a></li>
-                <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
-        </ul>
+                <ul class="nav navbar-nav navbar-right">
+                <% if(!user){ %>
+                          <li><a href="/login"><span class="glyphicon glyphicon-log-in" style="color:black;"></span> <span style="color:black;"> Login </span></a></li>
+                          <li ><a href="/signup"><span class="glyphicon glyphicon-user" style="color:black;" ></span> <span style="color:black;">Sign Up</span></a></li>
+                      <% } else { %>
+                        <li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;"> <%= user.local.email %> </span></a></li>
+                          <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
+                      <% } %>
+                  </ul>
     </div>
 
 
   </div>
 </nav>
-
 <div class="container">
 
 
@@ -62,7 +65,7 @@
                   <h3>Personal<br> <span>Details</span></h3>
                   <ol text-align:center>
                     <li>Name : <%= customer.name %></li>
-                    <li>Address : Rs. <%= customer.address %></li>
+                    <li>Address :  <%= customer.address %></li>
                     <li>Contact No.: <%= customer.mainNumber %></li>
                     <li>Customer Tag : <%= customer.tagNumber %></li>
                   </ol>
@@ -92,15 +95,15 @@
           </center>
     </div>
     <br>
-<div>
-    <label>INVITE LINK</label>
+<div><br>
+    <center><label>INVITE LINK</label>
     <input readonly="" style="border:none;box-shadow: none;" type="text" class="form-control" id="invite-link" value="https://www.laundrybuoy.com/signup/<%= customer._id %>">
-    <button onclick="copyToClipboard()" class="btn btn-default invite-button">Copy Link</button>
+    <button onclick="copyToClipboard()" class="btn btn-primary invite-button">Copy Link</button></center>
 </div>
-<div>
-    <label>SHARE VIA</label>
+<div><br>
+    <center><label>SHARE VIA : &nbsp; &nbsp</label>
     <a href="whatsapp://send?text=SignUp with this link https://www.laundrybuoy.com/signup/<%= customer._id %> and get 10% off on your first order. I'll get 10% off too, on my next order." data-action="share/whatsapp/share"><i class="fa fa-whatsapp" style="font-size:36px;color:green"></i></a>
-    <a href=”fb-messenger://share/?link= https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fsharing%2Freference%2Fsend-dialog&app_id=123456789”><i class="fa fa-facebook" style="font-size:30px;color:blue"></i></a>
+    <a href=”fb-messenger://share/?link= https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fsharing%2Freference%2Fsend-dialog&app_id=123456789”><i class="fa fa-facebook" style="font-size:30px;color:blue"></i></a></center>
 </div>
 
 
@@ -108,8 +111,8 @@
     <br><br>
         <center>
         <ul class="nav nav-tabs">
-            <li class="active col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#rechargehistory">Recharge History</a></li>
-            <li class="col-lg-6 col-md-6 col-sm-6"><a data-toggle="tab" href="#orderhistory">Order History</a></li>
+            <li class="active col-lg-6 col-md-6 col-sm-6"><a style="color:red" data-toggle="tab" href="#rechargehistory">Recharge History</a></li>
+            <li class="col-lg-6 col-md-6 col-sm-6"><a style="color:blue" data-toggle="tab" href="#orderhistory">Order History</a></li>
         </ul>
         </center>
 

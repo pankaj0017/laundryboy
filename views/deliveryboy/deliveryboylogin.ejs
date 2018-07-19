@@ -1,38 +1,105 @@
-<!-- views/login.ejs -->
-<!doctype html>
-<html>
-<head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+<!-- views/login.ejs --><html>
+    <head>
+        <title>
+            LaundryBuoy
+        </title>
+   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+
+  <link href="/css/style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <style>
-        body        { padding-top:80px; }
+        body        { padding:10px; word-wrap:break-word; }
+    </style>
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding:10px;
+    }
+    .othertop{margin-top:1px;}
     </style>
 </head>
-<body>
-<div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+    <body>    
+            <nav class="navbar navbar-default">
+  <div class="container-fluid">
 
-    <h1><span class="fa fa-sign-in"></span>Delivery boy Login</h1>
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand page-scroll sticky-logo" href="/">
+            <h1><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
+        </a>
+    </div>
+    <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                <% if(!user){ %>
+                            <li><a href="/deliveryboylogin"><span class="glyphicon glyphicon-log-in" style="color:black;"></span> <span style="color:black;"> Login </span></a></li>
+                        <% } else { %>
+                            <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Log Out</span></a></li>
+                        <% } %>
+                  </ul>
+    </div>
+
+
+  </div>
+</nav>
+           
+   <div class="container">
+<div class="row">
+<div class="col-md-10 ">
+<fieldset class="form-horizontal">
+<br>
+<!-- Form Name -->
+<center><legend><b><h1 style="font-family: courier new;font-size: 40px;">Delivery Boy Login</h1></b></legend></center>
+
 
     <% if (message.length > 0) { %>
     <div class="alert alert-danger"><%= message %></div>
     <% } %>
 
     <!-- LOGIN FORM -->
-    <form action="/deliveryboylogin" method="post">
+    
+<form action="/deliveryboylogin" method="post">
         <div class="form-group">
-            <label>Tag</label>
-            <input type="text" class="form-control" name="tag">
+            <label class="col-md-4 control-label" for="Tag">Tag</label>
+            <div class="col-md-4">
+ <div class="input-group">
+       <div class="input-group-addon">
+        <i class="fa fa-user">
+        </i>
+       </div>
+            <input type="text" class="form-control" required pattern="([a-z0-9A-Z]){4,}" name="tag">
         </div>
+    </div>
+</div>
         <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
+            <label class="col-md-4 control-label" for="Password">Password</label>
+            <div class="col-md-4">
+ <div class="input-group">
+    <div class="input-group-addon">
+        <i class="fa fa-lock">
+        </i>
+       </div>
+            <input type="password" class="form-control" required name="password">
         </div>
-
-        <button type="submit" class="btn btn-warning btn-lg">Login</button>
+    </div>
+</div>
+                <div class="form-group"><br>
+  <label class="col-md-4 control-label" ></label> 
+  <button class="btn btn-success btn-lg">Login</button>
+</div>
     </form>
+
+</fieldset>
 
 </div>
 
