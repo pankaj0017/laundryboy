@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>LaundryBuoy</title>
+    <link href="/img/logotitle.ico" rel="shortcut icon">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
 
@@ -37,18 +38,22 @@
             <span class="icon-bar"></span>
           </button>
         <a class="navbar-brand page-scroll sticky-logo" href="/">
-            <h1><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
+            <img src="img/logo.png" width="40" height="40" alt="" title="LaundryBuoy" style="border-radius: 50%;"> 
+            <h1 style="top:-40px"><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
         </a>
     </div>
     <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                <% if(!user){ %>
-                          <li><a href="/login"><span class="glyphicon glyphicon-log-in" style="color:black;"></span> <span style="color:black;"> Login </span></a></li>
-                          <li ><a href="/signup"><span class="glyphicon glyphicon-user" style="color:black;" ></span> <span style="color:black;">Sign Up</span></a></li>
-                      <% } else { %>
-                        <li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;"> <%= user.local.email %> </span></a></li>
+                        <li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;">Signed in as 
+                            <% if(user.local.email) { %>
+                              <%= user.local.email %>
+                            <% } else if(user.google.email) { %>
+                              <%= user.google.email %>
+                            <% } else { %>
+                              <%= user.facebook.email %>
+                            <% } %>
+                        </span></a></li>
                           <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
-                      <% } %>
                   </ul>
     </div>
 
@@ -148,7 +153,11 @@
                         <p><strong>OrderID : </strong><%= order._id %></p>
                         <p><strong>Description : </strong><%= order.description %></p>
                         <span><strong>Cost : </strong><%= order.cost %></span>
-                        <span><strong>Status : </strong><%= order.status %></span>
+                        <span><strong>Status : </strong><%= order.status %>
+                            <% if (order.status == 'booked') { %>
+                              <a href="/order/<%= order._id %>/cancel" class="btn btn-default btn-sm">Cancel Pickup</a>
+                            <% } %>
+                        </span>
                         <p><strong>Order Date : </strong><%= order.orderDate %></p>
                         <span><strong>Delivered Date : </strong><%= order.deliveryDate %></span>
                     </div> 

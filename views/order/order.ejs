@@ -3,40 +3,138 @@
         <title>
             LaundryBuoy
         </title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-        <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
-    </head>
-    <body>
-        <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+    <link href="/img/logotitle.ico" rel="shortcut icon">
+   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
 
-                <h1><span class="fa fa-sign-in"></span>Order Details</h1>
+  <link href="/css/style.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        body        {word-wrap:break-word; }
+    </style>
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding:10px;
+    }
+    .othertop{margin-top:100px;}
+    </style>
+</head>
+
+    <body>    
+            <nav class="navbar navbar-default">
+  <div class="container-fluid">
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand page-scroll sticky-logo" href="/">
+            <img src="img/logo.png" width="40" height="40" alt="" title="LaundryBuoy" style="border-radius: 50%;"> 
+            <h1 style="top:-40px"><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
+        </a>
+    </div>
+    <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;">Signed in as 
+                            <% if(user.local.email) { %>
+                              <%= user.local.email %>
+                            <% } else if(user.google.email) { %>
+                              <%= user.google.email %>
+                            <% } else { %>
+                              <%= user.facebook.email %>
+                            <% } %>
+                        </span></a></li>
+                    <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
+            </ul>
+    </div>
+
+
+  </div>
+</nav>
+           
+   <div class="container">
+<div class="row">
+<div class="col-md-10 ">
+<form action="/order" method="post" class="form-horizontal">
+<br>
+<!-- Form Name -->
+<center><legend><b><h1 style="font-family: courier new;font-size: 40px;">Edit Profile</h1></b></legend></center>
+
+<!-- Text input-->
+
+                <!-- UPDATE FORM -->
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
     <% } %>
-
-                <form action="/order" method="post">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" name="customer[name]" value="<%= customer.name %>">
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <textarea class="form-control" name="customer[address]"><%= customer.address %></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Pin Code</label>
-                        <input type="number" class="form-control" name="customer[pinCode]" value="<%= customer.pinCode %>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type="text" class="form-control" name="customer[mainNumber]" value="<%= customer.mainNumber %>" readonly>
-                    </div>
-
-                    <button type="submit" class="btn btn-success btn-lg">Enter</button>
                     
-                </form>
+    <div class="form-group">
+    <br>
+    <label class="col-md-4 control-label">Name</label>  
+    <div class="col-md-4">
+         <div class="input-group">
+               <div class="input-group-addon">
+                <i class="fa fa-user">
+                </i>
+               </div>
+               <input name="customer[name]" type="text" placeholder="Full Name" class="form-control input-md" value="<%= customer.name %>" required>
+         </div>
+    </div>
+    </div>
+
+    <div class="form-group"><br>
+    <label class="col-md-4 control-label" for="Address (Full)">Address</label>  
+    <div class="col-md-4">
+        <div class="input-group">
+           <div class="input-group-addon">
+            <i class="fa fa-home"></i>
+           </div>
+            <textarea class="form-control" rows="3" name="customer[address]" placeholder="Full Address" required><%= customer.address %> </textarea>
         </div>
-    </body>
+    </div>
+    </div>
+
+    <div class="form-group"><br>
+      <label class="col-md-4 control-label" for="Pin Code">Pin Code</label>  
+      <div class="col-md-4">
+        <div class="input-group">
+           <div class="input-group-addon">
+            <i class="fa fa-map-marker"></i>
+           </div>
+           <input name="customer[pinCode]" type="text" placeholder="Pin Code" class="form-control input-md" value="<%= customer.pinCode %>" disabled>
+        </div>
+      </div>
+    </div>
+    <div class="form-group"><br>
+          <label class="col-md-4 control-label" for="Mobile Number">Mobile Number</label> 
+          <div class="col-md-4">
+            <div class="input-group">
+               <div class="input-group-addon">
+                    <i class="fa fa-phone"></i>
+               </div>
+               <input name="customer[mainNumber]" type="text" placeholder="Pin Code" class="form-control input-md" value="<%= customer.mainNumber %>" disabled>
+             </div>
+          </div>
+    </div>
+
+    <div class="form-group"><br>
+        <label class="col-md-4 control-label" ></label>  
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </div>
+    </div>
+                    
+    </form>
+<br>
+</div>
+</div>
+</div>
+</body>
 </html>

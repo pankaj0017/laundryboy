@@ -8,8 +8,7 @@
   <meta content="" name="description">
 
   <!-- Favicons -->
-  <link href="/img/favicon.png" rel="icon">
-  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="/img/logotitle.ico" rel="shortcut icon">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900" rel="stylesheet">
 
@@ -61,8 +60,8 @@ $(document).ready(function(){
                   </button>
                 <!-- Brand -->
                 <a class="navbar-brand page-scroll sticky-logo" href="/">
-                  <h1><span>Laundry</span>Buoy</h1>
-                   <img src="img/logo.png" alt="" title=""> 
+                  <img src="img/logo.png" width="40" height="40" alt="" title="LaundryBuoy" style="border-radius: 50%;"> 
+                  <h1 style="top:-40px;"><span>Laundry</span>Buoy</h1>
                 </a>
               </div>
               <!-- Collect the nav links, forms, and other content for toggling -->
@@ -110,9 +109,9 @@ $(document).ready(function(){
 
     <% } %>
 
-      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="Call"><a style="font-size: 40px;line-height: 0px" href="tel:918178335478"><center><span class="fa fa-phone" style="color:black;"></span></center></a></li>
+      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="Call"><a style="font-size: 40px;line-height: 0px" href="tel:8178335478"><center><span class="fa fa-phone" style="color:black;"></span></center></a></li>
 
-      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="WhatsApp"><a style="font-size: 40px;line-height: 0px" href="https://wa.me/918510908590"><center><span class="fa fa-whatsapp" style="color:green;"></span></center></a></li>
+      <li class="zoom-fab zoom-btn-sm zoom-btn-doc scale-transition scale-out" data-toggle="tooltip" title="WhatsApp"><a style="font-size: 40px;line-height: 0px" href="https://wa.me/918510908590"><center><span class="fa fa-whatsapp" style="color:black;"></span></center></a></li>
   </ul>
 </div>
 
@@ -154,7 +153,15 @@ $(document).ready(function(){
                   <% if(!user) { %>
                     <a class="ready-btn page-scroll" href="/signup">Create your free account</a>
                   <% } else { %>
-                    <a class="ready-btn page-scroll" href="/profile">Profile Page</a>
+                    <a class="ready-btn page-scroll" href="/profile">Signed in As
+                        <% if(user.local.email) { %>
+                          <%= user.local.email %>
+                        <% } else if(user.google.email) { %>
+                          <%= user.google.email %>
+                        <% } else { %>
+                          <%= user.facebook.email %>
+                        <% } %>
+                    </a>
                   <% } %>
                 </div>
               </div>
@@ -189,9 +196,9 @@ $(document).ready(function(){
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
-                    <span style="font-size: 70px">&#10004;</span>
-                  <h4>Save Time</h4>
-                  <p>
+                    <h2><span class="fa fa-clock-o icons" style="font-size: 40px;"></span></h2>
+                  <h4 style="right: 10px;"><b>Save Time</b></h4>
+                  <p style="font-size: 18px;">
                     Even if you only do one load a day, you're still spending anywhere from 7-12 hrs on your laundry alone per week. Outsourcing this chore will save you lots of time.
                   </p>
                 </div>
@@ -205,10 +212,10 @@ $(document).ready(function(){
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
-                    <span style="font-size: 70px">&#10004;</span>
-                  <h4>Outsourcing is in</h4>
-                  <p>
-                    The average Indian has never been busier, but everyone wants a clean house. Your outsource your housekeeping, why not outsource your laundry too.
+                   <h2><span class="fa fa-home" style="font-size: 40px"></span></h2>
+                  <h4><b>Outsourcing is in</b></h4>
+                  <p style="font-size: 18px;">
+                    The average Indian has never been busier, but everyone wants a clean house. You outsource your housekeeping, why not outsource your laundry too.
                   </p>
                 </div>
               </div>
@@ -222,9 +229,9 @@ $(document).ready(function(){
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
-                    <span style="font-size: 70px">&#10004;</span>
-                  <h4>Easy to use</h4>
-                  <p>
+                   <h2><span style="font-size: 80px">&#10004;</span></h2>
+                  <h4><b>Easy to use</b></h4>
+                  <p style="font-size: 18px;">
                     We're just one click away. Rest yourselves at home and we'll manage everything from pickup to washing, ironing and delivering at your doorsteps.
                   </p>
                 </div>
@@ -239,9 +246,9 @@ $(document).ready(function(){
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
-                    <span style="font-size: 70px">&#10004;</span>
-                  <h4>Do Something else </h4>
-                  <p>
+                    <h2><span class="fa fa-lightbulb-o" style="font-size: 40px;"></span></h2>
+                  <h4><b>Do Something else</b> </h4>
+                  <p style="font-size: 18px;">
                     With all that extra time, you can finish that presentation for work, go on adventure with your kids, or spend some time with your loved ones.
                   </p>
                 </div>
@@ -257,9 +264,9 @@ $(document).ready(function(){
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
-                    <span style="font-size: 70px">&#10004;</span>
-                  <h4>It's Green</h4>
-                  <p>
+                    <h2><span class="fa fa-leaf" style="font-size: 40px"></span></h2>
+                  <h4><b>It's Green</b></h4>
+                  <p style="font-size: 18px;">
                    We use natural laundry detergents and high efficiency machines keeping your laundry clean and the planet green.
                   </p>
                 </div>
@@ -275,9 +282,9 @@ $(document).ready(function(){
                 <div class="single-services">
                   <a class="services-icon" href="#">
                     </a>
-                    <span style="font-size: 70px">&#10004;</span>
-                  <h4>You're in Charge</h4>
-                  <p>
+                   <h2> <span class="fa fa-user" style="font-size: 40px"></span></h2>
+                  <h4><b>You're in Charge</b></h4>
+                  <p style="font-size: 18px;">
                     At Laundry Buoy, we do our best to accommodate your needs and requests.
                   </p>
                 </div>
@@ -354,7 +361,6 @@ $(document).ready(function(){
           <div class="section-headline text-center">
             <br><br>
             <h2>Monthly Plans</h2>
-          <h4>* Service Charges are extra as applicable.</h4>
           </div>
         </div>
       </div>
@@ -405,7 +411,6 @@ $(document).ready(function(){
           <div class="section-headline text-center">
             <br><br>
             <h2>Complete Rate List</h2>
-            <h4>* Service Charges are extra as applicable.</h4>
           </div>
         </div>
       <div class="col-md-4 col-sm-4 col-xs-12">
@@ -525,7 +530,9 @@ $(document).ready(function(){
           <h4><center>
             Cost of the plan is Rs.<%= plan.amount %>/- per order.<br>
             <%= plan.shortClothes %> small clothes and <%= plan.longClothes %> big clothes can be washed and ironed.<br>
-            *Plan doesn't include super big clothes.
+            *Plan doesn't include super big clothes.<br>
+            *Customer may avail two services in a week.<br>
+            *Two small clothes can be exchanged against one big cloth.
           </h4></center>
         </div>
         <div class="modal-footer">
@@ -583,9 +590,6 @@ $(document).ready(function(){
                 </li>
                 <li style="font-size: 25px;">
                   <i class="fa fa-check"></i> Shoes Cleaning
-                </li>
-                <li style="font-size: 25px;">
-                  <i class="fa fa-check"></i> Clothes Packing
                 </li></center>
               </ul>
             </div>
@@ -616,37 +620,25 @@ $(document).ready(function(){
         </div>
         <div class="row">
           <!-- Start contact icon column -->
-          <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="contact-icon text-center">
               <div class="single-icon">
                 <i class="fa fa-mobile"></i>
                 <p>
-                  Call: +91 8178 33 5478
-                 WhatsApp: +91 8510 90 8590
+                <b>Call:</b> <a href="tel:8178335478" style="font-size: 15px;color:black">+91 8178 33 5478</a><br>
+                 <b>WhatsApp:</b><a href="https://wa.me/918510908590" style="font-size: 15px;color:black"> +91 8510 90 8590</a>
                 </p>
               </div>
             </div>
           </div>
           <!-- Start contact icon column -->
-          <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="contact-icon text-center">
               <div class="single-icon">
                 <i class="fa fa-envelope-o"></i>
                 <p>
-                  Email: laundrybuoy@gmail.com</a><br>
-                  <span>Web: www.laundrybuoy.com</span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <!-- Start contact icon column -->
-          <div class="col-md-4 col-sm-4 col-xs-12">
-            <div class="contact-icon text-center">
-              <div class="single-icon">
-                <i class="fa fa-map-marker"></i>
-                <p>
-                  Location: Pkt C5, H. No. 328/329<br>
-                  <span>Rohini Sec-6, Delhi-85</span>
+                 <b>Email:</b><a href="mailto: laundrybuoy@gmail.com" style="font-size: 15px;color:black"> laundrybuoy@gmail.com</a><br>
+                  <b>Web:</b><a href="/" style="font-size: 15px;color:black"> www.laundrybuoy.com</a>
                 </p>
               </div>
             </div>
@@ -742,15 +734,15 @@ $(document).ready(function(){
           <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="footer-content">
               <div class="footer-head">
-                <h4>Contact Us</h4>
+                <h4><b>Contact Us</b></h4>
                 <p>
                  You can connect to us through
                 </p>
                 <div class="footer-contacts">
-                  <p><span>Mobile:</span><a href="tel:918178335478" style="font-size: 15px;color:black"> 8178335478</a></p>
+                  <p><span>Mobile:</span><a href="tel:8178335478" style="font-size: 15px;color:black"> 8178335478</a></p>
                   <p><span>WhatsApp:</span><a href="https://wa.me/918510908590" style="font-size: 15px;color:black"> 8510908590</a></p>
                   <p><span>Email:</span><a href="mailto: laundrybuoy@gmail.com" style="font-size: 15px;color:black"> laundrybuoy@gmail.com</a></p>
-                  <p><span>Working Hours:</span> 9am-9pm (Fridays Off)</p>
+                  <p style="font-size: 15px;color:black"><span>Working Hours:</span> 9am-9pm (Fridays Off)</p>
                 </div>
               </div>
             </div>
@@ -868,7 +860,7 @@ $(document).ready(function(){
 
 .zoom-btn-person:hover { background-color: #e57373; }
 
-.zoom-btn-doc { background-color: #ffeb3b; }
+.zoom-btn-doc { background-color:  #FFA500; }
 
 .zoom-btn-doc:hover { background-color: #fff176; }
 

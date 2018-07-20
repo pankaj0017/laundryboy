@@ -414,11 +414,17 @@ div#preloader {
 }
 
 .stick .navbar-brand>img {
-  display: none;
+  float: left;
+  width: 50px;
+  height: 50px;
+  background: #555;
 }
 
 .stick .navbar-brand.sticky-logo>img {
-  display: block;
+ float: left;
+  width: 50px;
+  height: 45px;
+  background: #555;
 }
 
 .sticky-logo h1 {
@@ -428,6 +434,8 @@ div#preloader {
   font-size: 36px;
   font-weight: bold;
   line-height: 1;
+  position: relative;
+  left: 50px;
 }
 
 .sticky-logo h1 span {

@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/', function(req, res) {
-        if (req.isAuthenticated() && req.user.local.email == "laundrybuoy@gmail.com") {
+        if (req.isAuthenticated() && req.user.local.email == "9911692428") {
             res.redirect("/admin");
         } else {
           Plan.find({}, function(err, plans) {
@@ -666,7 +666,7 @@ module.exports = function(app, passport) {
 
                     var newOrder = new Order();
                     newOrder.customer = customer._id;
-                    PinCode.findOne({ 'pinCode' :  req.body.customer.pinCode }, function(err, foundPinCode) {
+                    PinCode.findOne({ 'pinCode' :  customer.pinCode }, function(err, foundPinCode) {
                         if (err)
                             console.log(err),res.redirect('/logout');
                         DeliveryBoy.findById(foundPinCode.deliveryBoy, function(err, foundDeliveryBoy) {
@@ -1455,7 +1455,7 @@ function isLoggedOut(req, res, next) {
     res.redirect('/profile');
 }
 function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.local.email == "laundrybuoy@gmail.com")
+    if (req.isAuthenticated() && req.user.local.email == "9911692428")
         return next();
     res.redirect('/login');
 }
