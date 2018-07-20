@@ -120,6 +120,7 @@ Supports Thumbs: true
   -webkit-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
+  display: none;
 }
 
 /* Normal desktop :992px. */
