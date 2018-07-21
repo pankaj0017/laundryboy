@@ -46,7 +46,7 @@ $(document).ready(function(){
     <div id="sticker" class="header-area">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 col-sm-12">
+          <div class="col-md-12 col-sm-12 col-lg-12">
 
             <!-- Navigation -->
             <nav class="navbar navbar-default">
@@ -308,10 +308,10 @@ $(document).ready(function(){
             <br><br>
             <ul class="nav nav-tabs" role="tablist">
               <li class="active">
-                <a href="#p-view-1" role="tab" data-toggle="tab"><h3>Single Order</h3></a>
+                <a href="#p-view-1" role="tab" data-toggle="tab"><h6>Single Order</h6></a>
               </li>
               <li>
-                <a href="#p-view-2" role="tab" data-toggle="tab"><h3>Monthly Plans</h3></a>
+                <a href="#p-view-2" role="tab" data-toggle="tab"><h6>Monthly Plans</h6></a>
               </li>
             </ul>
           </div>
@@ -340,7 +340,7 @@ $(document).ready(function(){
                     <li>Cost : Rs. <%= singleservice.amount %></li>
                     <li>Total Clothes : <%= singleservice.totalClothes %></li>
                     <br>
-                    <button><center><a data-toggle="modal" data-target="#single<%= singleservice.amount %>" style="font-size: 15px">View More</a></center></button>
+                    <button data-toggle="modal" data-target="#single<%= singleservice.amount %>"><center><a style="font-size: 15px">View More</a></center></button>
                   </ol>
                 </div>
               </div>     
@@ -379,7 +379,7 @@ $(document).ready(function(){
                     <li>Big Clothes : <%= plan.longClothes %></li>
                     <li>Validity : <%= plan.validity %></li>
                     <br>
-                    <button><center><a data-toggle="modal" data-target="#plan<%=plan.amount %>" style="font-size: 15px">View More</a></center></button>
+                    <button data-toggle="modal" data-target="#plan<%=plan.amount %>"><center><a style="font-size: 15px">View More</a></center></button>
                   </center>
                   </ol>
                 </div>

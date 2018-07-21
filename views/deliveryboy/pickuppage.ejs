@@ -69,20 +69,24 @@
                 <h3>Pickup Page</h3>
             </th>
             <tr>
-                <td>Customer</td>
+                <td><strong>Customer</strong></td>
                 <td><%= order.customer.name %></td>
             </tr>
             <tr>
-                <td>Address</td>
+                <td><strong>Address</strong></td>
                 <td><%= order.customer.address %></td>
             </tr>
             <tr>
-                <td>LaundryBuoy</td>
+                <td><strong>Pickup Guy Name</strong></td>
                 <td><%= order.deliveryBoy.name %></td>
             </tr>
             <tr>
-                <td>Only Iron</td>
-                <td>No / <a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>/onlyiron" class="btn btn-default btn-sm">Only Iron</a></td>
+                <td><strong>Pickup Guy Tag</strong></td>
+                <td><%= order.deliveryBoy.username %></td>
+            </tr> 
+            <tr>
+                <td><a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>" class="btn btn-primary btn-sm active">Wash and Iron</a></td>
+                <td><a href="/deliveryboy/<%=order.deliveryBoy._id%>/pickup/<%=order._id%>/onlyiron" class="btn btn-default btn-sm">Only Iron</a></td>
             </tr>
             <tr>
                 <td><a href="/deliveryboy/<%=order.deliveryBoy._id%>" class="btn btn-default btn-sm">Back</a></td>
@@ -216,7 +220,7 @@
         </div>
         <div class="form-group deliveryBoyPass">
             <label>Message</label>
-            <textarea class="form-control" name="customMessage"> Message : </textarea>
+            <textarea class="form-control" name="customMessage">Message : </textarea>
         </div>
         <div class="form-group deliveryBoyPass">
             <label>Delivery Boy Password</label>

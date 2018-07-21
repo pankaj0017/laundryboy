@@ -18,9 +18,9 @@
 <div class="container">
     <center>
         <ul class="nav nav-tabs">
-            <li class="active col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#readytopick">Pick (Vendor)</a></li>
-            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#pickup">Pick (Customer)</a></li>
-            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#deliver">Deliver</a></li>
+            <li class="active"><a data-toggle="tab" href="#readytopick">Pick (Vendor)</a></li>
+            <li><a data-toggle="tab" href="#pickup">Pick (Customer)</a></li>
+            <li><a data-toggle="tab" href="#deliver">Deliver</a></li>
         </ul>
     </center>
 
@@ -34,17 +34,17 @@
                 <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'ironed') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <p>OrderID : <%= order._id %></p>
-                        <p><span>Tag : <%= order.customer.tagNumber %></span>
-                        <span>Bag : <%= order.customer.bagNumber %></span>
+                        <p><strong>OrderID</strong> : <%= order._id %></p>
+                        <p><span><strong>Tag</strong> : <%= order.customer.tagNumber %></span>
+                        <span><strong>Bag</strong> : <%= order.customer.bagNumber %></span>
                         <% if (order.onlyIron) { %>
                             <span>Only Iron</span>
                         <% } %>
+                        <p><strong>Description</strong> : <%= order.description %></p>
+                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/out/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
-                        </span>
-                        <p>Description : <%= order.description %></p>
-                        <p>Contact Number : <%= order.customer.mainNumber %></p>
+                        </span></p>
                     </div> 
 
                 <% }}) %>
@@ -61,14 +61,15 @@
                 <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'booked') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <p>OrderID : <%= order._id %></p>
+                        <p><strong>OrderID</strong> : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
-                        <span> : <%= order.customer.pinCode %></span>
+                        <span> : <strong><%= order.customer.pinCode %></strong></span>
+                        
+                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
                         <span>
-                            <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm">Pick</a>
-                        </span>
-                        <p>Contact Number : <%= order.customer.mainNumber %></p>
+                            <a href="/deliveryboy/<%=deliveryboy._id%>/pickup/<%=order._id%>" class="btn btn-default btn-sm"> Pick</a>
+                        </span></p>
                     </div> 
 
                 <% }}) %>
@@ -87,13 +88,14 @@
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
-                        <span> : <%= order.customer.address %></span>
-                        <span> : <%= order.customer.pinCode %></span>
+                        <span><%= order.customer.tagNumber %></span>
+                        <p><span><%= order.customer.address %></span>
+                        <span> : <%= order.customer.pinCode %></span></p>
+                        <p>Description : <%= order.description %></p>
+                        <p>Contact Number : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/deliver/<%=order._id%>" class="btn btn-default btn-sm">Deliver</a>
-                        </span>
-                        <p>Description : <%= order.description %></p>
-                        <p>Contact Number : <%= order.customer.mainNumber %></p>
+                        </span></p>
                     </div> 
 
                 <% }}) %>
@@ -107,9 +109,9 @@
 
         <center>
         <ul class="nav nav-tabs">
-            <li class="active col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#alreadypicked">Picked</a></li>
-            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#alreadydelivered">Delivered</a></li>
-            <li class="col-lg-4 col-md-4 col-sm-4"><a data-toggle="tab" href="#alreadyterminated">Terminated</a></li>
+            <li class="active"><a data-toggle="tab" href="#alreadypicked">Picked</a></li>
+            <li><a data-toggle="tab" href="#alreadydelivered">Delivered</a></li>
+            <li><a data-toggle="tab" href="#alreadyterminated">Terminated</a></li>
         </ul>
     </center>
 
@@ -124,10 +126,17 @@
                 <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'picked') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <p>OrderID : <%= order._id %></p>
+                        <p><strong>OrderID</strong> : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
                         <span> : <%= order.customer.pinCode %></span>
+                        <p><span><strong>Tag</strong> : <%= order.customer.tagNumber %></span>
+                        <span><strong>Bag</strong> : <%= order.customer.bagNumber %></span>
+                        <% if (order.onlyIron) { %>
+                            <span><strong> : Only Iron</strong></span>
+                        <% } %>
+                        <p><strong>Description</strong> : <%= order.description %></p>
+                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a></p>
                     </div> 
 
                 <% }}) %>

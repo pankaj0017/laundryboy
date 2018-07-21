@@ -6,6 +6,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var User             = require('../app/models/user');
 var Customer         = require("../app/models/customer");
+var Mobile         = require("../app/models/mobile");
 var configAuth       = require('./auth');
 
 // expose this function to our app using module.exports
@@ -70,12 +71,17 @@ module.exports = function(passport) {
                             if (err)
                                 console.log(err);
                             var newCustomer = new Customer();
+                            newMobile = new Mobile();
+                            newMobile.owner    = newCustomer._id;
+                            newMobile.save();
                             newCustomer.user = newUser._id;
+                            newCustomer.name = req.body.name;
+                            newCustomer.mainNumber = req.body.contactNumber;
                             newCustomer.referedBy = req.params.id;
 
                                 newCustomer.save(function(err) {
                                         if (err)
-                                            console.log(err);  
+                                            console.log(err);
                                         return done(null, newUser);
                                     });
                         }); 
@@ -192,6 +198,7 @@ module.exports = function(passport) {
                                             
                                             var newCustomer = new Customer();
                                             newCustomer.user = newUser._id;
+                                            newCustomer.name = user.facebook.name;
                                                 newCustomer.save(function(err) {
                                                         if (err)
                                                             console.log(err);
@@ -269,6 +276,7 @@ module.exports = function(passport) {
                                         console.log(err);
                                     var newCustomer = new Customer();
                                             newCustomer.user = newUser._id;
+                                            newCustomer.name = user.google.name;
 
                                                 newCustomer.save(function(err) {
                                                         if (err)

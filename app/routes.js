@@ -930,9 +930,9 @@ module.exports = function(app, passport) {
                                           longgiven = longgiven + Number(req.body[clothe.name]);
                                         }
                                 }});
-                                summary = summary + req.body.customMessage;
 
                             }
+                            summary = summary + req.body.customMessage;
 
                             Customer.findById(getOrder.customer._id, function(err, foundCustomer) {
 
@@ -944,7 +944,7 @@ module.exports = function(app, passport) {
                                         var customerCount = new CustomerCount();
                                         customerCount.countingOf = 'customer';
                                         customerCount.save();
-                                        foundCustomer.tagNumber = 'lbc1';
+                                        foundCustomer.tagNumber = 'lbc401';
                                         console.log("here");
                                       } else {
                                           foundCustomer.tagNumber = 'lbc' + (customerCount.totalNumber + 1);
@@ -1246,6 +1246,12 @@ module.exports = function(app, passport) {
                           customer.shortClothes = 0;
                           customer.longClothes = ((customer.longClothes - customer.longGiven) - (customer.shortGiven - customer.shortClothes)/2);
                         }
+                      } else {
+                          customer.longClothes = customer.longClothes - customer.longGiven;
+                          customer.shortClothes = customer.shortClothes - customer.shortGiven;
+                          if (customer.longClothes == customer.longGiven && customer.shortClothes == customer.shortGiven) {
+                            customer.daysLeft = 0;
+                          }
                       }
 
                       customer.save();
