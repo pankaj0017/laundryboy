@@ -915,6 +915,7 @@ module.exports = function(app, passport) {
                                     if(req.body[clothe.name] != 0) { 
                                         summary = summary + clothe.name + ' * ' + req.body[clothe.name] + ' ';
                                         calculateCost = calculateCost + (clothe.ironPrice)*(req.body[clothe.name]);
+                                        shortgiven = shortgiven + Number(req.body[clothe.name]);
                                 }});
                                 getOrder.onlyIron = true;
 
@@ -1288,7 +1289,7 @@ module.exports = function(app, passport) {
                         deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
                         deliveryboy.save();
                         order.save();
-                        res.redirect('/deliveryboy/' + deliveryboy._id + '/deliver/' + order._id);
+                        res.redirect('/deliveryboy/' + deliveryboy._id);
 
                       });
 

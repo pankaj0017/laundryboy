@@ -142,7 +142,16 @@
                             <span><strong> : Only Iron</strong></span>
                         <% } %>
                         <p><strong>Description</strong> : <%= order.description %></p>
-                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a></p>
+                        <p>
+                            <strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
+                            <% if(!order.isPaid){ %>
+                            <span>
+                                <a href="/deliveryboy/<%=deliveryboy._id%>/payment/<%=order._id%>" class="btn btn-default btn-sm">Receive Payment</a>
+                            </span>
+                            <% } else { %>
+                                <span><strong>Paid</strong></span>
+                            <% } %>
+                        </p>
                     </div> 
 
                 <% }}) %>
