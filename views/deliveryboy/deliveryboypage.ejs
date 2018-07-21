@@ -40,6 +40,9 @@
                         <% if (order.onlyIron) { %>
                             <span>Only Iron</span>
                         <% } %>
+                        <span><strong>Name : </strong><%= order.customer.name %></span>
+                        <p><span><%= order.customer.address %></span>
+                        <span> : <strong><%= order.customer.pinCode %></strong></span></p>
                         <p><strong>Description</strong> : <%= order.description %></p>
                         <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
                         <span>
@@ -86,13 +89,16 @@
                 <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'out') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <p>OrderID : <%= order._id %></p>
-                        <span><%= order.customer.name %></span>
-                        <span><%= order.customer.tagNumber %></span>
+                        <p><strong>OrderID</strong> : <%= order._id %></p>
+                        <p><span><strong>Tag</strong> : <%= order.customer.tagNumber %></span>
+                        <% if (order.onlyIron) { %>
+                            <span>Only Iron</span>
+                        <% } %>
+                        <span><strong>Name : </strong><%= order.customer.name %></span>
                         <p><span><%= order.customer.address %></span>
-                        <span> : <%= order.customer.pinCode %></span></p>
-                        <p>Description : <%= order.description %></p>
-                        <p>Contact Number : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
+                        <span> : <strong><%= order.customer.pinCode %></strong></span></p>
+                        <p><strong>Description</strong> : <%= order.description %></p>
+                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a>
                         <span>
                             <a href="/deliveryboy/<%=deliveryboy._id%>/deliver/<%=order._id%>" class="btn btn-default btn-sm">Deliver</a>
                         </span></p>
@@ -152,10 +158,16 @@
                 <% deliveryboy.currentOrders.forEach(function(order){ if(order.status === 'delivered') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <p>OrderID : <%= order._id %></p>
+                        <p><strong>OrderID</strong> : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
                         <span> : <%= order.customer.pinCode %></span>
+                        <p><span><strong>Tag</strong> : <%= order.customer.tagNumber %></span>
+                        <% if (order.onlyIron) { %>
+                            <span><strong> : Only Iron</strong></span>
+                        <% } %>
+                        <p><strong>Description</strong> : <%= order.description %></p>
+                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a></p>
                     </div> 
 
                 <% }}) %>
@@ -172,9 +184,11 @@
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p>OrderID : <%= order._id %></p>
+                        <p><strong>OrderID</strong> : <%= order._id %></p>
                         <span><%= order.customer.name %></span>
                         <span> : <%= order.customer.address %></span>
                         <span> : <%= order.customer.pinCode %></span>
+                        <p><strong>Contact Number</strong> : <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a></p>
                     </div> 
 
                 <% }}) %>

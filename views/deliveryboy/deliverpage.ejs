@@ -15,31 +15,31 @@
 
 <div class="col-sm-6 col-sm-offset-3">
 
-    <div class="table-responsive">          
+    <div>          
         <table class="table">    
             <tr>
-                <td>DeliveryBoy Name : </td><td><%= order.deliveryBoy.name %></td>
+                <td><strong>DeliveryBoy Name</strong></td><td><%= order.deliveryBoy.name %></td>
             </tr>
             <tr>
-                <td>DeliveryBoy Tag : </td><td><%= order.deliveryBoy.username %></td>
+                <td><strong>DeliveryBoy Tag</strong></td><td><%= order.deliveryBoy.username %></td>
             </tr>
             <tr>
-                <td>Customer Name : </td><td><%= order.customer.name %></td>
+                <td><strong>Customer Name</strong></td><td><%= order.customer.name %></td>
             </tr>
             <tr>
-                <td>Customer Tag : </td><td><%= order.customer.tagNumber %></td>
+                <td><strong>Customer Tag</strong></td><td><%= order.customer.tagNumber %></td>
             </tr>
             <tr>
-                <td>Customer Address : </td><td><%= order.customer.address %></td>
+                <td><strong>Customer Address</strong></td><td><%= order.customer.address %></td>
             </tr>
             <tr>
-                <td>Customer Number : </td><td><%= order.customer.mainNumber %></td>
+                <td><strong>Customer Number</strong></td><td> <a href="tel:<%= order.customer.mainNumber %>"><%= order.customer.mainNumber %></a></td>
             </tr>
             <tr>
-                <td>Order Cost : </td><td><%= order.cost%></td>
+                <td><strong>Order Cost</strong></td><td><%= order.cost%></td>
             </tr>
             <tr>
-                <td>Order Description : </td><td><%= order.description %></td>
+                <td><strong>Order Description</strong></td><td><%= order.description %></td>
             </tr>
         </table>
     </div>
