@@ -91,9 +91,11 @@
                 <form method="get" action="/pincode">
                      <button type="submit" 
                         <% if(customer.isBusy){ %>
-                            disabled 
+                            disabled >Status : <%= customer.history[(customer.history.length)-1].status %>
+                        <% } else { %>
+                            >Order Pickup Now
                         <% } %>
-                        >Order Pickup Now</button>
+                      </button>
                 </form>
                 </div>
               </div> 
@@ -159,7 +161,9 @@
                             <% } %>
                         </span>
                         <p><strong>Order Date : </strong><%= order.orderDate %></p>
-                        <span><strong>Delivered Date : </strong><%= order.deliveryDate %></span>
+                        <% if (order.status == 'delivered') { %>
+                          <span><strong>Delivered Date : </strong><%= order.deliveryDate %></span>
+                        <% } %>
                     </div> 
 
                 <% }) %>

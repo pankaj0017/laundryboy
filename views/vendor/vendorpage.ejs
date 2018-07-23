@@ -109,7 +109,7 @@
             <div class="row">
                 <h2><br></h2>
 
-                <% vendor.currentOrders.forEach(function(order){ if(order.status === 'ironed') { %>
+                <% vendor.currentOrders.forEach(function(order){ if(order.status === 'ironed' || order.status === 'out' || order.status === 'delivered') { %>
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p><strong>OrderID</strong> : <%= order._id %></p>

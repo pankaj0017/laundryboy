@@ -686,7 +686,8 @@ module.exports = function(app, passport) {
                                 customer.save();
                                 foundDeliveryBoy.save();
                                 foundVendor.save();
-                                res.redirect("/profile");
+                                req.flash('customerOrderMessage', 'Your pickup has been scheduled');
+                                res.redirect("/order");
                             })
                         })                 
                     })
@@ -703,6 +704,12 @@ module.exports = function(app, passport) {
               if (order && order.status == 'booked') {
                 order.status = 'terminated';
                 customer.isBusy = false;
+                var options = {
+                      min:  1000,
+                      max:  9999,
+                      integer: true
+                    }
+                customer.pickUpKey = rn(options);
                 order.save();
                 customer.save();
               }
