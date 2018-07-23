@@ -1389,6 +1389,12 @@ module.exports = function(app, passport) {
                       order.status = 'delivered';
                       order.deliveryDate = Date.now() ;
                       customer.isBusy = false;
+                      var options = {
+                        min:  1000,
+                        max:  9999,
+                        integer: true
+                      }
+                      customer.pickUpKey = rn(options);
                       order.save();
                       customer.save();
 
