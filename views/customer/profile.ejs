@@ -83,8 +83,8 @@
                 <div class="pri_table_list">
                   <h3>Remaining<br/> <span>Plan Details</span></h3>
                   <ol text-align:center>
-                    <li>Long Clothes : <%= customer.longClothes %></li>
-                    <li>Short Clothes : <%= customer.shortClothes %></li>
+                    <li>Big Clothes : <%= customer.longClothes %></li>
+                    <li>Small Clothes : <%= customer.shortClothes %></li>
                     <li>Validity : <%= customer.daysLeft %></li>
                     <li>OTP : <%= customer.pickUpKey %></li>
                   </ol>
@@ -118,33 +118,15 @@
     <br><br>
         <center>
         <ul class="nav nav-tabs">
-            <li class="active col-lg-6 col-md-6 col-sm-6"><a style="color:red" data-toggle="tab" href="#rechargehistory"><h3>Recharges</h3></a></li>
-            <li class="col-lg-6 col-md-6 col-sm-6"><a style="color:blue" data-toggle="tab" href="#orderhistory"><h3>Orders</h3></a></li>
+            <li class="active col-lg-6 col-md-6 col-sm-6"><a style="color:red" data-toggle="tab" href="#orderhistory"><h3>Orders</h3></a></li>
+            <li class="col-lg-6 col-md-6 col-sm-6"><a style="color:blue" data-toggle="tab" href="#rechargehistory"><h3>Recharges</h3></a></li>
         </ul>
         </center>
 
     <div class="tab-content">
 
 
-        <div id="rechargehistory" class="tab-pane fade in active">
-
-            <div class="row">
-                <h2>Recharge History</h2>
-
-                <% customer.currentRecharges.forEach(function(recharge){  %>
-          
-                    <div class="col-lg-4 col-md-6 col-sm-12 well">
-                        <span><strong>Recharge Date : </strong><%= recharge.rechargeDate %></span>
-                        <span><strong>Amount : </strong><%= recharge.amount %></span>
-                    </div> 
-
-                <% }) %>
-                     
-            </div>
-
-        </div>
-
-        <div id="orderhistory" class="tab-pane fade">
+        <div id="orderhistory" class="tab-pane fade in active">
 
             <div class="row">
                 <h2>Order History</h2>
@@ -153,8 +135,10 @@
           
                     <div class="col-lg-4 col-md-6 col-sm-12 well">
                         <p><strong>OrderID : </strong><%= order._id %></p>
-                        <p><strong>Description : </strong><%= order.description %></p>
-                        <span><strong>Cost : </strong><%= order.cost %></span>
+                        <% if (order.status != 'booked') { %>
+                          <p><strong>Description : </strong><%= order.description %></p>
+                          <span><strong>Cost : </strong><%= order.cost %></span>
+                        <% } %>
                         <span><strong>Status : </strong><%= order.status %>
                             <% if (order.status == 'booked') { %>
                               <a href="/order/<%= order._id %>/cancel" class="btn btn-default btn-sm">Cancel Pickup</a>
@@ -170,6 +154,24 @@
                      
             </div>
         
+        </div>
+        
+        <div id="rechargehistory" class="tab-pane fade">
+
+            <div class="row">
+                <h2>Recharge History</h2>
+
+                <% customer.currentRecharges.forEach(function(recharge){  %>
+          
+                    <div class="col-lg-4 col-md-6 col-sm-12 well">
+                        <span><strong>Recharge Date : </strong><%= recharge.rechargeDate %></span>
+                        <span><strong>Amount : </strong><%= recharge.amount %></span>
+                    </div> 
+
+                <% }) %>
+                     
+            </div>
+
         </div>
     </div>
 </div>

@@ -49,21 +49,36 @@
                     <button type="submit" class="btn btn-success btn-lg">Add</button>
                     
                 </form>
-
-                <br><br><p>list of Plans : </p>
         <!-- CREATING -->
 
-        <% plans.forEach(function(plan){ %>
-                
-            <form class="form-inline" action="/admin/plans/<%=plan._id%>?_method=DELETE" method="POST">
-                <label>
-                    Rs.: <%= plan.amount %> for long : <%= plan.longClothes %> and short : <%= plan.shortClothes %> .
-                    Validity : <%= plan.validity %> Services :  <%= plan.services %>.
-                </label>
-                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
-            </form>
+    </div>
 
-        <% }) %>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>Amount</td>
+                    <td>Long</td>
+                    <td>Short</td>
+                    <td>Validity</td>
+                </tr>
+                <% plans.forEach(function(plan){ %>
+
+                    <tr>
+                        <td><%= plan.amount %></td>
+                        <td><%= plan.longClothes %></td>
+                        <td><%= plan.shortClothes %></td>
+                        <td><%= plan.validity %></td>
+                        <td>
+                            <form class="form-inline" action="/admin/plans/<%=plan._id%>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }) %>
+            </table>
+        </div>
 
     </div>
 

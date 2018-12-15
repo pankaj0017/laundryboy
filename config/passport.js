@@ -73,6 +73,7 @@ module.exports = function(passport) {
                             var newCustomer = new Customer();
                             newMobile = new Mobile();
                             newMobile.owner    = newCustomer._id;
+                            newMobile.number = req.body.contactNumber;
                             newMobile.save();
                             newCustomer.user = newUser._id;
                             newCustomer.name = req.body.name;

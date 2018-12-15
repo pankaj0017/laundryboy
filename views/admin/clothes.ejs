@@ -6,6 +6,10 @@
     <link href="/img/logotitle.ico" rel="shortcut icon">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         body        { padding-top:80px; word-wrap:break-word; }
     </style>
@@ -23,7 +27,6 @@
     </div>
 
     <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-        <p><%= user.local.email %></p>
 
         <h3><span class="fa fa-sign-in"></span>Add New Clothes</h3>
 
@@ -56,15 +59,35 @@
                 </form>
         <!-- CREATING -->
 
-        <% clothes.forEach(function(clothe){ %>
-                
+    </div>
 
-            <form class="form-inline" action="/admin/clothes/<%=clothe._id%>?_method=DELETE" method="POST">
-                <label><%= clothe.name %> in <%= clothe.category %> with price <%= clothe.price %> and <%= clothe.ironPrice %></label>
-                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
-            </form>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>Name</td>
+                    <td>Category</td>
+                    <td>W&I Price</td>
+                    <td>Iron Price</td>
+                    <td>Remove</td>
+                </tr>
+                <% clothes.forEach(function(clothe){ %>    
 
-        <% }) %>
+                    <tr>
+                        <td><%= clothe.name %></td>
+                        <td><%= clothe.category %></td>
+                        <td><%= clothe.price %></td>
+                        <td><%= clothe.ironPrice %></td>
+                        <td>
+                            <form class="form-inline" action="/admin/clothes/<%=clothe._id%>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }) %>
+            </table>
+        </div>
 
     </div>
 

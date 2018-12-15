@@ -16,16 +16,15 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1><span class="fa fa-user"></span> Customer Section</h1>
         <a href="/" class="btn btn-default btn-sm">Home</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         <a href="/admin" class="btn btn-default btn-sm">Back</a>
     </div>
 
     <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-        <p><%= user.local.email %></p>
 
-        <h3><span class="fa fa-sign-in"></span>Enter Any Detail to find</h3>
+        <h3><span class="fa fa-sign-in"></span>Enter any detail to find</h3>
 
             <form action="/admin/customer/cid" class="form-inline"  method="post" >
                 <div class="form-group">
@@ -37,8 +36,8 @@
             </form>
             <form action="/admin/customer/email" class="form-inline"  method="post" >
                 <div class="form-group">
-                    <label class="sr-only">Email:</label>
-                    <input type="text" class="form-control" name="viaEmail" placeholder="Enter Email Id">
+                    <label class="sr-only">Username:</label>
+                    <input type="text" class="form-control" name="viaEmail" placeholder="Enter Username">
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-sm">Find</button>

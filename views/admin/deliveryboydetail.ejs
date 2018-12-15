@@ -9,10 +9,8 @@
     <body>
 
         <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-            deliveryboy id =  <p><%= deliveryboy._id %></p>
 
-                <h1><span class="fa fa-sign-in"></span>Delivery Boy Details</h1>
-                <p><h3>deliveryboy tag : <%= deliveryboy.username %></h3></p>
+                <h2><span class="fa fa-sign-in"></span>Delivery Boy Details</h2>
                 <p><h3>Rating : <%= deliveryboy.rating %></h3></p>
 
                 <div class="page-header text-center">
@@ -25,12 +23,16 @@
                 <!-- UPDATE FORM -->
                 <form action="/admin/deliveryboys/<%=deliveryboy._id%>" method="post">
                     <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" class="form-control" value="<%= deliveryboy._id %>" readonly>
+                    </div>
+                    <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" name="deliveryboy[name]" value="<%= deliveryboy.name %>">
                     </div>
                     <div class="form-group">
                         <label>DeliveryBoy Tag</label>
-                        <input type="text" class="form-control" name="deliveryBoy[username]" value="<%= DeliveryBoy.username %>">
+                        <input type="text" class="form-control" name="deliveryBoy[username]" value="<%= deliveryboy.username %>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -41,11 +43,11 @@
                         <textarea class="form-control" name="deliveryboy[address]"><%= deliveryboy.address %></textarea>
                     </div>
                     <div class="form-group">
-                        <label>email</label>
+                        <label>Email</label>
                         <input type="text" class="form-control" name="deliveryboy[email]" value="<%= deliveryboy.email %>">
                     </div>
                     <div class="form-group">
-                        <label>mobile</label>
+                        <label>Mobile Number</label>
                         <input type="text" class="form-control" name="deliveryboy[mobile]" value="<%= deliveryboy.mobile %>">
                     </div>
 

@@ -23,16 +23,15 @@
     </div>
 
     <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-        <p><%= user.local.email %></p>
 
-        <h3><span class="fa fa-sign-in"></span>add new vendor</h3>
+        <h3><span class="fa fa-sign-in"></span>Add New Vendor</h3>
 
         <!-- CREATING -->
                 <form action="/admin/vendors" method="post">
 
                     <div class="form-group">
                         <label>Vendor Tag</label>
-                        <input type="text" class="form-control" name="newVendor[username]" value="lbv<%= vendorCount %>">
+                        <input type="text" class="form-control" name="newVendor[username]" value="lbv<%= vendorCount %>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -51,22 +50,37 @@
                         <textarea class="form-control" name="newVendor[address]"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>mobile</label>
+                        <label>Mobile Number</label>
                         <input type="text" class="form-control" name="newVendor[mobile]">
                     </div>
 
                     <button type="submit" class="btn btn-success btn-lg">Add new vendor</button>
                     
                 </form>
-
-                <br><br><p>list of vendors : click for more details</p>
         <!-- CREATING -->
+    </div>
 
-        <% vendors.forEach(function(vendor){ %>
-                
-            <p><a href="/admin/vendors/<%= vendor._id %>" ><%= vendor.username %> is tag of <%= vendor.name %></a></p>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>Tag</td>
+                    <td>Name</td>
+                    <td>Contact</td>
+                </tr>
+                <% vendors.forEach(function(vendor){ %>
 
-        <% }) %>
+                    <tr>
+                        <td>
+                            <a href="/admin/vendors/<%= vendor._id %>" ><%= vendor.username %></a>
+                        </td>
+                        <td><%= vendor.name %></td>
+                        <td><a href="tel:<%= vendor.mobile %>" ><%= vendor.mobile %></a></td>
+                    </tr>
+
+                <% }) %>
+            </table>
+        </div>
 
     </div>
 

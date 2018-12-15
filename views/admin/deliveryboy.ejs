@@ -23,16 +23,15 @@
     </div>
 
     <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-        <p><%= user.local.email %></p>
 
-        <h3><span class="fa fa-sign-in"></span>add new delivery boy</h3>
+        <h3><span class="fa fa-sign-in"></span>Add New Delivery Boy</h3>
 
         <!-- CREATING -->
                 <form action="/admin/deliveryboys" method="post">
 
                     <div class="form-group">
                         <label>DeliveryBoy Tag</label>
-                        <input type="text" class="form-control" name="newDeliveryBoy[username]" value="lbd<%= deliveryBoyCount %>">
+                        <input type="text" class="form-control" name="newDeliveryBoy[username]" value="lbd<%= deliveryBoyCount %>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -51,22 +50,38 @@
                         <textarea class="form-control" name="newDeliveryBoy[address]"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>mobile</label>
+                        <label>Mobile Number</label>
                         <input type="text" class="form-control" name="newDeliveryBoy[mobile]">
                     </div>
 
                     <button type="submit" class="btn btn-success btn-lg">Add new delivery boy</button>
                     
                 </form>
-
-                <br><br><p>list of deliveryboys : click for more details</p>
         <!-- CREATING -->
 
-        <% deliveryboys.forEach(function(deliveryboy){ %>
-                
-            <p><a href="/admin/deliveryboys/<%= deliveryboy._id %>" ><%= deliveryboy.username %> : <%= deliveryboy.name %> : <%= deliveryboy.mobile %></a></p>
+    </div>
 
-        <% }) %>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>Tag</td>
+                    <td>Name</td>
+                    <td>Contact</td>
+                </tr>
+                <% deliveryboys.forEach(function(deliveryboy){ %>
+
+                    <tr>
+                        <td>
+                            <a href="/admin/deliveryboys/<%= deliveryboy._id %>" ><%= deliveryboy.username %></a>
+                        </td>
+                        <td><%= deliveryboy.name %></td>
+                        <td><a href="tel:<%= deliveryboy.mobile %>" ><%= deliveryboy.mobile %></a></td>
+                    </tr>
+
+                <% }) %>
+            </table>
+        </div>
 
     </div>
 

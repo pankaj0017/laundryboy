@@ -16,16 +16,15 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Clothe Page</h1>
+        <h1><span class="fa fa-anchor"></span>Pincode  Page</h1>
         <a href="/" class="btn btn-default btn-sm">Home</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         <a href="/admin" class="btn btn-default btn-sm">Back</a>
     </div>
 
     <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-        <p><%= user.local.email %></p>
 
-        <h3><span class="fa fa-sign-in"></span>add new pincodes</h3>
+        <h3><span class="fa fa-sign-in"></span>Add new pincodes</h3>
 
         <!-- CREATING -->
                 <form action="/admin/pincodes" method="post">
@@ -48,15 +47,33 @@
                 </form>
         <!-- CREATING -->
 
-        <% pincodes.forEach(function(pincode){ %>
-                
+    </div>
 
-            <form class="form-inline" action="/admin/pincodes/<%=pincode._id%>?_method=DELETE" method="POST">
-                <label><%= pincode.pinCode %> of <%= pincode.vendor.name %> of <%= pincode.deliveryBoy.name %></label>
-                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
-            </form>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>Pincode</td>
+                    <td>Vendor</td>
+                    <td>DeliveryBoy</td>
+                    <td></td>
+                </tr>
+                <% pincodes.forEach(function(pincode){ %>
 
-        <% }) %>
+                    <tr>
+                        <td><%= pincode.pinCode %></td>
+                        <td><%= pincode.vendor.name %></td>
+                        <td><%= pincode.deliveryBoy.name %></td>
+                        <td>
+                            <form class="form-inline" action="/admin/pincodes/<%=pincode._id%>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }) %>
+            </table>
+        </div>
 
     </div>
 

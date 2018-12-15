@@ -44,15 +44,30 @@
 
                 <br><br><p>list of services : </p>
         <!-- CREATING -->
+    </div>
 
-        <% singleServices.forEach(function(singleService){ %>
-                
-            <form class="form-inline" action="/admin/singleservices/<%=singleService._id%>?_method=DELETE" method="POST">
-                <label>Rs. <%= singleService.amount %> for <%= singleService.totalClothes %> clothes</label>
-                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
-            </form>
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>Amount</td>
+                    <td>Total Clothes</td>
+                </tr>
+                <% singleServices.forEach(function(singleService){ %>
 
-        <% }) %>
+                    <tr>
+                        <td><%= singleService.amount %></td>
+                        <td><%= singleService.totalClothes %></td>
+                        <td>
+                            <form class="form-inline" action="/admin/singleservices/<%=singleService._id%>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }) %>
+            </table>
+        </div>
 
     </div>
 

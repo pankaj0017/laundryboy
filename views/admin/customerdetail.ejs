@@ -9,30 +9,60 @@
     <body>
 
         <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-            <p>user id : <%= customer.user %></p>
-            <p>customer id : <%= customer._id %></p>
-            <p>refered by : <%= customer.referedBy %></p>
-            <p>Name : <%= customer.name %></p>
-            <p>Customer Tag : <%= customer.tagNumber %></p>
-            <p>Address : <%= customer.address %></p>
-            <p>Pincode : <%= customer.pinCode %></p>
-            <p>Contact Numbers : 
-                <% customer.numbers.forEach(function(cell){ %>
-                         <%= cell.number %>. 
-                <% }) %>
-            </p>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <td><strong>User ID </strong></td>
+                        <td><%= customer.user %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Customer ID</strong></td>
+                        <td><%= customer._id %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Refered By</strong></td>
+                        <td><%= customer.referedBy %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contact Numbers</strong></td>
+                        <td>
+                            <% customer.numbers.forEach(function(cell){ %>
+                                     <%= cell.number %>. 
+                            <% }) %>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
             <div class="page-header text-center">
                 <a href="/" class="btn btn-default btn-sm">Home</a>
                 <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-                <a href="/admin" class="btn btn-default btn-sm">Back</a>
+                <a href="/admin/customer" class="btn btn-default btn-sm">Back</a>
             </div>
 
-                <h1><span class="fa fa-sign-in"></span>Update Details</h1>
+                <h1><span class="fa fa-user"></span>Update Details</h1>
 
 
                 <!-- UPDATE FORM -->
                 <form action="/admin/customerdetails/<%=customer._id%>" method="post">
 
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="customer[name]" value="<%= customer.name %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Tag</label>
+                        <input type="text" class="form-control" name="customer[tagNumber]" value="<%= customer.tagNumber %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control" name="customer[address]"><%= customer.address %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode</label>
+                        <input type="number" class="form-control" name="customer[pinCode]" value="<%= customer.pinCode %>">
+                    </div>
                     <div class="form-group">
                         <label>Days Left</label>
                         <input type="number" class="form-control" name="customer[daysLeft]" value="<%= customer.daysLeft %>">

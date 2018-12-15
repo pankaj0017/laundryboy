@@ -121,7 +121,7 @@ module.exports = function(app, passport) {
                        } else {   
                            newMobile.owner    = customer._id;
                            newMobile.save();
-                           customer.mainNumber = newMobile.number;
+                           customer.mainNumber = req.body.newMobile.number;
                            customer.numbers.push(newMobile);
                            customer.save();
                            res.redirect('/update');
@@ -149,16 +149,95 @@ module.exports = function(app, passport) {
     app.get('/admin', isAdmin, function(req, res) {
             res.render('admin/admin.ejs');
     });
-    app.get('/admin/customer', isAdmin, function(req, res) {
-            res.render('admin/customersection.ejs');
+
+    // =====================================
+    // ADMIN ORDER ROUTES =====================
+    // =====================================
+    // route for changing CUSTOMER database
+
+    app.get('/admin/order', isAdmin, function(req, res) {
+            res.render('admin/ordersection.ejs');
     });
+
+    app.post('/admin/order', isAdmin, function(req, res) {
+      Order.findById(req.body.viaID, function(err, order) {
+            if (err)
+                console.log(err),res.redirect('/logout');
+            if (order) {
+              res.redirect('/admin/order/' + order._id);
+            } else {
+              res.redirect('/admin/order');
+            }
+        })
+    });
+
+    app.get('/admin/order/:id', isAdmin, function(req, res) {
+      Order.findById(req.params.id).populate("customer deliveryBoy vendor").exec(function(err, order) {
+          if(err){
+              console.log(err),res.redirect('/logout');
+          } else if (order) {
+              res.render('admin/orderdetail.ejs',{order : order});
+          } else {
+            res.redirect('/admin/order');
+          }
+       });
+    });
+
+    app.get('/admin/allorder', isAdmin, function(req, res) {
+      Order.find({}).populate("customer deliveryBoy vendor").exec(function(err, allOrder) {
+            if (err)
+                console.log(err),res.redirect('/logout');
+            if (allOrder) {
+              res.render('admin/allorder.ejs',{allOrder : allOrder});
+            } else {
+              res.redirect('/admin/order');
+            }
+        })
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // =====================================
     // ADMIN CUSTOMER ROUTES =====================
     // =====================================
     // route for changing CUSTOMER database
 
-
+    app.get('/admin/customer', isAdmin, function(req, res) {
+        res.render('admin/customersection.ejs');
+    });
 
     app.get('/admin/customerdetails/:id', isAdmin, function(req, res){
        Customer.findById(req.params.id).populate("numbers").exec(function(err, customer) {
@@ -175,7 +254,7 @@ module.exports = function(app, passport) {
        Customer.findById(req.params.id, function(err, foundCustomer){
           if(err){
               console.log(err),res.redirect('/logout');
-          } else if (customer) {
+          } else if (foundCustomer) {
 
               foundCustomer.daysLeft = req.body.customer.daysLeft;
               foundCustomer.longClothes = req.body.customer.longClothes;
@@ -649,7 +728,6 @@ module.exports = function(app, passport) {
                     res.redirect("/order");
                 } else {
 
-                    customer.name = req.body.customer.name;
                     customer.address = req.body.customer.address;
                     customer.isBusy = true;
                     var options = {
@@ -934,8 +1012,10 @@ module.exports = function(app, passport) {
                                         calculateCost = calculateCost + (clothe.price)*(req.body[clothe.name]);
                                         if(clothe.price <= 4) {
                                           shortgiven = shortgiven + Number(req.body[clothe.name]);
-                                        } else {
+                                        } else if(clothe.price <= 10) {
                                           longgiven = longgiven + Number(req.body[clothe.name]);
+                                        } else {
+                                          longgiven = longgiven + (clothe.price)*Number(req.body[clothe.name])/10;
                                         }
                                 }});
 
@@ -1135,7 +1215,7 @@ module.exports = function(app, passport) {
                               newRecharge.deliveryBoy = deliveryboy._id;
                               newRecharge.save();
 
-                              customer.daysLeft = customer.daysLeft + plan.validity;
+                              customer.daysLeft = plan.validity;
                               customer.longClothes = customer.longClothes + plan.longClothes;
                               customer.shortClothes = customer.shortClothes + plan.shortClothes;
                               customer.currentRecharges.push(newRecharge);

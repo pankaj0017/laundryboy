@@ -52,7 +52,7 @@
   </div>
 </nav>
            
-   <div class="container">
+<div class="container">
 <div class="row">
 <div class="col-md-10 ">
 <fieldset class="form-horizontal">
@@ -77,65 +77,77 @@
                 <!-- UPDATE FORM -->
 
 <form action="/signup" method="post">
-    <div class="form-group">
-            <label class="col-md-4 control-label" for="Usename">Name</label>
-            <div class="col-md-4">
- <div class="input-group">
-       <div class="input-group-addon">
-        <i class="fa fa-user">
-        </i>
-       </div>
-            <input type="text" class="form-control" required pattern="([a-zA-Z\s]){4,}" name="name">
+  <div class="form-group">
+            <label class="col-md-4 control-label">First Name</label>
+    <div class="col-md-4">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-user"></i>
         </div>
+        <input type="text" class="form-control" required pattern="([a-zA-Z]){1,15}" name="name">
+      </div>
     </div>
-</div>
-        <div class="form-group">
+    <div class="col-md-4" style="font-family: courier new;">Alphabets only (1-15)</div>
+  </div>
+  <div class="form-group">
+            <label class="col-md-4 control-label">Last Name</label>
+    <div class="col-md-4">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-user"></i>
+        </div>
+        <input type="text" class="form-control" required pattern="([a-zA-Z]){1,15}" name="lastName">
+      </div>
+    </div>
+    <div class="col-md-4" style="font-family: courier new;">Alphabets only (1-15)</div>
+  </div>
+  <div class="form-group">
             <label class="col-md-4 control-label">Username</label>
-            <div class="col-md-4">
- <div class="input-group">
+    <div class="col-md-4">
+      <div class="input-group">
        <div class="input-group-addon">
-        <i class="fa fa-key">
-        </i>
-       </div>
+        <i class="fa fa-key"></i>
+        </div>
             <input type="text" class="form-control" required pattern="([a-z0-9A-Z]){4,15}" name="email">
         </div>
     </div>
-</div>
-        <div class="form-group">
+    <div class="col-md-4" style="font-family: courier new;">Alphanumeric (4-15)</div>
+  </div>
+  <div class="form-group">
             <label class="col-md-4 control-label">Contact Number</label>
-            <div class="col-md-4">
- <div class="input-group">
+    <div class="col-md-4">
+      <div class="input-group">
        <div class="input-group-addon">
-        <i class="fa fa-phone">
-        </i>
+        <i class="fa fa-phone"></i>
        </div>
-            <input type="number" class="form-control" required name="contactNumber">
+            <input type="number" class="form-control" required pattern="([0-9]){10,10}" name="contactNumber">
         </div>
     </div>
-</div>
-        <div class="form-group">
+    <div class="col-md-4" style="font-family: courier new;">10 digits</div>
+  </div>
+  <div class="form-group">
             <label class="col-md-4 control-label" for="Password">Password</label>
-            <div class="col-md-4">
- <div class="input-group">
-    <div class="input-group-addon">
-        <i class="fa fa-lock">
-        </i>
-       </div>
+     <div class="col-md-4">
+      <div class="input-group">
+          <div class="input-group-addon">
+            <i class="fa fa-lock"></i>
+          </div>
             <input type="password" class="form-control" id="password" required name="password">
-        </div>
+      </div>
     </div>
-</div>
-                <div class="form-group"><br>
-  <label class="col-md-4 control-label" ></label> 
-  <button class="btn btn-success btn-lg">SignUp</button>
-</div>
+  </div>
+  <div class="form-group"><br>
+    <label class="col-md-4 control-label" ></label> 
+    <button class="btn btn-success btn-lg">SignUp</button>
+  </div>
     </form>
 
 </fieldset>
 <br>
-   <center>         
-    <h3>Already have an account?&nbsp; <a style="font-size: 30px" href="/login">Login</a></h3>
-    <h3>Or go to &nbsp;<a style="font-size: 30px" href="/">Home</a></h3>
+    <center>       
+      <h3>Already have an account?&nbsp; <a style="font-size: 30px" href="/login">Login</a></h3>
+      <h3>Or go to &nbsp;<a style="font-size: 30px" href="/">Home</a></h3>
+    </center>
 </div>
 </div>
 </div>

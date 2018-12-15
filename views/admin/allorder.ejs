@@ -1,0 +1,61 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>LaundryBuoy</title>
+    <link href="/img/logotitle.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-book"></span> All Orders </h1>
+        <a href="/" class="btn btn-default btn-sm">Home</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/admin/order" class="btn btn-default btn-sm">Back</a>
+    </div>
+
+</div>
+<div class="col-sm-12 text-center">
+        
+        <table class="table">
+            <th>
+                <td>ORDER ID</td>
+                <td>Status</td>
+                <td>Cost</td>
+                <td>Is Paid</td>
+                <td>Description</td>
+                <td>Only Iron</td>
+                <td>Delivery Date</td>
+                <td>Customer</td>
+                <td>Delivery Boy</td>
+                <td>Vendor</td>
+            </th>
+
+            <% allOrder.forEach(function(order){ %>
+                <tr>
+                    <td> <%= order.orderDate.getDate() %>/<%= order.orderDate.getMonth() %>/<%= order.orderDate.getYear() + 1900 %></td>
+                    <td><a href="/admin/order/<%= order._id %>"><%= order._id %></a></td>
+                    <td><%= order.status %></td>
+                    <td><%= order.cost %></td>
+                    <td><%= order.isPaid %></td>
+                    <td><%= order.description %></td>
+                    <td><%= order.onlyIron %></td>
+                    <td> <%= order.deliveryDate.getDate() %>/<%= order.deliveryDate.getMonth() %>/<%= order.deliveryDate.getYear() + 1900 %></td>
+                    <td><%= order.customer.name %></td>
+                    <td><%= order.deliveryBoy.name %></td>
+                    <td><%= order.vendor.name %></td>
+                </tr>
+            <% }) %>
+            
+        </table>
+</div>
+</body>
+</html>

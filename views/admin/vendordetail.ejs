@@ -9,10 +9,8 @@
     <body>
 
         <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
-            vendor id =  <p><%= vendor._id %></p>
 
-                <h1><span class="fa fa-sign-in"></span>Vendor Details</h1>
-                <p><h3>vendor tag : <%= vendor.username %></h3></p>
+                <h2><span class="fa fa-sign-in"></span>Vendor Details</h2>
                 <p><h3>Rating : <%= vendor.rating %></h3></p>
 
                 <div class="page-header text-center">
@@ -25,12 +23,16 @@
                 <!-- UPDATE FORM -->
                 <form action="/admin/vendors/<%=vendor._id%>" method="post">
                     <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" class="form-control" value="<%= vendor._id %>" readonly>
+                    </div>
+                    <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" name="vendor[name]" value="<%= vendor.name %>">
                     </div>
                     <div class="form-group">
                         <label>Vendor Tag</label>
-                        <input type="text" class="form-control" name="vendor[username]" value="<%= vendor.username %>">
+                        <input type="text" class="form-control" name="vendor[username]" value="<%= vendor.username %>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -41,11 +43,11 @@
                         <textarea class="form-control" name="vendor[address]"><%= vendor.address %></textarea>
                     </div>
                     <div class="form-group">
-                        <label>email</label>
+                        <label>Email</label>
                         <input type="text" class="form-control" name="vendor[email]" value="<%= vendor.email %>">
                     </div>
                     <div class="form-group">
-                        <label>mobile</label>
+                        <label>Mobile Number</label>
                         <input type="text" class="form-control" name="vendor[mobile]" value="<%= vendor.mobile %>">
                     </div>
 

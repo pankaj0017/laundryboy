@@ -60,9 +60,10 @@
   </div>
 </nav>
            
-   <div class="container">
+<div class="container">
 <div class="row">
 <div class="col-md-10 ">
+
 <form action="/update" method="post" class="form-horizontal">
 <br>
 <!-- Form Name -->
@@ -118,7 +119,6 @@
 		       </div>
 		       <select class="form-control" name="customer[mainNumber]">
 
-				  	<option hidden><%= customer.mainNumber %></option>
 				  	<% customer.numbers.forEach(function(cell){ %>
 					    <option>
 					    	<%= cell.number %>
