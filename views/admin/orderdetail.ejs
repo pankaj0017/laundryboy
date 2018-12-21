@@ -16,6 +16,26 @@
                         <td><strong>Order ID </strong></td>
                         <td><%= order._id %></td>
                     </tr>
+                    <tr>
+                        <td><strong>Customer</strong></td>
+                        <td><a href="/admin/customerdetails/<%= order.customer._id %>"><%= order.customer.name %></a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vendor</strong></td>
+                        <td><a href="/admin/vendors/<%= order.vendor._id %>"><%= order.vendor.name %></a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Delivery Boy</strong></td>
+                        <td><a href="/admin/deliveryboys/<%= order.deliveryBoy._id %>"><%= order.deliveryBoy.name %></a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Order Date</strong></td>
+                        <td><%= order.orderDate %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Delivery Date</strong></td>
+                        <td><%= order.deliveryDate %></td>
+                    </tr>
                 </table>
             </div>
 
@@ -35,26 +55,59 @@
                         <label>Cost</label>
                         <input type="number" class="form-control" name="order[cost]" value="<%= order.cost %>">
                     </div>
-                        <div class="checkbox">
+                        <div class="form-group">
                             <label>Is Paid</label>
-                            <input id="paymentCheck" type="checkbox" name="payWithPlan" value="true" <% if(0) { %>disabled<% } else { %> checked="true" <% } %> >
+                            <label class="radio-inline">
+                              <input type="radio" name="radiopaid" value="yes" <% if(order.isPaid ){ %> checked <% } %> >yes
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="radiopaid" value="no" <% if(!order.isPaid){ %> checked <% } %> >no
+                            </label>
                         </div>
-                        <input type="text" class="form-control" name="order[tagNumber]" value="<%= order.isPaid %>">
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="form-control" name="order[description]"><%= order.description %></textarea>
                     </div>
                     <div class="form-group">
                         <label>Rating</label>
-                        <input type="number" class="form-control" name="order[rating]" value="<%= order.rating %>">
+                        <input type="number" class="form-control" name="order[rating]" pattern="([0-5]){5}" value="<%= order.rating %>">
                     </div>
                     <div class="form-group">
                         <label>Status</label>
-                        <input type="text" class="form-control" name="order[status]" value="<%= order.status %>">
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="booked" <% if(order.status == "booked" ){ %> checked <% } %> >booked
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="picked" <% if(order.status == "picked" ){ %> checked <% } %> >picked
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="received" <% if(order.status == "received" ){ %> checked <% } %> >received
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="washed" <% if(order.status == "washed" ){ %> checked <% } %> >washed
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="ironed" <% if(order.status == "ironed" ){ %> checked <% } %> >ironed
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="out" <% if(order.status == "out" ){ %> checked <% } %> >out
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="delivered" <% if(order.status == "delivered" ){ %> checked <% } %> >delivered
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radiostatus" value="terminated" <% if(order.status == "terminated" ){ %> checked <% } %> >terminated
+                        </label>
+                        
                     </div>
                     <div class="form-group">
                         <label>Only Iron</label>
-                        <input type="number" class="form-control" name="order[onlyIron]" value="<%= order.onlyIron %>">
+                        <label class="radio-inline">
+                          <input type="radio" name="radioiron" value="yes" <% if(order.onlyIron ){ %> checked <% } %> >yes
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="radioiron" value="no" <% if(!order.onlyIron){ %> checked <% } %> >no
+                        </label>
                     </div>
 
                     <button type="submit" class="btn btn-success btn-lg">Change</button>

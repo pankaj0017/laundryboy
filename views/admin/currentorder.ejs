@@ -9,11 +9,6 @@
     <style>
         body        { word-wrap:break-word; }
     </style>
-    <script>
-        function myFunction() {
-          window.print();
-        }
-    </script>
 </head>
 <body>
 
@@ -21,13 +16,11 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-book"></span> Executed Orders </h1>
-        <button type="button" class="btn btn-success btn-sm" onclick="myFunction()">Save</button>
+        <h1><span class="fa fa-book"></span> Current Orders </h1>
         <a href="/" class="btn btn-default btn-sm">Home</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         <a href="/admin/order" class="btn btn-default btn-sm">Back</a>
-        <a href="/admin/currentorder" class="btn btn-primary btn-sm">Current</a>
-        <a href="/admin/allorder/delete" class="btn btn-danger btn-sm">Delete</a>
+        <a href="/admin/allorder" class="btn btn-primary btn-sm">Executed</a>
     </div>
 
 </div>
@@ -47,7 +40,7 @@
                 <td>Vendor</td>
             </th>
 
-            <% allOrder.forEach(function(order){ if(order.status == 'delivered' || order.status == 'terminated') { %>
+            <% allOrder.forEach(function(order){ if(order.status != 'delivered' && order.status != 'terminated') { %>
                 <tr>
                     <td> <%= order.orderDate.getDate() %>/<%= order.orderDate.getMonth() %>/<%= order.orderDate.getYear() + 1900 %></td>
                     <td><a href="/admin/order/<%= order._id %>"><%= order._id %></a></td>

@@ -80,7 +80,7 @@
 		    <form action="/update/mobile" class="form-inline"  method="post" >
 		    	<div class="form-group">
 		    		<label class="sr-only" for="New Number">Number:</label>
-		            <input type="number" class="form-control" name="newMobile[number]" placeholder="Enter New Phone Number">
+		            <input type="text" class="form-control" required pattern="([0-9]){10}" name="newMobile[number]" placeholder="Enter New Phone Number">
 		        </div>
 
 		        <button type="submit" class="btn btn-info btn-sm">Add</button>

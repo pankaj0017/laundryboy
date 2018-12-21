@@ -71,21 +71,32 @@ module.exports = function(passport) {
                             if (err)
                                 console.log(err);
                             var newCustomer = new Customer();
-                            newMobile = new Mobile();
-                            newMobile.owner    = newCustomer._id;
-                            newMobile.number = req.body.contactNumber;
-                            newMobile.save();
-                            newCustomer.user = newUser._id;
-                            newCustomer.name = req.body.name;
-                            newCustomer.mainNumber = req.body.contactNumber;
-                            newCustomer.referedBy = req.params.id;
 
-                                newCustomer.save(function(err) {
-                                        if (err)
-                                            console.log(err);
-                                        return done(null, newUser);
-                                    });
-                        }); 
+                            Mobile.findOne({ 'number' :  req.body.contactNumber }, function(err, mobile) {
+                                  if (err)
+                                      console.log(err),res.redirect('/logout');
+                                  if (mobile) {
+                                    return done(null, false, req.flash('signupMessage', 'Mobile Number already in use'));
+                                  } else {
+
+                                    newMobile = new Mobile();
+                                    newMobile.owner    = newCustomer._id;
+                                    newMobile.number = req.body.contactNumber;
+                                    newMobile.save();
+                                    newCustomer.numbers.push(newMobile);
+                                    newCustomer.user = newUser._id;
+                                    newCustomer.name = req.body.name;
+                                    newCustomer.mainNumber = req.body.contactNumber;
+                                    newCustomer.referedBy = req.params.id;
+
+                                        newCustomer.save(function(err) {
+                                                if (err)
+                                                    console.log(err);
+                                                return done(null, newUser);
+                                            });
+                                  }
+                              })                         
+                        });
                     }
 
             });    

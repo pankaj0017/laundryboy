@@ -124,7 +124,7 @@ module.exports = function(app, passport) {
                            customer.mainNumber = req.body.newMobile.number;
                            customer.numbers.push(newMobile);
                            customer.save();
-                           res.redirect('/update');
+                           res.redirect('/profile');
                        }
                     });
                   }
@@ -183,12 +183,70 @@ module.exports = function(app, passport) {
        });
     });
 
+    app.post('/admin/order/:id', isAdmin, function(req, res) {
+      Order.findById(req.params.id).populate("customer deliveryBoy vendor").exec(function(err, order) {
+          if(err){
+              console.log(err),res.redirect('/logout');
+          } else if (order) { 
+              order.cost = req.body.order.cost;
+              order.description = req.body.order.description;
+              order.rating = req.body.order.rating;
+              if(req.body.radiopaid == "no") {
+                order.isPaid = false;
+              } else {
+                order.isPaid = true;
+              }
+              if(req.body.radioiron == "no") {
+                order.onlyIron = false;
+              } else {
+                order.onlyIron = true;
+              }
+              order.status = req.body.radiostatus;
+              order.save();
+              res.redirect('/admin/order/' + req.params.id);
+          } else {
+            res.redirect('/admin/order');
+          }
+       });
+    });
+
     app.get('/admin/allorder', isAdmin, function(req, res) {
       Order.find({}).populate("customer deliveryBoy vendor").exec(function(err, allOrder) {
             if (err)
                 console.log(err),res.redirect('/logout');
             if (allOrder) {
               res.render('admin/allorder.ejs',{allOrder : allOrder});
+            } else {
+              res.redirect('/admin/order');
+            }
+        })
+    });
+    app.get('/admin/currentorder', isAdmin, function(req, res) {
+      Order.find({}).populate("customer deliveryBoy vendor").exec(function(err, allOrder) {
+            if (err)
+                console.log(err),res.redirect('/logout');
+            if (allOrder) {
+              res.render('admin/currentorder.ejs',{allOrder : allOrder});
+            } else {
+              res.redirect('/admin/order');
+            }
+        })
+    });
+
+    app.get('/admin/allorder/delete', isAdmin, function(req, res) {
+      Order.find({}).populate("customer deliveryBoy vendor").exec(function(err, allOrder) {
+            if (err)
+                console.log(err),res.redirect('/logout');
+            if (allOrder) {
+              allOrder.forEach(function(order){ if(order.status == 'delivered' || order.status == 'terminated') {
+                console.log("Deleting order = " + order.status);
+                Order.findByIdAndRemove(order._id, function(err){
+                    if(err){
+                        console.log(err),res.redirect('/logout');
+                    }
+                 });
+              }});
+              res.redirect('/admin/allorder');
             } else {
               res.redirect('/admin/order');
             }
@@ -331,15 +389,9 @@ module.exports = function(app, passport) {
         })
     });
     app.post('/admin/customer/cid', isAdmin, function(req, res) {
-        Customer.findById(req.body.viaID, function(err, customer) {
-            if (err)
-                console.log(err),res.redirect('/logout');
-            if (customer) {
-              res.redirect('/admin/customerdetails/' + customer._id);
-            } else {
-              res.redirect('/admin/customer');
-            }
-        })
+
+        res.redirect('/admin/customerdetails/' + req.body.viaID);
+
     });
     app.post('/admin/customer/mobile', isAdmin, function(req, res) {
         Mobile.findOne({ 'number' :  req.body.viaMobile }, function(err, mobile) {
