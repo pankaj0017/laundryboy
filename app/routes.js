@@ -314,9 +314,17 @@ module.exports = function(app, passport) {
               console.log(err),res.redirect('/logout');
           } else if (foundCustomer) {
 
+              foundCustomer.name = req.body.customer.name;
+              foundCustomer.address = req.body.customer.address;
+              foundCustomer.pinCode = req.body.customer.pinCode;
               foundCustomer.daysLeft = req.body.customer.daysLeft;
               foundCustomer.longClothes = req.body.customer.longClothes;
               foundCustomer.shortClothes = req.body.customer.shortClothes;
+              if(req.body.radiobusy == "no") {
+                  customer.isBusy = false;
+                } else {
+                  customer.isBusy = true;
+                }
               foundCustomer.save();
               res.redirect('/admin/customerdetails/' + req.params.id);
           } else {

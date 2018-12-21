@@ -75,6 +75,15 @@
                         <label>Short Clothes</label>
                         <input type="number" class="form-control" name="customer[shortClothes]" value="<%= customer.shortClothes %>">
                     </div>
+                    <div class="form-group">
+                        <label>Is Paid</label>
+                            <label class="radio-inline">
+                              <input type="radio" name="radiobusy" value="yes" <% if(customer.isBusy){ %> checked <% } %> >yes
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="radiobusy" value="no" <% if(!customer.isBusy){ %> checked <% } %> >no
+                            </label>
+                    </div>
 
                     <button type="submit" class="btn btn-success btn-lg">Enter</button>
                     
