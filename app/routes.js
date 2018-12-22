@@ -131,7 +131,7 @@ module.exports = function(app, passport) {
               })
         });
     });
-    app.post('/update/mobile/:id', isLoggedIn, function(req, res){
+    app.get('/update/mobile/:id', isLoggedIn, function(req, res){
        Mobile.findByIdAndRemove(req.params.id, function(err){
           if(err){
               console.log(err),res.redirect('/logout');
@@ -254,40 +254,6 @@ module.exports = function(app, passport) {
     });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // =====================================
     // ADMIN CUSTOMER ROUTES =====================
     // =====================================
@@ -321,9 +287,9 @@ module.exports = function(app, passport) {
               foundCustomer.longClothes = req.body.customer.longClothes;
               foundCustomer.shortClothes = req.body.customer.shortClothes;
               if(req.body.radiobusy == "no") {
-                  customer.isBusy = false;
+                  foundCustomer.isBusy = false;
                 } else {
-                  customer.isBusy = true;
+                  foundCustomer.isBusy = true;
                 }
               foundCustomer.save();
               res.redirect('/admin/customerdetails/' + req.params.id);
@@ -407,6 +373,23 @@ module.exports = function(app, passport) {
                 console.log(err),res.redirect('/logout');
             if (mobile) {
               res.redirect('/admin/customerdetails/' + mobile.owner);
+            } else {
+              res.redirect('/admin/customer');
+            }
+        })
+    });
+    app.post('/admin/customer/mobiledelete', isAdmin, function(req, res) {
+        Mobile.findOne({ 'number' :  req.body.deleteMobile }, function(err, mobile) {
+            if (err)
+                console.log(err),res.redirect('/logout');
+            if (mobile) {
+              Mobile.findByIdAndRemove(mobile._id, function(err){
+                  if(err){
+                      console.log(err),res.redirect('/logout');
+                  } else {
+                      res.redirect('/admin/customer');
+                  }
+               });
             } else {
               res.redirect('/admin/customer');
             }

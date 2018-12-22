@@ -64,7 +64,7 @@
 
     		<% customer.numbers.forEach(function(cell){ %>
     			
-    			<form class="form-inline" action="/update/mobile/<%=cell._id%>?_method=DELETE" method="POST">
+    			<form class="form-inline" action="/update/mobile/<%=cell._id%>" >
     				<label><%= cell.number %></label>
                     <input type="submit" class="btn btn-xs btn-warning" value="Delete">
                 </form>
