@@ -147,7 +147,11 @@
                         <p><strong>Order Date : </strong><%= order.orderDate %></p>
                         <% if (order.status == 'delivered') { %>
                           <span><strong>Delivered Date : </strong><%= order.deliveryDate %></span>
+                          <% if (order.rating == 0) { %>
+                            <div><a href="/order/<%= order._id %>/feedback" style="font-size: 15px" class="btn btn-warning btn-sm">Rate this order</a></div>
+                          <% } %>
                         <% } %>
+                          
                     </div> 
 
                 <% }) %>

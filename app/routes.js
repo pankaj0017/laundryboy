@@ -839,6 +839,58 @@ module.exports = function(app, passport) {
         })
     });
 
+    app.get('/order/:id/feedback', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    console.log(err),res.redirect('/logout');
+            Order.findById(req.params.id, function(err, order){
+
+              if (order && order.status == 'delivered' && order.rating == 0 && order.customer == customer._id) {
+                res.render("order/feedback.ejs",{customer : customer});
+              }
+            })
+        })
+    });
+
+    app.post('/order/:id/feedback', isLoggedIn, function(req, res) {
+        Customer.findOne({ 'user' :  req.user._id }, function(err, customer) {
+                if (err)
+                    console.log(err),res.redirect('/logout');
+            Order.findById(req.params.id, function(err, order){
+
+              if (err)
+                    console.log(err),res.redirect('/logout');
+
+              if (order && order.status == 'delivered' && order.rating == 0 && order.customer == customer._id) {
+                order.rating = req.body.rateService;
+                order.rateDelivery = req.body.rateDelivery;
+                order.description = order.description + " : feedback : " + req.body.feedback;
+                order.save();
+
+                DeliveryBoy.findById(order.deliveryBoy, function(err, deliveryboy){
+
+                  if (err)
+                    console.log(err),res.redirect('/logout');
+
+                  deliveryboy.rating = deliveryboy.rating + req.body.rateDelivery;
+                  deliveryboy.ratingCount = deliveryboy.ratingCount + 1;
+                  deliveryboy.save();
+                })
+                Vendor.findById(order.vendor, function(err, vendor){
+
+                  if (err)
+                    console.log(err),res.redirect('/logout');
+
+                  vendor.rating = vendor.rating + req.body.rateService;
+                  vendor.ratingCount = vendor.ratingCount + 1;
+                  vendor.save();
+                })
+              }
+              res.redirect('/profile');
+            })
+        })
+    });
+
 
 
     // =====================================
@@ -1588,9 +1640,15 @@ module.exports = function(app, passport) {
 };
 
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
+      if (req.user.local.email != "9911692428") {
         return next();
-    res.redirect('/login');
+      } else {
+        res.redirect('/logout');
+      }
+    } else {
+      res.redirect('/login');
+    }
 }
 function isLoggedOut(req, res, next) {
     if (!req.isAuthenticated())
