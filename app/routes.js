@@ -845,7 +845,10 @@ module.exports = function(app, passport) {
                     console.log(err),res.redirect('/logout');
             Order.findById(req.params.id, function(err, order){
 
-              if (order && order.status == 'delivered' && order.rating == 0 && order.customer == customer._id) {
+              if (err)
+                    console.log(err),res.redirect('/logout');
+
+              if (order && order.status == 'delivered' && order.rating == 0 && order.customer.equals(customer._id)) {
                 res.render("order/feedback.ejs",{customer : customer});
               }
             })
@@ -861,7 +864,7 @@ module.exports = function(app, passport) {
               if (err)
                     console.log(err),res.redirect('/logout');
 
-              if (order && order.status == 'delivered' && order.rating == 0 && order.customer == customer._id) {
+              if (order && order.status == 'delivered' && order.rating == 0 && order.customer.equals(customer._id)) {
                 order.rating = req.body.rateService;
                 order.rateDelivery = req.body.rateDelivery;
                 order.description = order.description + " : feedback : " + req.body.feedback;
@@ -890,6 +893,48 @@ module.exports = function(app, passport) {
             })
         })
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

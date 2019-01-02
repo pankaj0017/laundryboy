@@ -1,0 +1,129 @@
+<html>
+	<head>
+		<title>
+			LaundryBuoy
+		</title>
+    <link href="/img/logotitle.ico" rel="shortcut icon">
+   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+
+  <link href="/css/style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        body        { padding:10px; word-wrap:break-word; }
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float:right;
+            width:1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:30px;
+            color:#ccc;
+        }
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+        .rate > input:checked ~ label {
+            color: #ffc700;    
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;  
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
+
+    </style>
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding:10px;
+    }
+    .othertop{margin-top:100px;}
+    </style>
+</head>
+	<body>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand page-scroll sticky-logo" href="/">
+            <h1><span>Laundry<span style="color: #555;">Buoy</span></span></h1>
+        </a>
+    </div>
+    <div class="collapse navbar-collapse main-menu bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+        	<li><a href="/profile"><span class="glyphicon glyphicon-user" style="color:black;"></span> <span style="color:black;">Signed in as 
+                            <% if(user.local.email) { %>
+                              <%= user.local.email %>
+                            <% } else if(user.google.email) { %>
+                              <%= user.google.email %>
+                            <% } else { %>
+                              <%= user.facebook.email %>
+                            <% } %>
+                        </span></a></li>
+            <li ><a href="/logout"><span class="glyphicon glyphicon-log-out" style="color:black;" ></span> <span style="color:black;">Logout</span></a></li>
+        </ul>
+    </div>
+
+
+  </div>
+</nav>
+
+    	<div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+
+		    <h3><span class="fa fa-sign-in"></span>Your feedback is important to us.</h3>
+
+		    <form action="/update/mobile" class="form-inline"  method="post" >
+
+          <div class="rate">
+            <input type="radio" id="star5" name="rate" value="5" />
+            <label for="star5" title="text">5 stars</label>
+            <input type="radio" id="star4" name="rate" value="4" />
+            <label for="star4" title="text">4 stars</label>
+            <input type="radio" id="star3" name="rate" value="3" />
+            <label for="star3" title="text">3 stars</label>
+            <input type="radio" id="star2" name="rate" value="2" />
+            <label for="star2" title="text">2 stars</label>
+            <input type="radio" id="star1" name="rate" value="1" />
+            <label for="star1" title="text">1 star</label>
+          </div>
+
+
+		    	<div class="form-group">
+		    		<label class="sr-only" for="New Number">Number:</label>
+		            <input type="text" class="form-control" required pattern="([0-9]){10}" name="newMobile[number]" placeholder="Enter New Phone Number">
+		        </div>
+
+		        <button type="submit" class="btn btn-info btn-sm">Add</button>
+		    </form>
+		    
+		    <a href="/update" class="btn btn-default btn-sm">Back</a>
+
+        </div>
+	</body>
+</html>
