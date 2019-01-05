@@ -1,0 +1,52 @@
+<!-- views/discountsection.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>LaundryBuoy</title>
+    <link href="/img/logotitle.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Discount and Offer</h1>
+        <a href="/" class="btn btn-default btn-sm">Home</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/admin" class="btn btn-default btn-sm">Back</a>
+    </div>
+
+    <div class="col-sm-6 col-sm-offset-3 jumbotron text-center">
+
+        <!-- CREATING -->
+                <form action="/admin/discount" method="post">
+
+                    <div class="form-group">
+                        <label>Discount</label>
+                        <input type="number" class="form-control" name="discountValue" value="<%= admin.discount %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Display Panel</label>
+                        <input type="text" class="form-control" name="displayPanel" value="<%= admin.address %>">
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg">Save</button>
+                    
+                </form>
+        <!-- CREATING -->
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -24,7 +24,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/login', isLoggedOut, passport.authenticate('local-login', {
-        successRedirect : '/', // redirect to the secure profile section
+        successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -149,6 +149,33 @@ module.exports = function(app, passport) {
     app.get('/admin', isAdmin, function(req, res) {
             res.render('admin/admin.ejs');
     });
+
+    app.get('/admin/discount', isAdmin, function(req, res) {
+
+      Customer.findOne({ 'user' :  req.user._id }, function(err, admin) {
+
+            if (err)
+                console.log(err),res.redirect('/logout');
+            res.render('admin/discountsection.ejs', {admin : admin});
+        })
+
+    });
+
+    app.post('/admin/discount', isAdmin, function(req, res) {
+      Customer.findOne({ 'user' :  req.user._id }, function(err, admin) {
+
+            if (err)
+                console.log(err),res.redirect('/logout');
+
+            admin.discount = req.body.discountValue;
+            admin.address = req.body.displayPanel;
+            admin.save(function(err) {   
+                if (err)
+                    console.log(err),res.redirect('/logout');
+                res.redirect('/admin/discount');
+            });
+        })
+      });
 
     // =====================================
     // ADMIN ORDER ROUTES =====================
@@ -286,6 +313,7 @@ module.exports = function(app, passport) {
               foundCustomer.daysLeft = req.body.customer.daysLeft;
               foundCustomer.longClothes = req.body.customer.longClothes;
               foundCustomer.shortClothes = req.body.customer.shortClothes;
+              foundCustomer.discount = req.body.customer.discount;
               if(req.body.radiobusy == "no") {
                   foundCustomer.isBusy = false;
                 } else {
@@ -849,7 +877,7 @@ module.exports = function(app, passport) {
                     console.log(err),res.redirect('/logout');
 
               if (order && order.status == 'delivered' && order.rating == 0 && order.customer.equals(customer._id)) {
-                res.render("order/feedback.ejs",{customer : customer});
+                res.render("order/feedback.ejs",{customer : customer, order : order});
               }
             })
         })
@@ -867,7 +895,10 @@ module.exports = function(app, passport) {
               if (order && order.status == 'delivered' && order.rating == 0 && order.customer.equals(customer._id)) {
                 order.rating = req.body.rateService;
                 order.rateDelivery = req.body.rateDelivery;
-                order.description = order.description + " : feedback : " + req.body.feedback;
+
+                if (req.body.feedback)
+                  order.description = order.description + " : feedback : " + req.body.feedback;
+
                 order.save();
 
                 DeliveryBoy.findById(order.deliveryBoy, function(err, deliveryboy){
@@ -875,18 +906,22 @@ module.exports = function(app, passport) {
                   if (err)
                     console.log(err),res.redirect('/logout');
 
-                  deliveryboy.rating = deliveryboy.rating + req.body.rateDelivery;
-                  deliveryboy.ratingCount = deliveryboy.ratingCount + 1;
-                  deliveryboy.save();
+                  if (req.body.rateDelivery >= 1 && req.body.rateDelivery <= 5) {
+                    deliveryboy.rating = deliveryboy.rating + req.body.rateDelivery;
+                    deliveryboy.ratingCount = deliveryboy.ratingCount + 1;
+                    deliveryboy.save();
+                  }
                 })
                 Vendor.findById(order.vendor, function(err, vendor){
 
                   if (err)
                     console.log(err),res.redirect('/logout');
 
-                  vendor.rating = vendor.rating + req.body.rateService;
-                  vendor.ratingCount = vendor.ratingCount + 1;
-                  vendor.save();
+                  if (req.body.rateService >= 1 && req.body.rateService <= 5) {
+                    vendor.rating = vendor.rating + req.body.rateService;
+                    vendor.ratingCount = vendor.ratingCount + 1;
+                    vendor.save();
+                  }
                 })
               }
               res.redirect('/profile');
@@ -895,51 +930,8 @@ module.exports = function(app, passport) {
     });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // =====================================
-    // VENDOR ROUTES =====================
+    // VENDOR ROUTES =======================
     // =====================================
 
 
@@ -1389,6 +1381,7 @@ module.exports = function(app, passport) {
        Order.findById(req.params.oid).populate("deliveryBoy customer").exec(function(err, order) {
           if(err) {
               console.log(err),res.redirect('/logout');
+
           } else if (order && order.deliveryBoy._id == req.params.id) {
 
               var costWithPlan = 0;
@@ -1419,11 +1412,34 @@ module.exports = function(app, passport) {
                       flag = false;
                     }
                 });
+                
+                User.findOne({ 'local.email' : '9911692428' }, function(err, foundUser) {
+                  
+                  if (err)
+                      console.log(err),res.redirect('/logout');
 
-                if (order.customer.discount) {
-                  costWithoutPlan = costWithoutPlan - 25;
-                }
-                res.render('deliveryboy/paymentpage.ejs',{order : order, costWithoutPlan : costWithoutPlan, costWithPlan : costWithPlan, message: req.flash('paymentstatus') });
+                  if (foundUser) {
+                    Customer.findOne({ user : foundUser._id }, function(err, admin) {
+
+                        if (err)
+                            console.log(err),res.redirect('/logout');
+
+                        if (admin) {
+
+                          if (order.customer.discount) {
+
+                            costWithoutPlan = costWithoutPlan - admin.discount;
+                          }
+
+                          res.render('deliveryboy/paymentpage.ejs',{
+                              order : order, costWithoutPlan : costWithoutPlan,
+                              costWithPlan : costWithPlan,
+                              message: req.flash('paymentstatus') 
+                            });
+                        }
+                      })
+                    }
+                  })
               });
           } else {
             res.redirect('/deliveryboylogin');
@@ -1506,18 +1522,39 @@ module.exports = function(app, passport) {
                               flag = false;
                             }
                         });
-                        if (customer.discount) {
-                          costWithoutPlan = costWithoutPlan - 25;
-                          customer.discount = customer.discount - 1;
-                          customer.save();
-                        }
-                        order.cost = costWithoutPlan;
-                        order.isPaid = true;
-                        deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
-                        deliveryboy.save();
-                        order.save();
-                        res.redirect('/deliveryboy/' + deliveryboy._id);
 
+
+                        User.findOne({ 'local.email' : '9911692428' }, function(err, foundAdmin) {
+                  
+                            if (err)
+                                console.log(err),res.redirect('/logout');
+
+                            if (foundUser) {
+                              Customer.findOne({ user : foundAdmin._id }, function(err, admin) {
+
+                                  if (err)
+                                      console.log(err),res.redirect('/logout');
+
+                                  if (admin) {
+
+                                    if (customer.discount) {
+
+                                      costWithoutPlan = costWithoutPlan - admin.discount;
+                                      customer.discount = customer.discount - 1;
+                                      customer.save();
+
+                                    }
+
+                                    order.cost = costWithoutPlan;
+                                    order.isPaid = true;
+                                    deliveryboy.amount = deliveryboy.amount + costWithoutPlan;
+                                    deliveryboy.save();
+                                    order.save();
+                                    res.redirect('/deliveryboy/' + deliveryboy._id);
+                                  }
+                                })
+                              }
+                          })
                       });
 
                     }
@@ -1689,7 +1726,7 @@ function isLoggedIn(req, res, next) {
       if (req.user.local.email != "9911692428") {
         return next();
       } else {
-        res.redirect('/logout');
+        res.redirect('/admin');
       }
     } else {
       res.redirect('/login');
