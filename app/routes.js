@@ -10,12 +10,34 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated() && req.user.local.email == "9911692428") {
             res.redirect("/admin");
         } else {
-          Plan.find({}, function(err, plans) {
-            SingleService.find({}, function(err, singleservices) {
 
-              res.render('index.ejs', {plans : plans, singleservices : singleservices});
+
+          User.findOne({ 'local.email' : '9911692428' }, function(err, foundUser) {
+                  
+            if (err)
+                console.log(err),res.redirect('/logout');
+
+            if (foundUser) {
+              Customer.findOne({ user : foundUser._id }, function(err, admin) {
+
+                  if (err)
+                      console.log(err),res.redirect('/logout');
+
+                  if (admin) {
+
+                    Plan.find({}, function(err, plans) {
+                      SingleService.find({}, function(err, singleservices) {
+
+                        res.render('index.ejs', {plans : plans, singleservices : singleservices, admin : admin});
+                      })
+                    })
+
+                  } else {
+                    res.redirect('/login');
+                  }
+                })
+              }
             })
-          })
         }
     });
 
